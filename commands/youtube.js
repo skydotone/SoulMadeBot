@@ -1,5 +1,6 @@
 const execute = (message, args) => {
-    message.author.send('https://www.youtube.com/channel/UCf6DzMRwj7SJ3nPrZqd5hHw');
+    // message.author.send is for DMs
+    message.channel.send('https://www.youtube.com/channel/UCf6DzMRwj7SJ3nPrZqd5hHw');
 }
 
 module.exports = {

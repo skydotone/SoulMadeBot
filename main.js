@@ -7,6 +7,28 @@ const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
 
+const crypto = require('crypto');
+const algorithm = 'aes-256-cbc'; //Using AES encryption
+const key = crypto.randomBytes(32);
+const iv = crypto.randomBytes(16);
+
+//Encrypting text
+function encrypt(text) {
+    let cipher = crypto.createCipheriv(algorithm, Buffer.from(key), iv);
+    let encrypted = cipher.update(text);
+    encrypted = Buffer.concat([encrypted, cipher.final()]);
+    return encrypted.toString('hex');
+}
+
+// Decrypting text
+function decrypt(text) {
+    let encryptedText = Buffer.from(text, 'hex');
+    let decipher = crypto.createDecipheriv(algorithm, Buffer.from(key), iv);
+    let decrypted = decipher.update(encryptedText);
+    decrypted = Buffer.concat([decrypted, decipher.final()]);
+    return decrypted.toString();
+}
+
 const app = express();
 const port = process.env.PORT || 5000;
 
@@ -41,7 +63,7 @@ client.on('messageCreate', message => {
     } else if (command === 'youtube') {
         client.commands.get('youtube').execute(message, args);
     } else if (command === 'join') {
-        client.commands.get('join').execute(message, args);
+        client.commands.get('join').execute(message, { uuid: encrypt(message.member.id) });
     }
 })
 
@@ -51,16 +73,18 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post('/api/join', async (req, res) => {
     // Let's ensure that the account proof is legit.
-
     let accountProofObject = req.body.user.services.filter(service => service.type === 'account-proof')[0];
     const AccountProof = accountProofObject.data;
-    console.log(AccountProof);
+    // Gets the balance of the user
     let balance = await getBalance(AccountProof);
 
+    // 'guild' == the server
     const guild = client.guilds.cache.get(serverID)
-    const member = guild.members.cache.get(req.body.memberID)
+    // gets the member by first decrypting the uuid and getting back
+    // the member id of the member, then gets the actual member
+    const member = guild.members.cache.get(decrypt(req.body.uuid))
     if (balance) {
-        if (balance >= 75) {
+        if (balance >= 10) {
             member.roles.add(userRole);
             member.user.send('You have been granted access to Emerald City.')
         } else {

@@ -1,22 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import * as fcl from '@onflow/fcl';
-import config from '../../config.json';
 
 fcl.config()
   .put('accessNode.api', 'https://access-testnet.onflow.org')
   .put('discovery.wallet', 'https://fcl-discovery.onflow.org/testnet/authn');
 
-function App() {
+function App(props) {
   const [user, setUser] = useState({});
 
   const getBalance = async () => {
+    // Gets the id in the URL
+    let search = window.location.search;
+    let params = new URLSearchParams(search);
+    let id = params.get('id');
+
     const response = await fetch('/api/join', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ user, memberID: config.myMemberID }),
+      body: JSON.stringify({ user, uuid: id }),
     });
   }
 
