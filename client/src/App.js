@@ -7,7 +7,7 @@ fcl.config()
   .put('discovery.wallet', 'https://fcl-discovery.onflow.org/testnet/authn');
 
 function App(props) {
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState();
 
   const getBalance = async () => {
     // Gets the id in the URL
@@ -32,7 +32,7 @@ function App(props) {
     if (user && user.addr) {
       getBalance();
     }
-  }, [user, getBalance]);
+  }, [user]);
 
   const authentication = async () => {
     if (user.addr) {
@@ -44,8 +44,8 @@ function App(props) {
 
   return (
     <div className="App">
-      <h1>{user && user.addr ? "Please close this browser." : null}</h1>
-      <button className="button-9" onClick={() => authentication()}>{!user.addr ? "Log in with Blocto" : "Log out"}</button>
+      <h1>{user && user.addr ? "You can close your browser now." : null}</h1>
+      <button className="button-9" onClick={() => authentication()}>{user && !user.addr ? "Log in with Blocto" : "Log out"}</button>
     </div>
   );
 }

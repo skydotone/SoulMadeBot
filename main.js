@@ -1,33 +1,12 @@
 require('dotenv').config();
 const { Client, Intents, Collection } = require('discord.js');
-const { getBalance } = require('./flowscript.js');
+const { getBalance } = require('./flowscripts/flowscript.js');
+const {encrypt, decrypt} = require('./helperfunctions/functions.js');
 
 const fs = require('fs');
 
 const express = require('express');
 const bodyParser = require('body-parser');
-
-const crypto = require('crypto');
-const algorithm = 'aes-256-cbc'; //Using AES encryption
-const key = crypto.randomBytes(32);
-const iv = crypto.randomBytes(16);
-
-// Encrypting text
-function encrypt(text) {
-    let cipher = crypto.createCipheriv(algorithm, Buffer.from(key), iv);
-    let encrypted = cipher.update(text);
-    encrypted = Buffer.concat([encrypted, cipher.final()]);
-    return encrypted.toString('hex');
-}
-
-// Decrypting text
-function decrypt(text) {
-    let encryptedText = Buffer.from(text, 'hex');
-    let decipher = crypto.createDecipheriv(algorithm, Buffer.from(key), iv);
-    let decrypted = decipher.update(encryptedText);
-    decrypted = Buffer.concat([decrypted, decipher.final()]);
-    return decrypted.toString();
-}
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -87,14 +66,14 @@ app.post('/api/join', async (req, res) => {
     // gets the member by first decrypting the uuid and getting back
     // the member id of the member, then gets the actual member
     const member = guild.members.cache.get(decrypt(req.body.uuid))
-    if (balance) {
-        if (balance >= 10) {
-            member.roles.add(process.env.USERROLE);
-            member.user.send('You have been granted access to Emerald City.')
-        } else {
-            member.user.send('You do not have enough tokens to join the community.')
-        }
+    
+    if (balance && (balance >= 5)) {
+        member.roles.add(process.env.BETATESTERROLE);
+        member.user.send('You have been granted access to Emerald City.')
+    } else {
+        member.user.send('You do not have enough tokens to join the community.')
     }
+    
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
