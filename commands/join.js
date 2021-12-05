@@ -7,7 +7,7 @@ const execute = (message, args) => {
         .setTitle('Click here to enter Emerald City')
         .setURL('https://pedantic-darwin-e512ad.netlify.app/?id=' + args.uuid)
         .setAuthor('Emerald City Bot', 'https://i.imgur.com/qjT7cro.png')
-        .setDescription('Hey there! Please click the link above if you have 10 Emerald Tokens and wish to gain access to the Emerald City discord.')
+        .setDescription('Hey there! Please click the link above if you have 5 EmeraldBeta Tokens and wish to gain access to be given the "Beta Tester" role.')
         .setTimestamp()
 
     message.author.send({ embeds: [exampleEmbed] });
