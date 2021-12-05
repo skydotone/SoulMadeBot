@@ -76,9 +76,9 @@ app.post('/api/join', async (req, res) => {
     
     if (balance && (balance >= 5)) {
         member.roles.add(process.env.BETATESTERROLE);
-        member.user.send('You have been granted access to Emerald City.')
+        member.user.send('You have been granted the "Beta Tester" role.')
     } else {
-        member.user.send('You do not have enough tokens to join the community.')
+        member.user.send('You have not minted your EmeraldBeta tokens. You can do that here: https://emerald-city.netlify.app/')
     }
     
 });
