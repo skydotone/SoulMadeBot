@@ -11,7 +11,7 @@ const bodyParser = require('body-parser');
 const app = express();
 const cors = require('cors');
 var corsOptions = {
-    origin: ['https://pedantic-darwin-e512ad.netlify.app/'],
+    origin: ['https://pedantic-darwin-e512ad.netlify.app'],
     credentials: true,
     methods: ['GET', 'POST']
 };
