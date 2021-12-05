@@ -1,11 +1,15 @@
 {
   "name": "discord-bot",
   "version": "1.0.0",
+  "engines": {
+    "node": "16.13.0"
+  },
   "description": "",
   "main": "main.js",
   "scripts": {
     "client": "cd client && yarn start",
-    "bot": "node main.js"
+    "bot": "node main.js",
+    "start": "node main.js"
   },
   "author": "Jacob Tucker",
   "license": "ISC",
