@@ -2,7 +2,7 @@ const execute = (message, args) => {
     let role = message.guild.roles.cache.find(role => role.name === args[0]);
     if (!role) {
         message.channel.send('This is not a valid role you can add.')
-    } else if (!role.editable) {
+    } else if (!role.editable || role.id == process.env.BETATESTERROLE) {
         message.channel.send('You do not have permissions to add this role to yourself.');
     } else {
         message.member.roles.add(role);

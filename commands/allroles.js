@@ -2,7 +2,9 @@ const { MessageEmbed } = require('discord.js');
 
 const execute = (message, args) => {
     let rolemap = message.guild.roles.cache
-        .filter(r => r.editable)
+        .filter(r => 
+            r.editable && r.id != process.env.BETATESTERROLE
+        )
         .map(r => r)
         .join(', ');
 
