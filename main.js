@@ -1,5 +1,5 @@
+require('dotenv').config();
 const { Client, Intents, Collection } = require('discord.js');
-const { serverID, token, userRole } = require('./config.json');
 const { getBalance } = require('./flowscript.js');
 
 const fs = require('fs');
@@ -12,7 +12,7 @@ const algorithm = 'aes-256-cbc'; //Using AES encryption
 const key = crypto.randomBytes(32);
 const iv = crypto.randomBytes(16);
 
-//Encrypting text
+// Encrypting text
 function encrypt(text) {
     let cipher = crypto.createCipheriv(algorithm, Buffer.from(key), iv);
     let encrypted = cipher.update(text);
@@ -64,6 +64,10 @@ client.on('messageCreate', message => {
         client.commands.get('youtube').execute(message, args);
     } else if (command === 'join') {
         client.commands.get('join').execute(message, { uuid: encrypt(message.member.id) });
+    } else if (command === 'role') {
+        client.commands.get('role').execute(message, args);
+    } else if (command === 'allroles') {
+        client.commands.get('allroles').execute(message, args);
     }
 })
 
@@ -79,13 +83,13 @@ app.post('/api/join', async (req, res) => {
     let balance = await getBalance(AccountProof);
 
     // 'guild' == the server
-    const guild = client.guilds.cache.get(serverID)
+    const guild = client.guilds.cache.get(process.env.SERVERID)
     // gets the member by first decrypting the uuid and getting back
     // the member id of the member, then gets the actual member
     const member = guild.members.cache.get(decrypt(req.body.uuid))
     if (balance) {
         if (balance >= 10) {
-            member.roles.add(userRole);
+            member.roles.add(process.env.USERROLE);
             member.user.send('You have been granted access to Emerald City.')
         } else {
             member.user.send('You do not have enough tokens to join the community.')
@@ -97,4 +101,4 @@ app.listen(port, () => console.log(`Listening on port ${port}`));
 
 // This is the bot's token
 // Must be at the bottom of the file
-client.login(token);
+client.login(process.env.TOKEN);

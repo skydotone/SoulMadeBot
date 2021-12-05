@@ -5,7 +5,7 @@ const execute = (message, args) => {
     const exampleEmbed = new MessageEmbed()
         .setColor('#5bc595')
         .setTitle('Click here to enter Emerald City')
-        .setURL('https://localhost:3000/?id=' + args.uuid)
+        .setURL('http://localhost:3000/?id=' + args.uuid)
         .setAuthor('Emerald City Bot', 'https://i.imgur.com/qjT7cro.png')
         .setDescription('Hey there! Please click the link above if you have 10 Emerald Tokens and wish to gain access to the Emerald City discord.')
         .setTimestamp()
