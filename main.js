@@ -18,7 +18,7 @@ var corsOptions = {
 app.use(cors(corsOptions));
 const port = process.env.PORT || 5000;
 
-const prefix = '-';
+const prefix = '!';
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 
 // Gets all of our commands from our commands folder
