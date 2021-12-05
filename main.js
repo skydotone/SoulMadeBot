@@ -9,6 +9,13 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const app = express();
+const cors = require('cors');
+var corsOptions = {
+    origin: ['https://pedantic-darwin-e512ad.netlify.app/'],
+    credentials: true,
+    methods: ['GET', 'POST']
+};
+app.use(cors(corsOptions));
 const port = process.env.PORT || 5000;
 
 const prefix = '-';
