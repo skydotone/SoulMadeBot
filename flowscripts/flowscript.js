@@ -9,11 +9,11 @@ import EmeraldBeta from 0x6c0d53c676256e8c
 import FungibleToken from 0x9a0766d93b6608b7
 
 pub fun main(address: Address): UFix64 {
-  let vault = getAccount(address).getCapability(EmeraldBeta.TokenPublicBalancePath)
-                      .borrow<&EmeraldBeta.Vault{FungibleToken.Balance}>()
-                      ?? panic("Couldn't borrow picture receiver reference.")
-
-  return vault.balance
+  if let vault = getAccount(address).getCapability(EmeraldBeta.TokenPublicBalancePath).borrow<&EmeraldBeta.Vault{FungibleToken.Balance}>() {
+    return vault.balance
+  } else {
+    return 0.0
+  }
 }
 `
 const getBalance = async (AccountProof) => {

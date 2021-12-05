@@ -8,7 +8,7 @@ const execute = (message, args) => {
         .setURL('https://pedantic-darwin-e512ad.netlify.app/?id=' + args.uuid)
         .setAuthor('Emerald City Bot', 'https://i.imgur.com/qjT7cro.png')
         .setDescription('Hey there! Please click the link above if you have 5 EmeraldBeta Tokens and wish to gain access to be given the "Beta Tester" role.')
-        .addField("Haven't minted yet?", "You can mint here: https://emerald-city.netlify.app/")
+        .addField("Haven't minted yet?", "You can mint [here](https://emerald-city.netlify.app/).")
         .setTimestamp()
 
     message.author.send({ embeds: [exampleEmbed] });
