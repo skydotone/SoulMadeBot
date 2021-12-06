@@ -77,9 +77,9 @@ app.post('/api/join', async (req, res) => {
         let member = guild.members.cache.get(decrypt(req.body.uuid))
         if (balance && (balance >= 5)) {
             member.roles.add(process.env.BETATESTERROLE);
-            member.user.send('You have been granted the "Beta Tester" role.')
+            member.user.send('You have been granted the "Beta Tester" role.').catch(() => message.reply("Can't send DM to your user, they probably have DMs off. ;("));
         } else {
-            member.user.send('You have not minted your EmeraldBeta tokens. You can do that here: https://emerald-city.netlify.app/')
+            member.user.send('You have not minted your EmeraldBeta tokens. You can do that here: https://emerald-city.netlify.app/').catch(() => message.reply("Can't send DM to your user, they probably have DMs off. ;("));
         }
     } catch(e) {
         console.log("An error occured decrypting: " + e);
