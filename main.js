@@ -72,15 +72,18 @@ app.post('/api/join', async (req, res) => {
     const guild = client.guilds.cache.get(process.env.SERVERID)
     // gets the member by first decrypting the uuid and getting back
     // the member id of the member, then gets the actual member
-    const member = guild.members.cache.get(decrypt(req.body.uuid))
-    
-    if (balance && (balance >= 5)) {
-        member.roles.add(process.env.BETATESTERROLE);
-        member.user.send('You have been granted the "Beta Tester" role.')
-    } else {
-        member.user.send('You have not minted your EmeraldBeta tokens. You can do that here: https://emerald-city.netlify.app/')
+
+    try {
+        let member = guild.members.cache.get(decrypt(req.body.uuid))
+        if (balance && (balance >= 5)) {
+            member.roles.add(process.env.BETATESTERROLE);
+            member.user.send('You have been granted the "Beta Tester" role.')
+        } else {
+            member.user.send('You have not minted your EmeraldBeta tokens. You can do that here: https://emerald-city.netlify.app/')
+        }
+    } catch(e) {
+        console.log("An error occured decrypting: " + e);
     }
-    
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
