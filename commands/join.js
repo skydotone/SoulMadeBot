@@ -11,7 +11,7 @@ const execute = (message, args) => {
         .addField("Haven't minted yet?", "You can mint [here](https://emerald-city.netlify.app/).")
         .setTimestamp()
 
-    message.author.send({ embeds: [exampleEmbed] });
+    message.author.send({ embeds: [exampleEmbed] }).catch(() => message.reply("Can't send DM to your user, they probably have DMs off. ;("));
 }
 
 module.exports = {
