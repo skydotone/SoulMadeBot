@@ -4,7 +4,7 @@ const execute = async (message, args) => {
     // message.author.send is for DMs
     let mintURL = await getMintURL(message.guild.id);
 
-    message.channel.send('Mint your tokens here: ' + mintURL);
+    message.channel.send('Mint your tokens here: <' + mintURL + '>');
 }
 
 module.exports = {
