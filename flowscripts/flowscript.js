@@ -4,19 +4,7 @@ const t = require("@onflow/types");
 fcl.config()
   .put('accessNode.api', 'https://access-testnet.onflow.org');
 
-const script = `
-import EmeraldBeta from 0x6c0d53c676256e8c
-import FungibleToken from 0x9a0766d93b6608b7
-
-pub fun main(address: Address): UFix64 {
-  if let vault = getAccount(address).getCapability(EmeraldBeta.TokenPublicBalancePath).borrow<&EmeraldBeta.Vault{FungibleToken.Balance}>() {
-    return vault.balance
-  } else {
-    return 0.0
-  }
-}
-`
-const getBalance = async (AccountProof) => {
+const getBalance = async (AccountProof, guildID) => {
   const Address = AccountProof.address;
   const Timestamp = AccountProof.timestamp;
   const Message = fcl.WalletUtils.encodeMessageForProvableAuthnVerifying(
@@ -30,6 +18,47 @@ const getBalance = async (AccountProof) => {
   );
 
   if (!isValid) return 0;
+
+  const { tokenType, number, path } = await fcl.send([
+    fcl.script(`
+      import EmeraldAuthBot from ${process.env.ADDRESS}
+
+      pub fun main(guildID: Int): EmeraldAuthBot.GuildInfo {
+        return EmeraldAuthBot.getGuildInfo(guildID: guildID)
+      }
+    `),
+    fcl.args([
+      fcl.arg(parseInt(guildID), t.Int)
+    ])
+  ]).then(fcl.decode);
+  console.log(path);
+  console.log(contractName);
+  console.log(contractAddress);
+
+  var script = ``;
+  if (tokenType === "FT") {
+    script = `
+      import FungibleToken from 0x9a0766d93b6608b7
+      pub fun main(address: Address): UFix64 {
+        if let vault = getAccount(address).getCapability(${path}).borrow<&{FungibleToken.Balance}>() {
+          return vault.balance
+        } else {
+          return 0.0
+        }
+      }
+    `;
+  } else if (tokenType === "NFT") {
+    script = `
+      import NonFungibleToken from 0x631e88ae7f1d7c20
+      pub fun main(address: Address): Int {
+        if let collection = getAccount(address).getCapability(${path}).borrow<&{NonFungibleToken.CollectionPublic}>() {
+          return collection.getIDs().length
+        } else {
+          return 0
+        }
+      }
+    `;
+  }
 
   const result = await fcl.send([
     fcl.script(script),

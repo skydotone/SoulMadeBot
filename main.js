@@ -1,7 +1,7 @@
 require('dotenv').config();
 const { Client, Intents, Collection } = require('discord.js');
 const { getBalance } = require('./flowscripts/flowscript.js');
-const {encrypt, decrypt} = require('./helperfunctions/functions.js');
+const { encrypt, decrypt } = require('./helperfunctions/functions.js');
 
 const fs = require('fs');
 
@@ -11,7 +11,7 @@ const bodyParser = require('body-parser');
 const app = express();
 const cors = require('cors');
 var corsOptions = {
-    origin: ['https://pedantic-darwin-e512ad.netlify.app'],
+    origin: ['https://pedantic-darwin-e512ad.netlify.app', 'http://localhost:3000'],
     credentials: true,
     methods: ['GET', 'POST']
 };
@@ -49,11 +49,13 @@ client.on('messageCreate', message => {
     } else if (command === 'youtube') {
         client.commands.get('youtube').execute(message, args);
     } else if (command === 'join') {
-        client.commands.get('join').execute(message, { uuid: encrypt(message.member.id) });
+        client.commands.get('join').execute(message, { uuid: encrypt(message.member.id), guildID: encrypt(message.guild.id) });
     } else if (command === 'role') {
         client.commands.get('role').execute(message, args);
     } else if (command === 'allroles') {
         client.commands.get('allroles').execute(message, args);
+    } else if (command === 'setup') {
+        client.commands.get('setup').execute(message, args);
     }
 })
 
@@ -66,7 +68,7 @@ app.post('/api/join', async (req, res) => {
     let accountProofObject = req.body.user.services.filter(service => service.type === 'account-proof')[0];
     const AccountProof = accountProofObject.data;
     // Gets the balance of the user
-    let balance = await getBalance(AccountProof);
+    let balance = await getBalance(AccountProof, decrypt(req.body.guildID));
 
     // 'guild' == the server
     const guild = client.guilds.cache.get(process.env.SERVERID)
@@ -77,11 +79,11 @@ app.post('/api/join', async (req, res) => {
         let member = guild.members.cache.get(decrypt(req.body.uuid))
         if (balance && (balance >= 5)) {
             member.roles.add(process.env.BETATESTERROLE);
-            member.user.send('You have been granted the "Beta Tester" role.').catch(() => message.reply("Can't send DM to your user, they probably have DMs off. ;("));
+            member.user.send('You have been granted a special role, congradulations!.').catch(() => message.reply("Can't send DM to your user, they probably have DMs off. ;("));
         } else {
-            member.user.send('You have not minted your EmeraldBeta tokens. You can do that here: https://emerald-city.netlify.app/').catch(() => message.reply("Can't send DM to your user, they probably have DMs off. ;("));
+            member.user.send('You have not yet minted your tokens.').catch(() => message.reply("Can't send DM to your user, they probably have DMs off. ;("));
         }
-    } catch(e) {
+    } catch (e) {
         console.log("An error occured decrypting: " + e);
     }
 });

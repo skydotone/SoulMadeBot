@@ -5,10 +5,9 @@ const execute = (message, args) => {
     const exampleEmbed = new MessageEmbed()
         .setColor('#5bc595')
         .setTitle('Click here to verify your account')
-        .setURL('https://pedantic-darwin-e512ad.netlify.app/?id=' + args.uuid)
+        .setURL('https://pedantic-darwin-e512ad.netlify.app/?id=' + args.uuid + '&guildID=' + args.guildID)
         .setAuthor('Emerald City Bot', 'https://i.imgur.com/qjT7cro.png')
-        .setDescription('Hey there! Please click the link above if you have 5 EmeraldBeta Tokens and wish to gain access to be given the "Beta Tester" role.')
-        .addField("Haven't minted yet?", "You can mint [here](https://emerald-city.netlify.app/).")
+        .setDescription('Hey there! Please click the link above if you have the tokens you need and wish to gain access to be given a special role.')
         .setTimestamp()
 
     message.author.send({ embeds: [exampleEmbed] }).catch(() => message.reply("Can't send DM to your user, they probably have DMs off. ;("));

@@ -21,8 +21,10 @@
     "crypto": "^1.0.1",
     "discord.js": "^13.3.1",
     "dotenv": "^10.0.0",
+    "elliptic": "^6.5.4",
     "express": "^4.16.4",
-    "nodemon": "^2.0.14"
+    "nodemon": "^2.0.14",
+    "sha3": "^2.1.4"
   },
   "devDependencies": {
     "concurrently": "^4.0.1"
