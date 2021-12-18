@@ -1,6 +1,44 @@
-pub contract EmeraldAuthBot {
+import HyperverseAuth from 0x4e190c2eb6d78faa
+import HyperverseModule from 0x4e190c2eb6d78faa
+import IHyperverse from 0x4e190c2eb6d78faa
+pub contract EmeraldAuthBot: IHyperverse {
 
-    access(contract) var guilds: {String: GuildInfo}
+    /**************************************** METADATA & TENANT ****************************************/
+
+    pub var metadata: HyperverseModule.Metadata
+
+    pub event TenantCreated(tenant: Address)
+    access(contract) var tenants: @{Address: Tenant}
+    access(contract) fun getTenant(_ tenant: Address): &Tenant {
+        if self.tenants[tenant] == nil {
+            self.tenants[tenant] <-! create Tenant(_tenant: tenant)
+            emit TenantCreated(tenant: tenant)
+        }
+        return &self.tenants[tenant] as &Tenant
+    }
+    pub fun tenantExists(tenant: Address): Bool {
+        return self.tenants[tenant] != nil
+    }
+
+    pub resource Tenant {
+        pub var tenant: Address
+        access(contract) var guilds: {String: GuildInfo}
+        
+        init(_tenant: Address) {
+            self.tenant = _tenant
+            self.guilds = {}
+        }
+    }
+
+    pub fun createTenant(auth: &HyperverseAuth.Auth) {
+        let tenant = auth.owner!.address
+        self.tenants[tenant] <-! create Tenant(_tenant: tenant)
+        emit TenantCreated(tenant: tenant)
+    }
+
+    /**************************************** FUNCTIONALITY ****************************************/
+
+    pub event AddedGuild(_ tenant: Address, guildID: String)
 
     pub struct GuildInfo {
         pub var guildID: String
@@ -19,27 +57,42 @@ pub contract EmeraldAuthBot {
             self.mintURL = _mintURL
         }
     }
-    
+
     pub resource Headmaster {
+        pub var tenant: Address
         pub fun addGuild(guildID: String, tokenType: String, number: Int, path: String, role: String, mintURL: String) {
-            EmeraldAuthBot.guilds[guildID] = GuildInfo(_guildID: guildID, _tokenType: tokenType, _number: number, _path: path, _role: role, _mintURL: mintURL)
+            let state = EmeraldAuthBot.getTenant(self.tenant)
+            state.guilds[guildID] = GuildInfo(_guildID: guildID, _tokenType: tokenType, _number: number, _path: path, _role: role, _mintURL: mintURL)
+            emit AddedGuild(self.tenant, guildID: guildID)
         }
+        init(_ tenant: Address) { self.tenant = tenant }
+    }
+    pub fun createHeadmaster(auth: &HyperverseAuth.Auth): @Headmaster { return <- create Headmaster(auth.owner!.address) }
+
+    pub fun getGuildInfo(_ tenant: Address, guildID: String): GuildInfo? {
+        return self.getTenant(tenant).guilds[guildID]
     }
 
-    pub fun getGuildInfo(guildID: String): GuildInfo? {
-        return self.guilds[guildID]
-    }
-
-    pub fun getMintURL(guildID: String): String? {
-        let guildInfo = self.guilds[guildID]
+    pub fun getMintURL(_ tenant: Address, guildID: String): String? {
+        let guildInfo = self.getTenant(tenant).guilds[guildID]
         return guildInfo?.mintURL
     }
 
-    init() {
-        self.guilds = {}
+    pub fun getGuildIDs(_ tenant: Address): [String] {
+        return self.getTenant(tenant).guilds.keys
+    }
 
-        if (self.account.borrow<&Headmaster>(from: /storage/EmeraldAuthBotHeadmaster) == nil) {
-            self.account.save(<- create Headmaster(), to: /storage/EmeraldAuthBotHeadmaster)
-        }
+    init() {
+        self.tenants <- {}
+
+        self.metadata = HyperverseModule.Metadata(
+                            _identifier: self.getType().identifier,
+                            _contractAddress: self.account.address,
+                            _title: "EmeraldAuthBot",
+                            _authors: [HyperverseModule.Author(_address: 0x6c0d53c676256e8c, _externalURI: "https://twitter.com/jacobmtucker")],
+                            _version: "0.0.1",
+                            _publishedAt: getCurrentBlock().timestamp,
+                            externalURI: "https://emerald-city.netlify.app/"
+                        )
     }
 }

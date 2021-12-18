@@ -49,11 +49,24 @@ const authorizationFunction = async (account) => {
 
 const transaction = `
 import EmeraldAuthBot from ${process.env.ADDRESS}
+import HyperverseAuth from ${process.env.ADDRESS}
 
 transaction(guildID: String, tokenType: String, number: Int, path: String, role: String, mintURL: String) {
     prepare(signer: AuthAccount) {
-        let headmaster = signer.borrow<&EmeraldAuthBot.Headmaster>(from: /storage/EmeraldAuthBotHeadmaster)
-                            ?? panic("Could not borrow the Headmaster.")
+        if signer.borrow<&HyperverseAuth.Auth>(from: HyperverseAuth.AuthStoragePath) == nil {
+            signer.save(<- HyperverseAuth.createAuth(), to: HyperverseAuth.AuthStoragePath)
+        }
+
+        let auth = signer.borrow<&HyperverseAuth.Auth>(from: HyperverseAuth.AuthStoragePath)
+            ?? panic("Could not borrow the Hyperverse Auth.")
+
+        if signer.borrow<&EmeraldAuthBot.Headmaster>(from: /storage/EmeraldBotHeadmaster) == nil {
+            signer.save(<- EmeraldAuthBot.createHeadmaster(auth: auth), to: /storage/EmeraldBotHeadmaster)
+        }
+
+        let headmaster = signer.borrow<&EmeraldAuthBot.Headmaster>(from: /storage/EmeraldBotHeadmaster)
+            ?? panic("gggggggg")
+        EmeraldAuthBot.createTenant(auth: auth)
         headmaster.addGuild(guildID: guildID, tokenType: tokenType, number: number, path: path, role: role, mintURL: mintURL)
     }
 

@@ -24,7 +24,7 @@ const getBalance = async (AccountProof, guildID) => {
       import EmeraldAuthBot from ${process.env.ADDRESS}
 
       pub fun main(guildID: String): EmeraldAuthBot.GuildInfo? {
-        return EmeraldAuthBot.getGuildInfo(guildID: guildID)
+        return EmeraldAuthBot.getGuildInfo(${process.env.ADDRESS}, guildID: guildID)
       }
     `),
     fcl.args([
