@@ -70,17 +70,17 @@ app.post('/api/join', async (req, res) => {
     let accountProofObject = req.body.user.services.filter(service => service.type === 'account-proof')[0];
     const AccountProof = accountProofObject.data;
     // Gets the balance of the user
-    let { result, number, role } = await getBalance(AccountProof, decrypt(req.body.guildID));
+    let { result, number, role, guildID } = await getBalance(AccountProof, decrypt(req.body.guildID));
 
     // 'guild' == the server
-    const guild = client.guilds.cache.get(process.env.SERVERID)
+    const guild = client.guilds.cache.get(guildID)
     // gets the member by first decrypting the uuid and getting back
     // the member id of the member, then gets the actual member
 
     try {
         let member = guild.members.cache.get(decrypt(req.body.uuid))
         if (result && (result >= number)) {
-            member.roles.add(role);
+            member.roles.add(`${role}`);
             member.user.send('You have been granted a special role, congradulations!.').catch(() => message.reply("Can't send DM to your user, they probably have DMs off. ;("));
         } else {
             member.user.send('You have not yet minted your tokens.').catch(() => message.reply("Can't send DM to your user, they probably have DMs off. ;("));
