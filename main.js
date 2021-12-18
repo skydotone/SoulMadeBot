@@ -70,7 +70,7 @@ app.post('/api/join', async (req, res) => {
     let accountProofObject = req.body.user.services.filter(service => service.type === 'account-proof')[0];
     const AccountProof = accountProofObject.data;
     // Gets the balance of the user
-    let balance = await getBalance(AccountProof, decrypt(req.body.guildID));
+    let { result, number } = await getBalance(AccountProof, decrypt(req.body.guildID));
 
     // 'guild' == the server
     const guild = client.guilds.cache.get(process.env.SERVERID)
@@ -79,7 +79,7 @@ app.post('/api/join', async (req, res) => {
 
     try {
         let member = guild.members.cache.get(decrypt(req.body.uuid))
-        if (balance && (balance >= 5)) {
+        if (result && (result >= number)) {
             member.roles.add(process.env.BETATESTERROLE);
             member.user.send('You have been granted a special role, congradulations!.').catch(() => message.reply("Can't send DM to your user, they probably have DMs off. ;("));
         } else {

@@ -64,7 +64,7 @@ const getBalance = async (AccountProof, guildID) => {
     ])
   ]).then(fcl.decode);
 
-  return result;
+  return { result, number };
 }
 
 module.exports = {
