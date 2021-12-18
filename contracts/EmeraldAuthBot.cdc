@@ -6,19 +6,21 @@ pub contract EmeraldAuthBot {
         pub var tokenType: String
         pub var number: Int
         pub var path: String 
+        pub var role: Int
         pub var mintURL: String
 
-        init(_tokenType: String, _number: Int, _path: String, _mintURL: String) {
+        init(_tokenType: String, _number: Int, _path: String, _role: Int, _mintURL: String) {
             self.tokenType = _tokenType
             self.number = _number
             self.path = _path
+            self.role = _role
             self.mintURL = _mintURL
         }
     }
     
     pub resource Headmaster {
-        pub fun addGuild(guildID: Int, tokenType: String, number: Int, path: String, mintURL: String) {
-            EmeraldAuthBot.guilds[guildID] = GuildInfo(_tokenType: tokenType, _number: number, _path: path, _mintURL: mintURL)
+        pub fun addGuild(guildID: Int, tokenType: String, number: Int, path: String, role: Int, mintURL: String) {
+            EmeraldAuthBot.guilds[guildID] = GuildInfo(_tokenType: tokenType, _number: number, _path: path, _role: role, _mintURL: mintURL)
         }
     }
 
