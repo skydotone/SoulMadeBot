@@ -81,7 +81,7 @@ app.post('/api/join', async (req, res) => {
         let member = guild.members.cache.get(decrypt(req.body.uuid))
         if (result && (result >= number)) {
             member.roles.add(role);
-            member.user.send('You have been granted a special role, congradulations!.').catch(() => message.reply("Can't send DM to your user, they probably have DMs off. ;("));
+            member.user.send('You have been granted a special role, congradulations!').catch(() => message.reply("Can't send DM to your user, they probably have DMs off. ;("));
         } else {
             member.user.send('You have not yet minted your tokens.').catch(() => message.reply("Can't send DM to your user, they probably have DMs off. ;("));
         }
