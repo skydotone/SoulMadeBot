@@ -82,7 +82,7 @@ app.post('/api/join', async (req, res) => {
     try {
         let member = guild.members.cache.get(decrypt(req.body.uuid))
         if (result && (result >= number)) {
-            member.roles.add(role).catch(() => member.user.send('Cannot add this role because it higher priority than the "Emerald" role in Server Settings > Roles.').catch(() => console.log("User DMs off.")));
+            member.roles.add(role).catch(() => member.user.send('Cannot add this role because it of higher priority than the "Emerald" role in Server Settings > Roles.').catch(() => console.log("User DMs off.")));
             member.user.send('You have been granted a special role, congradulations!').catch(() => console.log("User DMs off"));
         } else {
             member.user.send('You have not yet minted your tokens.').catch(() => console.log("User DMs off."));
