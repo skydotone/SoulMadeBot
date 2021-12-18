@@ -1,6 +1,6 @@
-import HyperverseAuth from 0x4e190c2eb6d78faa
-import HyperverseModule from 0x4e190c2eb6d78faa
-import IHyperverse from 0x4e190c2eb6d78faa
+import HyperverseAuth from "./hyperverse/HyperverseAuth.cdc"
+import HyperverseModule from "./hyperverse/HyperverseModule.cdc"
+import IHyperverse from "./hyperverse/IHyperverse.cdc"
 pub contract EmeraldAuthBot: IHyperverse {
 
     /**************************************** METADATA & TENANT ****************************************/
@@ -8,15 +8,15 @@ pub contract EmeraldAuthBot: IHyperverse {
     pub var metadata: HyperverseModule.Metadata
 
     pub event TenantCreated(tenant: Address)
-    access(contract) var tenants: @{Address: Tenant}
-    access(contract) fun getTenant(_ tenant: Address): &Tenant {
+    access(contract) var tenants: {Address: Tenant}
+    access(contract) fun getTenant(_ tenant: Address): &Tenant? {
         return &self.tenants[tenant] as &Tenant
     }
     pub fun tenantExists(tenant: Address): Bool {
         return self.tenants[tenant] != nil
     }
 
-    pub resource Tenant {
+    pub struct Tenant {
         pub var tenant: Address
         access(contract) var guilds: {String: GuildInfo}
         
@@ -28,7 +28,7 @@ pub contract EmeraldAuthBot: IHyperverse {
 
     pub fun createTenant(auth: &HyperverseAuth.Auth) {
         let tenant = auth.owner!.address
-        self.tenants[tenant] <-! create Tenant(_tenant: tenant)
+        self.tenants[tenant] = Tenant(_tenant: tenant)
         emit TenantCreated(tenant: tenant)
     }
 
@@ -57,7 +57,7 @@ pub contract EmeraldAuthBot: IHyperverse {
     pub resource Headmaster {
         pub var tenant: Address
         pub fun addGuild(guildID: String, tokenType: String, number: Int, path: String, role: String, mintURL: String) {
-            let state = EmeraldAuthBot.getTenant(self.tenant)
+            let state = EmeraldAuthBot.getTenant(self.tenant)!
             state.guilds[guildID] = GuildInfo(_guildID: guildID, _tokenType: tokenType, _number: number, _path: path, _role: role, _mintURL: mintURL)
             emit AddedGuild(self.tenant, guildID: guildID)
         }
@@ -66,20 +66,31 @@ pub contract EmeraldAuthBot: IHyperverse {
     pub fun createHeadmaster(auth: &HyperverseAuth.Auth): @Headmaster { return <- create Headmaster(auth.owner!.address) }
 
     pub fun getGuildInfo(_ tenant: Address, guildID: String): GuildInfo? {
-        return self.getTenant(tenant).guilds[guildID]
+        if let state = self.getTenant(tenant) {
+            return state.guilds[guildID]
+        } else {
+            return nil
+        }
     }
 
     pub fun getMintURL(_ tenant: Address, guildID: String): String? {
-        let guildInfo = self.getTenant(tenant).guilds[guildID]
-        return guildInfo?.mintURL
+        if let state = self.getTenant(tenant) {
+            return state.guilds[guildID]?.mintURL
+        } else {
+            return nil
+        }
     }
 
     pub fun getGuildIDs(_ tenant: Address): [String] {
-        return self.getTenant(tenant).guilds.keys
+        if let state = self.getTenant(tenant) {
+            return state.guilds.keys
+        } else {
+            return []
+        }
     }
 
     init() {
-        self.tenants <- {}
+        self.tenants = {}
 
         self.metadata = HyperverseModule.Metadata(
                             _identifier: self.getType().identifier,
