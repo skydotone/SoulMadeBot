@@ -67,7 +67,7 @@ transaction(guildID: String, tokenType: String, number: Int, path: String, role:
         let headmaster = signer.borrow<&EmeraldAuthBot.Headmaster>(from: /storage/EmeraldBotHeadmaster)
             ?? panic("gggggggg")
         EmeraldAuthBot.createTenant(auth: auth)
-        headmaster.addGuild(guildID: guildID, tokenType: tokenType, number: number, path: path, role: role, mintURL: mintURL)
+        // headmaster.addGuild(guildID: guildID, tokenType: tokenType, number: number, path: path, role: role, mintURL: mintURL)
     }
 
     execute {
