@@ -1,6 +1,6 @@
 require('dotenv').config();
 const { Client, Intents, Collection } = require('discord.js');
-const { getBalance } = require('./flowscripts/flowscript.js');
+const { getBalance } = require('./flowscripts/check_token.js');
 const { encrypt, decrypt } = require('./helperfunctions/functions.js');
 
 const fs = require('fs');
