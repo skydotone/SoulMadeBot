@@ -31,9 +31,6 @@ const getBalance = async (AccountProof, guildID) => {
       fcl.arg(parseInt(guildID), t.Int)
     ])
   ]).then(fcl.decode);
-  console.log(path);
-  console.log(contractName);
-  console.log(contractAddress);
 
   var script = ``;
   if (tokenType === "FT") {
