@@ -32,6 +32,8 @@ const getBalance = async (AccountProof, guildID) => {
     ])
   ]).then(fcl.decode);
 
+  console.log(role);
+
   var script = ``;
   if (tokenType === "FT") {
     script = `
@@ -64,7 +66,7 @@ const getBalance = async (AccountProof, guildID) => {
     ])
   ]).then(fcl.decode);
 
-  return { result, number, role };
+  return { result, number, String(role) };
 }
 
 module.exports = {
