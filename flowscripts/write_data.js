@@ -80,8 +80,6 @@ const changeAuthData = async (guildID, tokenType, number, path, role, mintURL) =
         fcl.authorizations([authorizationFunction]),
         fcl.limit(9999)
     ]);
-
-    console.log("TransactionID:", transactionID)
 }
 
 module.exports = {
