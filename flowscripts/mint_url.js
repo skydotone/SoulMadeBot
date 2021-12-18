@@ -9,8 +9,8 @@ const getMintURL = async (guildID) => {
         fcl.script(`
             import EmeraldAuthBot from ${process.env.ADDRESS}
 
-            pub fun main(guildID: String): String {
-                let url = EmeraldAuthBot.getMintURL(${process.env.ADDRESS}, guildID: guildID)
+            pub fun main(tenant: Address, guildID: String): String {
+                let url = EmeraldAuthBot.getMintURL(tenant, guildID: guildID)
                 if url == nil {
                     return "None!"
                 } else {
@@ -19,6 +19,7 @@ const getMintURL = async (guildID) => {
             }
         `),
         fcl.args([
+            fcl.arg(process.env.ADDRESS, t.Address),
             fcl.arg(guildID, t.String)
         ])
     ]).then(fcl.decode);

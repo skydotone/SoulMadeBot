@@ -54,8 +54,7 @@ import HyperverseAuth from ${process.env.ADDRESS}
 transaction(guildID: String, tokenType: String, number: Int, path: String, role: String, mintURL: String) {
     prepare(signer: AuthAccount) {
         let headmaster = signer.borrow<&EmeraldAuthBot.Headmaster>(from: /storage/EmeraldBotHeadmaster)
-                            ?? panic("Could not borrow Headmaster")
-
+            ?? panic("Could not borrow the Headmaster")
         headmaster.addGuild(guildID: guildID, tokenType: tokenType, number: number, path: path, role: role, mintURL: mintURL)
     }
 
