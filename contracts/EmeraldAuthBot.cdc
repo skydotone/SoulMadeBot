@@ -1,6 +1,6 @@
-import HyperverseAuth from "./hyperverse/HyperverseAuth.cdc"
-import HyperverseModule from "./hyperverse/HyperverseModule.cdc"
-import IHyperverse from "./hyperverse/IHyperverse.cdc"
+import HyperverseAuth from 0x4e190c2eb6d78faa
+import HyperverseModule from 0x4e190c2eb6d78faa
+import IHyperverse from 0x4e190c2eb6d78faa
 pub contract EmeraldAuthBot: IHyperverse {
 
     /**************************************** METADATA & TENANT ****************************************/
@@ -10,7 +10,7 @@ pub contract EmeraldAuthBot: IHyperverse {
     pub event TenantCreated(tenant: Address)
     access(contract) var tenants: {Address: Tenant}
     access(contract) fun getTenant(_ tenant: Address): &Tenant? {
-        return &self.tenants[tenant] as &Tenant
+        return &self.tenants[tenant] as? &Tenant
     }
     pub fun tenantExists(tenant: Address): Bool {
         return self.tenants[tenant] != nil
