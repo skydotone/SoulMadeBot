@@ -14,7 +14,7 @@ const getMintURL = async (guildID) => {
                 if url == nil {
                     return "None!"
                 } else {
-                    return url
+                    return url!
                 }
             }
         `),
