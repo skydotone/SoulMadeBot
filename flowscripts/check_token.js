@@ -53,7 +53,7 @@ const getBalance = async (AccountProof, guildID) => {
         if let collection = getAccount(address).getCapability(${path}).borrow<&{NonFungibleToken.CollectionPublic}>() {
           return collection.getIDs().length
         } else {
-          return 0
+          return -1
         }
       }
     `;

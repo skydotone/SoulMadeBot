@@ -2,7 +2,7 @@ const { changeAuthData } = require('../flowscripts/write_data.js');
 const { Permissions } = require('discord.js');
 
 const execute = (message, args) => {
-    if (message.member.permissions.has(Permissions.FLAGS.MANAGE_GUILD) && (args.length === 4 || args.length === 5) && (!isNaN(args[1]))) {
+    if (message.member.permissions.has(Permissions.FLAGS.MANAGE_GUILD) && (args.length === 4 || args.length === 5) && (!isNaN(args[1])) && (args[0] === 'NFT' || args[0] === 'FT')) {
         let role = message.guild.roles.cache.find(role => role.name === args[3]);
         if (!role) {
             message.channel.send("This role does not exist!");
