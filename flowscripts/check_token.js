@@ -23,12 +23,12 @@ const getBalance = async (AccountProof, guildID) => {
     fcl.script(`
       import EmeraldAuthBot from ${process.env.ADDRESS}
 
-      pub fun main(guildID: Int): EmeraldAuthBot.GuildInfo {
+      pub fun main(guildID: String): EmeraldAuthBot.GuildInfo {
         return EmeraldAuthBot.getGuildInfo(guildID: guildID)
       }
     `),
     fcl.args([
-      fcl.arg(parseInt(guildID), t.Int)
+      fcl.arg(guildID, t.String)
     ])
   ]).then(fcl.decode);
 
