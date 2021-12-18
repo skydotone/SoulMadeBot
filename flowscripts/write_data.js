@@ -50,11 +50,11 @@ const authorizationFunction = async (account) => {
 const transaction = `
 import EmeraldAuthBot from ${process.env.ADDRESS}
 
-transaction(guildID: Int, tokenType: String, number: Int, path: String) {
+transaction(guildID: Int, tokenType: String, number: Int, path: String, mintURL: String) {
     prepare(signer: AuthAccount) {
         let headmaster = signer.borrow<&EmeraldAuthBot.Headmaster>(from: /storage/EmeraldAuthBotHeadmaster)
                             ?? panic("Could not borrow the Headmaster.")
-        headmaster.addGuild(guildID: guildID, tokenType: tokenType, number: number, path: path)
+        headmaster.addGuild(guildID: guildID, tokenType: tokenType, number: number, path: path, mintURL: mintURL)
     }
 
     execute {
@@ -63,14 +63,15 @@ transaction(guildID: Int, tokenType: String, number: Int, path: String) {
 }
 `
 
-const changeAuthData = async (guildID, tokenType, number, path) => {
+const changeAuthData = async (guildID, tokenType, number, path, mintURL) => {
     const { transactionID } = await fcl.send([
         fcl.transaction(transaction),
         fcl.args([
             fcl.arg(parseInt(guildID), t.Int),
             fcl.arg(tokenType, t.String),
             fcl.arg(parseInt(number), t.Int),
-            fcl.arg(`/public/${path}`, t.String)
+            fcl.arg(`/public/${path}`, t.String),
+            fcl.arg(mintURL, t.String)
         ]),
         fcl.payer(authorizationFunction),
         fcl.proposer(authorizationFunction),

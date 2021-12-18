@@ -56,6 +56,8 @@ client.on('messageCreate', message => {
         client.commands.get('allroles').execute(message, args);
     } else if (command === 'setup') {
         client.commands.get('setup').execute(message, args);
+    } else if (command === 'mint') {
+        client.commands.get('mint').execute(message, args);
     }
 })
 
