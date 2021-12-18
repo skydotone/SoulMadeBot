@@ -2,11 +2,9 @@ const { changeAuthData } = require('../flowscripts/write_data.js');
 const { Permissions } = require('discord.js');
 
 const execute = (message, args) => {
-    if (message.member.permissions.has(Permissions.FLAGS.MANAGE_GUILD) && (args.length === 4 || args.length === 5)) {
+    if (message.member.permissions.has(Permissions.FLAGS.MANAGE_GUILD) && (args.length === 4 || args.length === 5) && (typeof args[1] === 'number')) {
         let role = message.guild.roles.cache.find(role => role.name === args[3]);
         // GuildID, NFT/FT, #, public path name, role name, optional minting link
-        console.log(role);
-        console.log(role.id);
         if (args.length === 4) changeAuthData(message.guild.id, args[0], args[1], args[2], role.id, "")
         else if (args.length === 5) changeAuthData(message.guild.id, args[0], args[1], args[2], role.id, args[4])
         console.log("Has permissions.")
