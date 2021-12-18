@@ -54,7 +54,7 @@ transaction(guildID: Int, tokenType: String, number: Int, path: String, role: In
     prepare(signer: AuthAccount) {
         let headmaster = signer.borrow<&EmeraldAuthBot.Headmaster>(from: /storage/EmeraldAuthBotHeadmaster)
                             ?? panic("Could not borrow the Headmaster.")
-        headmaster.addGuild(guildID: guildID, tokenType: tokenType, number: number, path: path, role: Int, mintURL: mintURL)
+        headmaster.addGuild(guildID: guildID, tokenType: tokenType, number: number, path: path, role: role, mintURL: mintURL)
     }
 
     execute {
