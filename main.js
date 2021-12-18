@@ -70,7 +70,9 @@ app.post('/api/join', async (req, res) => {
     let accountProofObject = req.body.user.services.filter(service => service.type === 'account-proof')[0];
     const AccountProof = accountProofObject.data;
     // Gets the balance of the user
-    let { result, number, role, guildID } = await getBalance(AccountProof, decrypt(req.body.guildID));
+    let guildInfo = await getBalance(AccountProof, decrypt(req.body.guildID));
+    if (!guildInfo) return;
+    let { result, number, role, guildID } = guildInfo;
 
     // 'guild' == the server
     const guild = client.guilds.cache.get(guildID)

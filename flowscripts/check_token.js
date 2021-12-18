@@ -19,7 +19,7 @@ const getBalance = async (AccountProof, guildID) => {
 
   if (!isValid) return 0;
 
-  const { tokenType, number, path, role } = await fcl.send([
+  const guildInfo = await fcl.send([
     fcl.script(`
       import EmeraldAuthBot from ${process.env.ADDRESS}
 
@@ -33,7 +33,8 @@ const getBalance = async (AccountProof, guildID) => {
     ])
   ]).then(fcl.decode);
 
-  console.log(role);
+  if (!guildInfo) return;
+  let { path, tokenType, number, role } = guildInfo;
 
   var script = ``;
   if (tokenType === "FT") {
