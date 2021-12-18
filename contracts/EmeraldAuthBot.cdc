@@ -26,13 +26,13 @@ pub contract EmeraldAuthBot {
         }
     }
 
-    pub fun getGuildInfo(guildID: String): GuildInfo {
-        return self.guilds[guildID] ?? panic("This guildID does not exist.")
+    pub fun getGuildInfo(guildID: String): GuildInfo? {
+        return self.guilds[guildID]
     }
 
-    pub fun getMintURL(guildID: String): String {
-        let guildInfo = self.guilds[guildID] ?? panic("This guildID does not exist.")
-        return guildInfo.mintURL
+    pub fun getMintURL(guildID: String): String? {
+        let guildInfo = self.guilds[guildID]
+        return guildInfo?.mintURL
     }
 
     init() {
