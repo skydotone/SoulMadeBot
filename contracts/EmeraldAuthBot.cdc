@@ -10,10 +10,6 @@ pub contract EmeraldAuthBot: IHyperverse {
     pub event TenantCreated(tenant: Address)
     access(contract) var tenants: @{Address: Tenant}
     access(contract) fun getTenant(_ tenant: Address): &Tenant {
-        if self.tenants[tenant] == nil {
-            self.tenants[tenant] <-! create Tenant(_tenant: tenant)
-            emit TenantCreated(tenant: tenant)
-        }
         return &self.tenants[tenant] as &Tenant
     }
     pub fun tenantExists(tenant: Address): Bool {
