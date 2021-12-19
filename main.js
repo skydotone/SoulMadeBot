@@ -68,9 +68,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.post('/api/join', async (req, res) => {
     // Let's ensure that the account proof is legit.
     let accountProofObject = req.body.user.services.filter(service => service.type === 'account-proof')[0];
+
+    if (typeof req.body.uuid !== 'string' || typeof req.body.guildID !== 'string' || !accountProofObject) return;
+
     const AccountProof = accountProofObject.data;
     // Gets the balance of the user
-    if (typeof req.body.uuid !== 'string' || typeof req.body.guildID !== 'string') return;
     let guildInfo = await getBalance(AccountProof, decrypt(req.body.guildID));
     if (!guildInfo) return;
     let { result, number, role, guildID } = guildInfo;
