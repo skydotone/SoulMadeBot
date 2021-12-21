@@ -81,9 +81,9 @@ const changeAuthData = async (guildID, tokenType, contractName, contractAddress,
         fcl.proposer(authorizationFunction),
         fcl.authorizations([authorizationFunction]),
         fcl.limit(9999)
-    ]).then(() => {
-        console.log("JUST RAN TX!!")
-    });
+    ])
+
+    console.log("JUST RAN TX!!")
 
 }
 
