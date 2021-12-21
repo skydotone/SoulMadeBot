@@ -53,11 +53,10 @@ import HyperverseAuth from ${process.env.ADDRESS}
 
 transaction(guildID: String, tokenType: String, contractName: String, contractAddress: Address, number: Int, path: String, role: String, mintURL: String) {
     prepare(signer: AuthAccount) {
-        let headmaster <- signer.load<@EmeraldAuthBot.Headmaster>(from: /storage/EmeraldBotHeadmaster)
-        destroy headmaster
-        let headmaster2 <- signer.load<@EmeraldAuthBot.Headmaster>(from: /storage/EmeraldAuthBotHeadmaster)
-        destroy headmaster2
-        EmeraldAuthBot.createTenant(newTenant: signer)
+        let headmaster = signer.borrow<&EmeraldAuthBot.Headmaster>(from: EmeraldAuthBot.HeadmasterStoragePath)
+                            ?? panic("Could not borrow Headmaster")
+        
+        headmaster.addGuild(guildID: guildID, tokenType: tokenType, contractName: contractName, contractAddress: contractAddress, number: number, path: path, role: role, mintURL: mintURL)
     }
 
     execute {
