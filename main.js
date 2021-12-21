@@ -48,8 +48,6 @@ client.on('messageCreate', message => {
         message.channel.send('Testing!');
     } else if (command === 'youtube') {
         client.commands.get('youtube').execute(message, args);
-    } else if (command === 'join') {
-        client.commands.get('join').execute(message, { uuid: encrypt(message.member.id), guildID: encrypt(message.guild.id) });
     } else if (command === 'role') {
         client.commands.get('role').execute(message, args);
     } else if (command === 'allroles') {
@@ -114,10 +112,7 @@ app.post('/api/join', async (req, res) => {
     try {
         let member = guild.members.cache.get(decrypt(req.body.uuid))
         if (result && (result >= number)) {
-            member.roles.add(role).catch(() => member.user.send('Cannot add this role because it of higher priority than the "Emerald" role in Server Settings > Roles.').catch(() => console.log("User DMs off.")));
-            member.user.send('You have been granted a special role, congradulations!').catch(() => console.log("User DMs off"));
-        } else {
-            member.user.send('You have not yet minted your tokens.').catch(() => console.log("User DMs off."));
+            member.roles.add(role).catch((e) => console.log(e)));
         }
     } catch (e) {
         console.log("An error occured decrypting: " + e);
