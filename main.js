@@ -112,7 +112,7 @@ app.post('/api/join', async (req, res) => {
     try {
         let member = guild.members.cache.get(decrypt(req.body.uuid))
         if (result && (result >= number)) {
-            member.roles.add(role).catch((e) => console.log(e)));
+            member.roles.add(role).catch((e) => console.log(e));
         }
     } catch (e) {
         console.log("An error occured decrypting: " + e);
