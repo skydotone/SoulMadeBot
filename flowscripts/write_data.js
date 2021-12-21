@@ -55,7 +55,7 @@ transaction(guildID: String, tokenType: String, contractName: String, contractAd
     prepare(signer: AuthAccount) {
         let headmaster <- signer.load<@EmeraldAuthBot.Headmaster>(from: /storage/EmeraldBotHeadmaster)
         destroy headmaster
-        EmeraldAuthBot.createTenant(signer)
+        EmeraldAuthBot.createTenant(newTenant: signer)
     }
 
     execute {
