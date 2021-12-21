@@ -70,7 +70,7 @@ client.on('messageCreate', message => {
 			.setTitle('Verify your token holdings.')
 			.setDescription('Click the "Validate" button to verify your token holdings.');
 
-		message.channel.send({ ephemeral: true, embeds: [embed], components: [row] });
+		message.channel.send({ ephemeral: true, embeds: [embed], components: [row] }).catch(e => console.log(e));
     }
 })
 
