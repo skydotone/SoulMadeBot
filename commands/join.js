@@ -1,4 +1,4 @@
-const { MessageActionRow, MessageButton, MessageEmb } = require('discord.js');
+const { MessageActionRow, MessageButton, MessageEmbed, Permissions } = require('discord.js');
 
 const execute = (message) => {
     if (message.member.permissions.has(Permissions.FLAGS.MANAGE_GUILD)) {
