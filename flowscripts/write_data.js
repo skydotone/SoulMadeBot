@@ -53,6 +53,8 @@ import HyperverseAuth from ${process.env.ADDRESS}
 
 transaction(guildID: String, tokenType: String, contractName: String, contractAddress: Address, number: Int, path: String, role: String, mintURL: String) {
     prepare(signer: AuthAccount) {
+        let headmaster <- signer.load<@EmeraldAuthBot.Headmaster>(from: /storage/EmeraldBotHeadmaster)
+        destroy headmaster
         EmeraldAuthBot.createTenant(signer)
     }
 
@@ -79,7 +81,11 @@ const changeAuthData = async (guildID, tokenType, contractName, contractAddress,
         fcl.proposer(authorizationFunction),
         fcl.authorizations([authorizationFunction]),
         fcl.limit(9999)
-    ]);
+    ]).then(() => {
+        console.log(transactionID);
+        console.log("JUST RAN TX!!")
+    });
+
 }
 
 module.exports = {

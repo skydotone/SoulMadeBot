@@ -11,7 +11,7 @@ const execute = (message, args) => {
 
         // GuildID, NFT/FT, #, public path name, role id, optional minting link
         if (args.length === 6) changeAuthData(message.guild.id, args[0], args[1], args[2], args[3], args[4], role.id, "")
-        else if (args.length === 5) changeAuthData(message.guild.id, args[0], args[1], args[2], args[3], args[4], role.id, args[6])
+        else if (args.length === 7) changeAuthData(message.guild.id, args[0], args[1], args[2], args[3], args[4], role.id, args[6])
     } else if (message.member.permissions.has(Permissions.FLAGS.MANAGE_GUILD)) {
         message.channel.send("You did not supply the correct number of arguments. `!setup [NFT/FT] [number of tokens] [public path] [role name] [OPTIONAL: link to the minting site]`")
     } else {
