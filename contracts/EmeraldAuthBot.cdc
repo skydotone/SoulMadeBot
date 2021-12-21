@@ -1,4 +1,3 @@
-import HyperverseAuth from 0x4e190c2eb6d78faa
 import HyperverseModule from 0x4e190c2eb6d78faa
 import IHyperverse from 0x4e190c2eb6d78faa
 
@@ -73,9 +72,13 @@ pub contract EmeraldAuthBot: IHyperverse {
     pub event TenantCreated(tenant: Address)
     access(contract) var tenants: @{Address: Tenant}
     access(contract) fun getTenant(_ tenant: Address): &Tenant? {
-        return &self.tenants[tenant] as? &Tenant
+        if self.tenantExists(tenant) {
+            return &self.tenants[tenant] as &Tenant
+        } else {
+            return nil
+        }
     }
-    pub fun tenantExists(tenant: Address): Bool {
+    pub fun tenantExists(_ tenant: Address): Bool {
         return self.tenants[tenant] != nil
     }
 
