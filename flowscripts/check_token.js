@@ -36,6 +36,9 @@ const getBalance = async (AccountProof, guildID) => {
   if (!guildInfo) return;
   let { tokenType, contractName, contractAddress, number, path, role } = guildInfo;
 
+  console.log(contractAddress)
+  console.log(contractName)
+
   var script = ``;
   if (tokenType === "FT") {
     script = `
@@ -52,6 +55,7 @@ const getBalance = async (AccountProof, guildID) => {
   } else if (tokenType === "NFT") {
     script = `
       import NonFungibleToken from 0x631e88ae7f1d7c20
+      import ${contractName} from ${contractAddress}
       pub fun main(address: Address): Int {
         if let collection = getAccount(address).getCapability(${path}).borrow<&${contractName}.Collection{NonFungibleToken.CollectionPublic}>() {
           return collection.getIDs().length
