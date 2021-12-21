@@ -56,21 +56,8 @@ client.on('messageCreate', message => {
         client.commands.get('setup').execute(message, args);
     } else if (command === 'mint') {
         client.commands.get('mint').execute(message, args);
-    } else if (command === 'button') {
-        const row = new MessageActionRow()
-			.addComponents(
-				new MessageButton()
-					.setCustomId('join')
-					.setLabel('Validate')
-					.setStyle('PRIMARY'),
-			);
-
-		const embed = new MessageEmbed()
-			.setColor('#0099ff')
-			.setTitle('Verify your token holdings.')
-			.setDescription('Click the "Validate" button to verify your token holdings.');
-
-		message.channel.send({ ephemeral: true, embeds: [embed], components: [row] }).catch(e => console.log(e));
+    } else if (command === 'join') {
+        client.commands.get('join').execute(message);
     }
 })
 
