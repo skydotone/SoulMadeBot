@@ -1,6 +1,6 @@
-import HyperverseModule from "./HyperverseModule.cdc"
+import HyperverseModule from 0x4e190c2eb6d78faa
 pub contract interface IHyperverse {
     pub var metadata: HyperverseModule.Metadata
-    pub struct Tenant {}
+    pub resource Tenant {}
     pub event TenantCreated(tenant: Address)
 }
