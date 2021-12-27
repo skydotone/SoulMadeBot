@@ -36,10 +36,6 @@ const getBalance = async (AccountProof, guildID) => {
   if (!guildInfo) return;
   let { tokenType, contractName, contractAddress, number, path, role } = guildInfo;
 
-  console.log(contractAddress)
-  console.log(contractName)
-  console.log(Address)
-
   var script = ``;
   if (tokenType === "FT") {
     script = `
@@ -70,7 +66,7 @@ const getBalance = async (AccountProof, guildID) => {
   const result = await fcl.send([
     fcl.script(script),
     fcl.args([
-      fcl.arg("0x" + Address, t.Address)
+      fcl.arg(Address, t.Address)
     ])
   ]).then(fcl.decode);
 
