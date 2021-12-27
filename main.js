@@ -11,7 +11,7 @@ const bodyParser = require('body-parser');
 const app = express();
 const cors = require('cors');
 var corsOptions = {
-    origin: ['https://pedantic-darwin-e512ad.netlify.app', 'http://localhost:3000'],
+    origin: ['https://pedantic-darwin-e512ad.netlify.app'],
     credentials: true,
     methods: ['GET', 'POST']
 };
@@ -62,8 +62,8 @@ client.on('messageCreate', message => {
 })
 
 client.on('interactionCreate', interaction => {
-	if (!interaction.isButton()) return;
-	// const botInfo = new MessageEmbed().addField(`Hello there! Please click [this](http://localhost:3000/?id=${args.uuid}) link to gain access to Emerald City.`)
+    if (!interaction.isButton()) return;
+    // const botInfo = new MessageEmbed().addField(`Hello there! Please click [this](http://localhost:3000/?id=${args.uuid}) link to gain access to Emerald City.`)
     const exampleEmbed = new MessageEmbed()
         .setColor('#5bc595')
         .setTitle('Click here to verify your account')

@@ -38,6 +38,7 @@ const getBalance = async (AccountProof, guildID) => {
 
   console.log(contractAddress)
   console.log(contractName)
+  console.log(Address)
 
   var script = ``;
   if (tokenType === "FT") {
