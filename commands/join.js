@@ -1,5 +1,5 @@
 const { MessageActionRow, MessageButton, MessageEmbed, Permissions } = require('discord.js');
-const { checkNetwork } = require('../flowscripts/write_data.js');
+const { checkNetwork } = require('../flowscripts/check_network.js');
 
 const execute = async (message, args) => {
 
