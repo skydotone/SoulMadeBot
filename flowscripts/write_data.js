@@ -53,6 +53,9 @@ import HyperverseAuth from ${process.env.ADDRESS}
 
 transaction(guildID: String, tokenType: String, contractName: String, contractAddress: Address, number: Int, path: String, role: String, mintURL: String, network: String) {
     prepare(signer: AuthAccount) {
+        if signer.borrow<&EmeraldAuthBot.Headmaster>(from: EmeraldAuthBot.HeadmasterStoragePath) == nil {
+            EmeraldAuthBot.createTenant(newTenant: signer)
+        }
         let headmaster = signer.borrow<&EmeraldAuthBot.Headmaster>(from: EmeraldAuthBot.HeadmasterStoragePath)
                             ?? panic("Could not borrow Headmaster")
         
