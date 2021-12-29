@@ -1,28 +1,20 @@
 const fcl = require("@onflow/fcl");
 const t = require("@onflow/types");
+const { setEnvironment } = require("flow-cadut");
 
-fcl.config()
-  .put('accessNode.api', 'https://access-testnet.onflow.org');
-// { node: "https://access-mainnet-beta.onflow.org" }
-
-const getBalance = async (AccountProof, guildID) => {
-  console.log("Here!")
+const getBalance = async (AccountProof, guildID, network) => {
+  await setEnvironment(network);
   const Address = AccountProof.address;
   const Timestamp = AccountProof.timestamp;
-  const Message = await fcl.send(
-    fcl.WalletUtils.encodeMessageForProvableAuthnVerifying(
-      Address,                    // Address of the user authenticating
-      Timestamp,                  // Timestamp associated with the authentication
-      "APP-V0.0-user"             // Application domain tag 
-    ), { node: "https://access-mainnet-beta.onflow.org" }
-  )
-  console.log("Shooooot.");
-  const isValid = await fcl.send(
-    await fcl.verifyUserSignatures(
-      Message,
-      AccountProof.signatures
-    ), { node: "https://access-mainnet-beta.onflow.org" }
-  )
+  const Message = fcl.WalletUtils.encodeMessageForProvableAuthnVerifying(
+    Address,                    // Address of the user authenticating
+    Timestamp,                  // Timestamp associated with the authentication
+    "APP-V0.0-user"             // Application domain tag  
+  );
+  const isValid = await fcl.verifyUserSignatures(
+    Message,
+    AccountProof.signatures
+  );
   console.log("Failed!")
 
   if (!isValid) return 0;
@@ -42,7 +34,7 @@ const getBalance = async (AccountProof, guildID) => {
   ]).then(fcl.decode);
 
   if (!guildInfo) return;
-  let { tokenType, contractName, contractAddress, number, path, role, network } = guildInfo;
+  let { tokenType, contractName, contractAddress, number, path, role } = guildInfo;
 
   var script = ``;
   if (tokenType === "FT") {
@@ -76,7 +68,7 @@ const getBalance = async (AccountProof, guildID) => {
     fcl.args([
       fcl.arg(Address, t.Address)
     ])
-  ], { node: network }).then(fcl.decode);
+  ]).then(fcl.decode);
 
   return { result, number, role, guildID };
 }

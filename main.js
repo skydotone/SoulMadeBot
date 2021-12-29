@@ -100,7 +100,7 @@ app.post('/api/join', async (req, res) => {
 
     const AccountProof = accountProofObject.data;
     // Gets the balance of the user
-    let guildInfo = await getBalance(AccountProof, decrypt(req.body.guildID));
+    let guildInfo = await getBalance(AccountProof, decrypt(req.body.guildID), req.body.network);
     if (!guildInfo) return;
     let { result, number, role, guildID } = guildInfo;
 

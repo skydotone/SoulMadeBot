@@ -23,6 +23,7 @@
     "dotenv": "^10.0.0",
     "elliptic": "^6.5.4",
     "express": "^4.16.4",
+    "flow-cadut": "^0.1.15-alpha.12",
     "nodemon": "^2.0.14",
     "sha3": "^2.1.4"
   },
