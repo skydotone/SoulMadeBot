@@ -63,29 +63,18 @@ client.on('messageCreate', message => {
 
 client.on('interactionCreate', interaction => {
     if (!interaction.isButton()) return;
-    if (interaction.customId === 'testnetjoin') {
-        // const botInfo = new MessageEmbed().addField(`Hello there! Please click [this](http://localhost:3000/?id=${args.uuid}) link to gain access to Emerald City.`)
-        const exampleEmbed = new MessageEmbed()
-            .setColor('#5bc595')
-            .setTitle('Click here to verify your account')
-            .setURL('https://pedantic-darwin-e512ad.netlify.app/testnet/?id=' + encrypt(interaction.member.id) + '&guildID=' + encrypt(interaction.guild.id))
-            .setAuthor('Emerald City Bot', 'https://i.imgur.com/qjT7cro.png')
-            .setDescription('Hey there! Please click the link above if you have the tokens you need and wish to gain access to be given a special role.')
-            .setTimestamp()
 
-        interaction.reply({ ephemeral: true, embeds: [exampleEmbed] })
-    } else if (interaction.customId === 'mainnetjoin') {
-        // const botInfo = new MessageEmbed().addField(`Hello there! Please click [this](http://localhost:3000/?id=${args.uuid}) link to gain access to Emerald City.`)
-        const exampleEmbed = new MessageEmbed()
-            .setColor('#5bc595')
-            .setTitle('Click here to verify your account')
-            .setURL('https://pedantic-darwin-e512ad.netlify.app/mainnet/?id=' + encrypt(interaction.member.id) + '&guildID=' + encrypt(interaction.guild.id))
-            .setAuthor('Emerald City Bot', 'https://i.imgur.com/qjT7cro.png')
-            .setDescription('Hey there! Please click the link above if you have the tokens you need and wish to gain access to be given a special role.')
-            .setTimestamp()
+    // const botInfo = new MessageEmbed().addField(`Hello there! Please click [this](http://localhost:3000/?id=${args.uuid}) link to gain access to Emerald City.`)
+    const exampleEmbed = new MessageEmbed()
+        .setColor('#5bc595')
+        .setTitle('Click here to verify your account')
+        .setURL('https://pedantic-darwin-e512ad.netlify.app/' + interaction.customId.split('-')[0] + '/?id=' + encrypt(interaction.member.id) + '&guildID=' + encrypt(interaction.guild.id))
+        .setAuthor('Emerald City Bot', 'https://i.imgur.com/qjT7cro.png')
+        .setDescription('Hey there! Please click the link above if you have the tokens you need and wish to gain access to be given a special role.')
+        .setTimestamp()
 
-        interaction.reply({ ephemeral: true, embeds: [exampleEmbed] })
-    }
+    interaction.reply({ ephemeral: true, embeds: [exampleEmbed] })
+
 });
 
 /* SERVER */

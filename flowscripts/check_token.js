@@ -15,7 +15,6 @@ const getBalance = async (AccountProof, guildID, network) => {
     Message,
     AccountProof.signatures
   );
-  console.log("Failed!")
 
   if (!isValid) return 0;
 

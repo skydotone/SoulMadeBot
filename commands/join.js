@@ -1,42 +1,25 @@
 const { MessageActionRow, MessageButton, MessageEmbed, Permissions } = require('discord.js');
+const { checkNetwork } = require('../flowscripts/write_data.js');
 
 const execute = (message, args) => {
-	if (!args[0]) {
-		message.channel.send("Must include an argument: testnet/mainnet");
-		return;
-	}
+
+	let network = await checkNetwork(message.guild.id);
+
 	if (message.member.permissions.has(Permissions.FLAGS.MANAGE_GUILD)) {
-		if (args[0] === 'testnet') {
-			const row = new MessageActionRow()
-				.addComponents(
-					new MessageButton()
-						.setCustomId('testnetjoin')
-						.setLabel('Validate')
-						.setStyle('PRIMARY'),
-				);
+		const row = new MessageActionRow()
+			.addComponents(
+				new MessageButton()
+					.setCustomId(`${network}-join`)
+					.setLabel('Validate')
+					.setStyle('PRIMARY'),
+			);
 
-			const embed = new MessageEmbed()
-				.setColor('#0099ff')
-				.setTitle('Verify your token holdings.')
-				.setDescription('Click the "Validate" button to verify your token holdings.');
+		const embed = new MessageEmbed()
+			.setColor('#0099ff')
+			.setTitle('Verify your token holdings.')
+			.setDescription('Click the "Validate" button to verify your token holdings.');
 
-			message.channel.send({ ephemeral: true, embeds: [embed], components: [row] }).catch(e => console.log(e));
-		} else if (args[0] === 'mainnet') {
-			const row = new MessageActionRow()
-				.addComponents(
-					new MessageButton()
-						.setCustomId('mainnetjoin')
-						.setLabel('Validate')
-						.setStyle('PRIMARY'),
-				);
-
-			const embed = new MessageEmbed()
-				.setColor('#0099ff')
-				.setTitle('Verify your token holdings.')
-				.setDescription('Click the "Validate" button to verify your token holdings.');
-
-			message.channel.send({ ephemeral: true, embeds: [embed], components: [row] }).catch(e => console.log(e));
-		}
+		message.channel.send({ ephemeral: true, embeds: [embed], components: [row] }).catch(e => console.log(e));
 	}
 }
 
