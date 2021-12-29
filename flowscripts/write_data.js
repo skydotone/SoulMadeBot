@@ -1,5 +1,6 @@
 const fcl = require("@onflow/fcl");
 const t = require("@onflow/types");
+const { setEnvironment } = require("flow-cadut");
 
 const { SHA3 } = require("sha3");
 
@@ -66,6 +67,7 @@ transaction(guildID: String, tokenType: String, contractName: String, contractAd
 `
 
 const changeAuthData = async (guildID, tokenType, contractName, contractAddress, number, path, role, mintURL, network) => {
+    await setEnvironment("testnet");
     const transactionId = await fcl.send([
         fcl.transaction(transaction),
         fcl.args([
@@ -83,7 +85,7 @@ const changeAuthData = async (guildID, tokenType, contractName, contractAddress,
         fcl.proposer(authorizationFunction),
         fcl.authorizations([authorizationFunction]),
         fcl.limit(9999)
-    ], { node: 'https://access-testnet.onflow.org' }).then(fcl.decode);
+    ]).then(fcl.decode);
 
     console.log(transactionId);
 
