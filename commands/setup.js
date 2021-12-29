@@ -9,15 +9,9 @@ const execute = (message, args) => {
             return;
         }
 
-        let network = args[6];
-        if (network === 'testnet') {
-            network = "https://access-testnet.onflow.org"
-        } else if (network === 'mainnet') {
-            network = "https://access-mainnet-beta.onflow.org"
-        }
         // GuildID, NFT/FT, #, public path name, role id, optional minting link, network
-        if (args.length === 7) changeAuthData(message.guild.id, args[0], args[1], args[2], args[3], args[4], role.id, "", network)
-        else if (args.length === 8) changeAuthData(message.guild.id, args[0], args[1], args[2], args[3], args[4], role.id, args[7], network)
+        if (args.length === 7) changeAuthData(message.guild.id, args[0], args[1], args[2], args[3], args[4], role.id, "", args[6])
+        else if (args.length === 8) changeAuthData(message.guild.id, args[0], args[1], args[2], args[3], args[4], role.id, args[7], args[6])
     } else if (message.member.permissions.has(Permissions.FLAGS.MANAGE_GUILD)) {
         message.channel.send("You did not supply the correct number of arguments. `!setup [NFT/FT] [number of tokens] [public path] [role name] [OPTIONAL: link to the minting site]`")
     } else {
