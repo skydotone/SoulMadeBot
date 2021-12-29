@@ -38,7 +38,7 @@ const getBalance = async (AccountProof, guildID, network) => {
   var script = ``;
   if (tokenType === "FT") {
     script = `
-      import FungibleToken from ${network === 'https://access-testnet.onflow.org' ? '0x9a0766d93b6608b7' : '0xf233dcee88fe0abe'}
+      import FungibleToken from ${network === 'testnet' ? '0x9a0766d93b6608b7' : '0xf233dcee88fe0abe'}
       import ${contractName} from ${contractAddress}
       pub fun main(address: Address): UFix64 {
         if let vault = getAccount(address).getCapability(${path}).borrow<&${contractName}.Vault{FungibleToken.Balance}>() {
@@ -50,7 +50,7 @@ const getBalance = async (AccountProof, guildID, network) => {
     `;
   } else if (tokenType === "NFT") {
     script = `
-      import NonFungibleToken from ${network === 'https://access-testnet.onflow.org' ? '0x631e88ae7f1d7c20' : '0x1d7e57aa55817448'}
+      import NonFungibleToken from ${network === 'testnet' ? '0x631e88ae7f1d7c20' : '0x1d7e57aa55817448'}
       import ${contractName} from ${contractAddress}
       pub fun main(address: Address): Int {
         if let collection = getAccount(address).getCapability(${path}).borrow<&${contractName}.Collection{NonFungibleToken.CollectionPublic}>() {
