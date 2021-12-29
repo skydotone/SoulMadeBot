@@ -9,17 +9,20 @@ const getBalance = async (AccountProof, guildID) => {
   console.log("Here!")
   const Address = AccountProof.address;
   const Timestamp = AccountProof.timestamp;
-  const Message = fcl.WalletUtils.encodeMessageForProvableAuthnVerifying(
-    Address,                    // Address of the user authenticating
-    Timestamp,                  // Timestamp associated with the authentication
-    "APP-V0.0-user",             // Application domain tag 
-    { node: "https://access-mainnet-beta.onflow.org" }
-  );
-  const isValid = await fcl.verifyUserSignatures(
-    Message,
-    AccountProof.signatures,
-    { node: "https://access-mainnet-beta.onflow.org" }
-  );
+  const Message = await fcl.send(
+    fcl.WalletUtils.encodeMessageForProvableAuthnVerifying(
+      Address,                    // Address of the user authenticating
+      Timestamp,                  // Timestamp associated with the authentication
+      "APP-V0.0-user"             // Application domain tag 
+    ), { node: "https://access-mainnet-beta.onflow.org" }
+  )
+  console.log("Shooooot.");
+  const isValid = await fcl.send(
+    await fcl.verifyUserSignatures(
+      Message,
+      AccountProof.signatures
+    ), { node: "https://access-mainnet-beta.onflow.org" }
+  )
   console.log("Failed!")
 
   if (!isValid) return 0;
