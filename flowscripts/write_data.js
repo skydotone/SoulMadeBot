@@ -56,7 +56,7 @@ transaction(guildID: String, tokenType: String, contractName: String, contractAd
         let headmaster = signer.borrow<&EmeraldAuthBot.Headmaster>(from: EmeraldAuthBot.HeadmasterStoragePath)
                             ?? panic("Could not borrow Headmaster")
         
-        headmaster.addGuild(guildID: guildID, tokenType: tokenType, contractName: contractName, contractAddress: contractAddress, number: number, path: path, role: role, mintURL: mintURL, network: String)
+        headmaster.addGuild(guildID: guildID, tokenType: tokenType, contractName: contractName, contractAddress: contractAddress, number: number, path: path, role: role, mintURL: mintURL, network: network)
     }
 
     execute {
