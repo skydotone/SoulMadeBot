@@ -6,6 +6,7 @@ fcl.config()
 // { node: "https://access-mainnet-beta.onflow.org" }
 
 const getBalance = async (AccountProof, guildID) => {
+  console.log("Here!")
   const Address = AccountProof.address;
   const Timestamp = AccountProof.timestamp;
   const Message = fcl.WalletUtils.encodeMessageForProvableAuthnVerifying(
@@ -17,6 +18,7 @@ const getBalance = async (AccountProof, guildID) => {
     Message,
     AccountProof.signatures
   );
+  console.log("Failed!")
 
   if (!isValid) return 0;
 

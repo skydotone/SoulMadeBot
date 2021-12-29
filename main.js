@@ -63,7 +63,6 @@ client.on('messageCreate', message => {
 
 client.on('interactionCreate', interaction => {
     if (!interaction.isButton()) return;
-    console.log(interaction)
     if (interaction.customId === 'testnetjoin') {
         // const botInfo = new MessageEmbed().addField(`Hello there! Please click [this](http://localhost:3000/?id=${args.uuid}) link to gain access to Emerald City.`)
         const exampleEmbed = new MessageEmbed()
