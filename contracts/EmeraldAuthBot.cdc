@@ -18,8 +18,9 @@ pub contract EmeraldAuthBot: IHyperverse {
         pub var path: String 
         pub var role: String
         pub var mintURL: String
+        pub var network: String
 
-        init(_guildID: String, _tokenType: String, _contractName: String, _contractAddress: Address, _number: Int, _path: String, _role: String, _mintURL: String) {
+        init(_guildID: String, _tokenType: String, _contractName: String, _contractAddress: Address, _number: Int, _path: String, _role: String, _mintURL: String, _network: String) {
             self.guildID = _guildID
             self.tokenType = _tokenType
             self.contractName = _contractName
@@ -28,14 +29,15 @@ pub contract EmeraldAuthBot: IHyperverse {
             self.path = _path
             self.role = _role
             self.mintURL = _mintURL
+            self.network = _network
         }
     }
 
     pub resource Headmaster {
         pub let tenant: Address
-        pub fun addGuild(guildID: String, tokenType: String, contractName: String, contractAddress: Address, number: Int, path: String, role: String, mintURL: String) {
+        pub fun addGuild(guildID: String, tokenType: String, contractName: String, contractAddress: Address, number: Int, path: String, role: String, mintURL: String, network: String) {
             let state = EmeraldAuthBot.getTenant(self.tenant)!
-            state.guilds[guildID] = GuildInfo(_guildID: guildID, _tokenType: tokenType, _contractName: contractName, _contractAddress: contractAddress, _number: number, _path: path, _role: role, _mintURL: mintURL)
+            state.guilds[guildID] = GuildInfo(_guildID: guildID, _tokenType: tokenType, _contractName: contractName, _contractAddress: contractAddress, _number: number, _path: path, _role: role, _mintURL: mintURL, _network: network)
             emit AddedGuild(self.tenant, guildID: guildID)
         }
         init(_ tenant: Address) { self.tenant = tenant }

@@ -3,6 +3,7 @@ const t = require("@onflow/types");
 
 fcl.config()
   .put('accessNode.api', 'https://access-testnet.onflow.org');
+// { node: "https://access-mainnet-beta.onflow.org" }
 
 const getBalance = async (AccountProof, guildID) => {
   const Address = AccountProof.address;
@@ -34,12 +35,12 @@ const getBalance = async (AccountProof, guildID) => {
   ]).then(fcl.decode);
 
   if (!guildInfo) return;
-  let { tokenType, contractName, contractAddress, number, path, role } = guildInfo;
+  let { tokenType, contractName, contractAddress, number, path, role, network } = guildInfo;
 
   var script = ``;
   if (tokenType === "FT") {
     script = `
-      import FungibleToken from 0x9a0766d93b6608b7
+      import FungibleToken from ${network === 'https://access-testnet.onflow.org' ? '0x9a0766d93b6608b7' : '0xf233dcee88fe0abe'}
       import ${contractName} from ${contractAddress}
       pub fun main(address: Address): UFix64 {
         if let vault = getAccount(address).getCapability(${path}).borrow<&${contractName}.Vault{FungibleToken.Balance}>() {
@@ -51,7 +52,7 @@ const getBalance = async (AccountProof, guildID) => {
     `;
   } else if (tokenType === "NFT") {
     script = `
-      import NonFungibleToken from 0x631e88ae7f1d7c20
+      import NonFungibleToken from ${network === 'https://access-testnet.onflow.org' ? '0x631e88ae7f1d7c20' : '0x1d7e57aa55817448'}
       import ${contractName} from ${contractAddress}
       pub fun main(address: Address): Int {
         if let collection = getAccount(address).getCapability(${path}).borrow<&${contractName}.Collection{NonFungibleToken.CollectionPublic}>() {
@@ -68,7 +69,7 @@ const getBalance = async (AccountProof, guildID) => {
     fcl.args([
       fcl.arg(Address, t.Address)
     ])
-  ]).then(fcl.decode);
+  ], { node: network }).then(fcl.decode);
 
   return { result, number, role, guildID };
 }

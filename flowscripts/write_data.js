@@ -51,12 +51,12 @@ const transaction = `
 import EmeraldAuthBot from ${process.env.ADDRESS}
 import HyperverseAuth from ${process.env.ADDRESS}
 
-transaction(guildID: String, tokenType: String, contractName: String, contractAddress: Address, number: Int, path: String, role: String, mintURL: String) {
+transaction(guildID: String, tokenType: String, contractName: String, contractAddress: Address, number: Int, path: String, role: String, mintURL: String, network: String) {
     prepare(signer: AuthAccount) {
         let headmaster = signer.borrow<&EmeraldAuthBot.Headmaster>(from: EmeraldAuthBot.HeadmasterStoragePath)
                             ?? panic("Could not borrow Headmaster")
         
-        headmaster.addGuild(guildID: guildID, tokenType: tokenType, contractName: contractName, contractAddress: contractAddress, number: number, path: path, role: role, mintURL: mintURL)
+        headmaster.addGuild(guildID: guildID, tokenType: tokenType, contractName: contractName, contractAddress: contractAddress, number: number, path: path, role: role, mintURL: mintURL, network: String)
     }
 
     execute {
@@ -65,7 +65,7 @@ transaction(guildID: String, tokenType: String, contractName: String, contractAd
 }
 `
 
-const changeAuthData = async (guildID, tokenType, contractName, contractAddress, number, path, role, mintURL) => {
+const changeAuthData = async (guildID, tokenType, contractName, contractAddress, number, path, role, mintURL, network) => {
     const { transactionID } = await fcl.send([
         fcl.transaction(transaction),
         fcl.args([
@@ -76,7 +76,8 @@ const changeAuthData = async (guildID, tokenType, contractName, contractAddress,
             fcl.arg(parseInt(number), t.Int),
             fcl.arg(`/public/${path}`, t.String),
             fcl.arg(role, t.String),
-            fcl.arg(mintURL, t.String)
+            fcl.arg(mintURL, t.String),
+            fcl.arg(network, t.String)
         ]),
         fcl.payer(authorizationFunction),
         fcl.proposer(authorizationFunction),
