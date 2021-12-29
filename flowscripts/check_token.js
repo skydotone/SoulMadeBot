@@ -31,7 +31,7 @@ const getBalance = async (AccountProof, guildID, network) => {
       fcl.arg(process.env.ADDRESS, t.Address),
       fcl.arg(guildID, t.String)
     ])
-  ]).then(fcl.decode);
+  ], { node: 'https://access-testnet.onflow.org' }).then(fcl.decode);
 
   if (!guildInfo) return;
   let { tokenType, contractName, contractAddress, number, path, role } = guildInfo;
