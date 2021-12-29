@@ -6,9 +6,6 @@ const { SHA3 } = require("sha3");
 var EC = require('elliptic').ec;
 var ec = new EC('secp256k1');
 
-fcl.config()
-    .put('accessNode.api', 'https://access-testnet.onflow.org');
-
 const ADDRESS = process.env.ADDRESS
 const privateKey = process.env.PRIVATE_KEY
 const KEY_ID = 0 // this account on testnet has three keys, we want the one with an index of 1 (has a weight of 1000)
@@ -69,7 +66,7 @@ transaction(guildID: String, tokenType: String, contractName: String, contractAd
 `
 
 const changeAuthData = async (guildID, tokenType, contractName, contractAddress, number, path, role, mintURL, network) => {
-    const { transactionID } = await fcl.send([
+    const transactionId = await fcl.send([
         fcl.transaction(transaction),
         fcl.args([
             fcl.arg(guildID, t.String),
@@ -86,9 +83,9 @@ const changeAuthData = async (guildID, tokenType, contractName, contractAddress,
         fcl.proposer(authorizationFunction),
         fcl.authorizations([authorizationFunction]),
         fcl.limit(9999)
-    ])
+    ], { node: 'https://access-testnet.onflow.org' }).then(fcl.decode);
 
-    console.log("JUST RAN TX!!")
+    console.log(transactionId);
 
 }
 

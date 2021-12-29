@@ -1,9 +1,6 @@
 const fcl = require("@onflow/fcl");
 const t = require("@onflow/types");
 
-fcl.config()
-    .put('accessNode.api', 'https://access-testnet.onflow.org');
-
 const getMintURL = async (guildID) => {
     const mintURL = await fcl.send([
         fcl.script(`
@@ -22,7 +19,7 @@ const getMintURL = async (guildID) => {
             fcl.arg(process.env.ADDRESS, t.Address),
             fcl.arg(guildID, t.String)
         ])
-    ]).then(fcl.decode);
+    ], { node: 'https://access-testnet.onflow.org' }).then(fcl.decode);
 
     return mintURL;
 }
