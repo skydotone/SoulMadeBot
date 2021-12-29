@@ -12,11 +12,13 @@ const getBalance = async (AccountProof, guildID) => {
   const Message = fcl.WalletUtils.encodeMessageForProvableAuthnVerifying(
     Address,                    // Address of the user authenticating
     Timestamp,                  // Timestamp associated with the authentication
-    "APP-V0.0-user"             // Application domain tag  
+    "APP-V0.0-user",             // Application domain tag 
+    { node: "https://access-mainnet-beta.onflow.org" }
   );
   const isValid = await fcl.verifyUserSignatures(
     Message,
-    AccountProof.signatures
+    AccountProof.signatures,
+    { node: "https://access-mainnet-beta.onflow.org" }
   );
   console.log("Failed!")
 
