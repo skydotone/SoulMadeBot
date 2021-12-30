@@ -106,6 +106,8 @@ app.post('/api/join', async (req, res) => {
     } catch (e) {
         console.log("An error occured decrypting: " + e);
     }
+
+    res.end();
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
