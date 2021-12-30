@@ -80,7 +80,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post('/api/join', async (req, res) => {
-    // Let's ensure that the account proof is legit.
+    // Let's ensure that the account proof is legit. 
     console.log(req.body.user.addr)
     let accountProofObject = req.body.user.services.filter(service => service.type === 'account-proof')[0];
 
