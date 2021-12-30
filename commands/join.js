@@ -5,11 +5,14 @@ const execute = async (message, args) => {
 
 	let network = await checkNetwork(message.guild.id);
 
+	console.log(network);
 	if (network === "") {
 		return;
 	}
+	console.log("Made it!")
 
 	if (message.member.permissions.has(Permissions.FLAGS.MANAGE_GUILD)) {
+		console.log("Has permissions!")
 		const row = new MessageActionRow()
 			.addComponents(
 				new MessageButton()
