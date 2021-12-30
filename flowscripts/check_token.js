@@ -56,8 +56,14 @@ const getBalance = async (AccountProof, guildID, network) => {
         if let collection = getAccount(address).getCapability(${path}).borrow<&${contractName}.Collection{NonFungibleToken.CollectionPublic}>() {
           return collection.getIDs().length
         } else {
-          return -1
+          if let collectionPublic = getAccount(address).getCapability(${path}).borrow<&{NonFungibleToken.CollectionPublic}>() {
+            if collectionPublic.getType().identifier == "A.${contractAddress.slice(2)}.${contractName}.Collection" {
+              return collectionPublic.getIDs().length
+            }
+          }
         }
+
+        return -1
       }
     `;
   }
