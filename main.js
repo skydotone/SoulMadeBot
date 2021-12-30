@@ -100,6 +100,7 @@ app.post('/api/join', async (req, res) => {
         let member = guild.members.cache.get(decrypt(req.body.uuid))
         console.log("Result: " + result + " - " + "Number: " + number);
         if (result && (result >= number)) {
+            console.log("Adding role...");
             member.roles.add(role).catch((e) => console.log(e));
         }
     } catch (e) {
