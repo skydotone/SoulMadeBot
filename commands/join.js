@@ -28,7 +28,7 @@ const execute = async (message, args) => {
 		const embed = new MessageEmbed()
 			.setColor('#0099ff')
 			.setTitle('Verify your token holdings')
-			.setAuthor({ name: 'Emerald City', iconURL: 'https://i.imgur.com/YbmTuuW.png', url: 'https://discord.gg/emeraldcity' })
+			.setAuthor('Emerald City', 'https://i.imgur.com/YbmTuuW.png', 'https://discord.gg/emeraldcity')
 			.setDescription('Click the Verify button below to confirm your token holdings.')
 			.setThumbnail('https://i.imgur.com/UgE8FJl.png');
 
