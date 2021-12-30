@@ -7,7 +7,11 @@ const checkNetwork = async (guildID) => {
         import EmeraldAuthBot from ${process.env.ADDRESS}
 
         pub fun main(tenant: Address, guildID: String): String {
-            return EmeraldAuthBot.getGuildInfo(tenant, guildID: guildID)!.network
+            if let guildInfo = EmeraldAuthBot.getGuildInfo(tenant, guildID: guildID) {
+                return guildInfo.network
+            } else {
+                return ""
+            }
         }
         `),
         fcl.args([

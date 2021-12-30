@@ -50,8 +50,6 @@ client.on('messageCreate', message => {
         client.commands.get('youtube').execute(message, args);
     } else if (command === 'role') {
         client.commands.get('role').execute(message, args);
-    } else if (command === 'allroles') {
-        client.commands.get('allroles').execute(message, args);
     } else if (command === 'setup') {
         client.commands.get('setup').execute(message, args);
     } else if (command === 'mint') {
