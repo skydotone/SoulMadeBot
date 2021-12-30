@@ -1,4 +1,4 @@
-const { MessageActionRow, MessageButton, MessageEmbed, Permissions, EmbedAuthorData } = require('discord.js');
+const { MessageActionRow, MessageButton, MessageEmbed, Permissions } = require('discord.js');
 const { checkNetwork } = require('../flowscripts/check_network.js');
 
 const execute = async (message, args) => {
@@ -28,9 +28,9 @@ const execute = async (message, args) => {
 		const embed = new MessageEmbed()
 			.setColor('#0099ff')
 			.setTitle('Verify your token holdings')
-			.setAuthor('Emerald City')
-			.setDescription('Click the button below to verify your token holdings.')
-			.setThumbnail('https://i.imgur.com/a/Jt7zGRo.png');
+			.setAuthor({ name: 'Emerald City', iconURL: 'https://i.imgur.com/YbmTuuW.png', url: 'https://discord.gg/emeraldcity' })
+			.setDescription('Click the Verify button below to confirm your token holdings.')
+			.setThumbnail('https://i.imgur.com/UgE8FJl.png');
 
 		message.channel.send({ ephemeral: true, embeds: [embed], components: [row] }).catch(e => console.log(e));
 	}
