@@ -1,4 +1,4 @@
-const { MessageActionRow, MessageButton, MessageEmbed, Permissions } = require('discord.js');
+const { MessageActionRow, MessageButton, MessageEmbed, Permissions, EmbedAuthorData } = require('discord.js');
 const { checkNetwork } = require('../flowscripts/check_network.js');
 
 const execute = async (message, args) => {
@@ -19,12 +19,16 @@ const execute = async (message, args) => {
 					.setCustomId(`${network}-join`)
 					.setLabel('Validate')
 					.setStyle('PRIMARY'),
+				new MessageButton()
+					.setURL('https://github.com/jacob-tucker/blocto-auth-discord-bot')
+					.setLabel('Source')
+					.setStyle('LINK')
 			);
 
 		const embed = new MessageEmbed()
 			.setColor('#0099ff')
 			.setTitle('Verify your token holdings')
-			.setAuthor({ name: 'Emerald City', iconURL: 'https://i.imgur.com/a/PMkAHil.png', url: 'https://discord.gg/emeraldcity' })
+			.setAuthor('Emerald City')
 			.setDescription('Click the button below to verify your token holdings.')
 			.setThumbnail('https://i.imgur.com/a/Jt7zGRo.png');
 
