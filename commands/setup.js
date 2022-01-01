@@ -21,8 +21,9 @@ const execute = (message, args) => {
 
             if (args.length === 7) changeAuthData(message.guild.id, args[0], args[1], args[2], args[3], args[4], role.id, "", args[6])
             else if (args.length === 8) changeAuthData(message.guild.id, args[0], args[1], args[2], args[3], args[4], role.id, args[7], args[6])
-        } else if (args.length == 2 && args[0] === 'FIND') {
-            changeAuthData(message.guild.id, args[0], "", "", 1, "", args[1], "https://find.xyz", "mainnet")
+        } else if (args.length === 2 && args[0] === 'FIND') {
+            console.log("Setting up .find");
+            changeAuthData(message.guild.id, args[0], "", "0x097bafa4e0b48eef", 1, "", args[1], "https://find.xyz", "mainnet");
         } else {
             message.channel.send("You did not supply the correct number of arguments. `!setup [NFT/FT] [number of tokens] [public path] [role name] [OPTIONAL: link to the minting site]`")
         }
