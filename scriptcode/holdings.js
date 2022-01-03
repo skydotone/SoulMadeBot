@@ -1,4 +1,4 @@
-export const nft = (contractName, contractAddress, network, path) => {
+const nft = (contractName, contractAddress, network, path) => {
     let script = `
         import NonFungibleToken from ${network === 'testnet' ? '0x631e88ae7f1d7c20' : '0x1d7e57aa55817448'}
         import ${contractName} from ${contractAddress}
@@ -20,7 +20,7 @@ export const nft = (contractName, contractAddress, network, path) => {
     return script;
 }
 
-export const ft = (contractName, contractAddress, network, path) => {
+const ft = (contractName, contractAddress, network, path) => {
     let script = `
         import FungibleToken from ${network === 'testnet' ? '0x9a0766d93b6608b7' : '0xf233dcee88fe0abe'}
         import ${contractName} from ${contractAddress}
@@ -41,7 +41,7 @@ export const ft = (contractName, contractAddress, network, path) => {
     return script;
 }
 
-export const find = () => {
+const find = () => {
     let script = `
         import FIND from 0x097bafa4e0b48eef
         import Profile from 0x097bafa4e0b48eef
@@ -86,4 +86,10 @@ export const find = () => {
         }
     `;
     return script;
+}
+
+module.exports = {
+    nft: nft,
+    ft: ft,
+    find: find
 }
