@@ -86,7 +86,6 @@ app.post('/api/join', async (req, res) => {
 
     if (typeof req.body.uuid !== 'string' || typeof req.body.guildID !== 'string' || !accountProofObject) return res.end();
 
-    console.log("After typecheck...")
     const AccountProof = accountProofObject.data;
     // Gets the balance of the user
     let guildInfo = await getBalance(AccountProof, decrypt(req.body.guildID), req.body.network);
