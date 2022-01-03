@@ -1,5 +1,3 @@
-import { script } from "@onflow/fcl";
-
 export const nft = (contractName, contractAddress, network, path) => {
     let script = `
         import NonFungibleToken from ${network === 'testnet' ? '0x631e88ae7f1d7c20' : '0x1d7e57aa55817448'}
