@@ -1,7 +1,9 @@
 import HyperverseModule from 0x4e190c2eb6d78faa
 import IHyperverse from 0x4e190c2eb6d78faa
 
-pub contract EmeraldAuthBot: IHyperverse {
+// https://play.onflow.org/04c9c8c5-ef8b-480e-95e2-d35b8ff7112d?type=account&id=0
+
+pub contract EmeraldAuthBotv2: IHyperverse {
 
     /**************************************** FUNCTIONALITY ****************************************/
 
@@ -9,54 +11,83 @@ pub contract EmeraldAuthBot: IHyperverse {
 
     pub event AddedGuild(_ tenant: Address, guildID: String)
 
-    pub struct GuildInfo {
-        pub var guildID: String
+    pub struct VerificationInfo {
         pub var tokenType: String
         pub var contractName: String
         pub var contractAddress: Address
         pub var number: Int
         pub var path: String 
         pub var role: String
-        pub var mintURL: String
         pub var network: String
+        pub var url: String
 
-        init(_guildID: String, _tokenType: String, _contractName: String, _contractAddress: Address, _number: Int, _path: String, _role: String, _mintURL: String, _network: String) {
-            self.guildID = _guildID
+        init(_tokenType: String, _contractName: String, _contractAddress: Address, _number: Int, _path: String, _role: String, _network: String, _url: String) {
             self.tokenType = _tokenType
             self.contractName = _contractName
             self.contractAddress = _contractAddress
             self.number = _number
             self.path = _path
             self.role = _role
-            self.mintURL = _mintURL
             self.network = _network
+            self.url = _url
+        }
+    }
+
+    pub struct GuildInfo {
+        pub var guildID: String
+        pub var verifications: {String: VerificationInfo}
+
+        access(contract) fun addVerification(verification: VerificationInfo) {
+            self.verifications[verification.role] = verification
+        }
+
+        init(_guildID: String) {
+            self.guildID = _guildID
+            self.verifications = {}
         }
     }
 
     pub resource Headmaster {
         pub let tenant: Address
-        pub fun addGuild(guildID: String, tokenType: String, contractName: String, contractAddress: Address, number: Int, path: String, role: String, mintURL: String, network: String) {
-            let state = EmeraldAuthBot.getTenant(self.tenant)!
-            state.guilds[guildID] = GuildInfo(_guildID: guildID, _tokenType: tokenType, _contractName: contractName, _contractAddress: contractAddress, _number: number, _path: path, _role: role, _mintURL: mintURL, _network: network)
+
+        pub fun addGuild(guildID: String) {
+            let state = EmeraldAuthBotv2.getTenant(self.tenant)!
+            state.guilds[guildID] = GuildInfo(_guildID: guildID)
             emit AddedGuild(self.tenant, guildID: guildID)
         }
-        init(_ tenant: Address) { self.tenant = tenant }
-    }
 
-    pub fun getGuildInfo(_ tenant: Address, guildID: String): GuildInfo? {
-        if let state = self.getTenant(tenant) {
-            return state.guilds[guildID]
-        } else {
-            return nil
+        pub fun addVerification(guildID: String, tokenType: String, contractName: String, contractAddress: Address, number: Int, path: String, role: String, network: String, url: String) {
+            let state = EmeraldAuthBotv2.getTenant(self.tenant)!
+            if state.guilds[guildID] == nil {
+                self.addGuild(guildID: guildID)
+            }
+
+            let guild = &state.guilds[guildID]! as &GuildInfo
+            let verificationInfo = VerificationInfo(
+                    _tokenType: tokenType, 
+                    _contractName: contractName, 
+                    _contractAddress: contractAddress, 
+                    _number: number, 
+                    _path: path, 
+                    _role: role, 
+                    _network: network, 
+                    _url: url
+            )
+            guild.addVerification(verification: verificationInfo)
+        }
+        
+        init(_ tenant: Address) { 
+            self.tenant = tenant 
         }
     }
 
-    pub fun getMintURL(_ tenant: Address, guildID: String): String? {
+    pub fun getVerificationInfo(_ tenant: Address, guildID: String, role: String): VerificationInfo? {
         if let state = self.getTenant(tenant) {
-            return state.guilds[guildID]?.mintURL
-        } else {
-            return nil
-        }
+            if let guildInfo = state.guilds[guildID] {
+                return guildInfo.verifications[role]
+            }
+        } 
+        return nil
     }
 
     pub fun getGuildIDs(_ tenant: Address): [String] {
@@ -65,6 +96,26 @@ pub contract EmeraldAuthBot: IHyperverse {
         } else {
             return []
         }
+    }
+
+    pub fun getVerifications(_ tenant: Address, guildID: String): [VerificationInfo] {
+        if let state = self.getTenant(tenant) {
+            if let guild = state.guilds[guildID] {
+                return guild.verifications.values
+            }
+        } 
+
+        return []
+    }
+
+    pub fun getURL(_ tenant: Address, guildID: String, role: String): String? {
+        if let state = self.getTenant(tenant) {
+            if let guild = state.guilds[guildID] {
+                return guild.verifications[role]?.url
+            }
+        } 
+
+        return nil
     }
 
     /**************************************** METADATA & TENANT ****************************************/
@@ -103,13 +154,13 @@ pub contract EmeraldAuthBot: IHyperverse {
     }
 
     init() {
-        self.HeadmasterStoragePath = /storage/EmeraldAuthBotHeadmaster
+        self.HeadmasterStoragePath = /storage/EmeraldAuthBotHeadmasterv2
         self.tenants <- {}
 
         self.metadata = HyperverseModule.Metadata(
                             _identifier: self.getType().identifier,
                             _contractAddress: self.account.address,
-                            _title: "EmeraldAuthBot",
+                            _title: "EmeraldAuthBotv2",
                             _authors: [HyperverseModule.Author(_address: 0x6c0d53c676256e8c, _externalURI: "https://twitter.com/jacobmtucker")],
                             _version: "0.0.1",
                             _publishedAt: getCurrentBlock().timestamp,
