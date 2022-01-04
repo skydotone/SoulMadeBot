@@ -91,9 +91,9 @@ app.post('/api/join', async (req, res) => {
         decrypted = decrypt(req.body.id);
     } catch(e) {
         console.log(e);
-        res.send({"success": 2});
+        return res.send({"success": 2});
     }
-    
+
     let decryptedValues = decrypted.split('///');
     
     // Gets the balance of the user
