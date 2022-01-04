@@ -64,13 +64,18 @@ client.on('interactionCreate', interaction => {
     // const botInfo = new MessageEmbed().addField(`Hello there! Please click [this](http://localhost:3000/?id=${args.uuid}) link to gain access to Emerald City.`)
     const exampleEmbed = new MessageEmbed()
         .setColor('#5bc595')
-        .setTitle('Click here to verify your account')
-        .setURL('https://pedantic-darwin-e512ad.netlify.app/' + interactionCustomId[0] + '/?id=' + encrypted)
-        .setAuthor('Emerald City Bot', 'https://i.imgur.com/qjT7cro.png')
-        .setDescription('Hey there! Please click the link above if you have the tokens you need and wish to gain access to be given a special role.')
+        .setDescription('Click the link below to verify your account.')
         .setTimestamp()
 
-    interaction.reply({ ephemeral: true, embeds: [exampleEmbed] })
+    const row = new MessageActionRow()
+        .addComponents(
+            new MessageButton()
+                .setURL('https://pedantic-darwin-e512ad.netlify.app/' + interactionCustomId[0] + '/?id=' + encrypted)
+                .setLabel('Verify Account')
+                .setStyle('LINK')
+        );
+
+    interaction.reply({ ephemeral: true, embeds: [exampleEmbed], components: [row] })
 
 });
 
