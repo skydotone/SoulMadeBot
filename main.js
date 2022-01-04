@@ -105,7 +105,7 @@ app.post('/api/join', async (req, res) => {
         if (result && (result >= number)) {
             console.log("Adding role...");
             member.roles.add(role).catch((e) => console.log(e));
-            res.send({"success": true});
+            return res.send({"success": true});
         }
     } catch (e) {
         console.log("An error occured decrypting: " + e);
