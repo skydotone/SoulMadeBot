@@ -72,7 +72,7 @@ const postButton = (message, network, role) => {
         );
 
     const embed = new MessageEmbed()
-        .setColor('#0099ff')
+        .setColor('#5bc595')
         .setTitle('Verify your account')
         .setAuthor('Emerald City', 'https://i.imgur.com/YbmTuuW.png', 'https://discord.gg/emeraldcity')
         .setDescription('Click the Validate button below to confirm your eligibility for the ' + `<@&${role.id}>` + ' role.')
