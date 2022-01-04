@@ -75,7 +75,7 @@ const postButton = (message, network, role) => {
         .setColor('#0099ff')
         .setTitle('Verify your account')
         .setAuthor('Emerald City', 'https://i.imgur.com/YbmTuuW.png', 'https://discord.gg/emeraldcity')
-        .setDescription('Click the Verify button below to confirm your eligibility for the ' + `<@&${role.id}>` + ' role.')
+        .setDescription('Click the Validate button below to confirm your eligibility for the ' + `<@&${role.id}>` + ' role.')
         .setThumbnail('https://i.imgur.com/UgE8FJl.png');
 
     message.channel.send({ ephemeral: true, embeds: [embed], components: [row] }).catch(e => console.log(e));
