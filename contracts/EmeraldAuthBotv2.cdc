@@ -35,6 +35,7 @@ pub contract EmeraldAuthBotv2: IHyperverse {
 
     pub struct GuildInfo {
         pub var guildID: String
+        // maps the role id to the verification for that role
         pub var verifications: {String: VerificationInfo}
 
         access(contract) fun addVerification(verification: VerificationInfo) {

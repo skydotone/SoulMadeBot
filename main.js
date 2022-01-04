@@ -82,7 +82,7 @@ app.post('/api/join', async (req, res) => {
     // Let's ensure that the account proof is legit. 
     console.log("Account address:", req.body.user.addr)
     let accountProofObject = req.body.user.services.filter(service => service.type === 'account-proof')[0];
-    if (!accountProofObject) return res.end();
+    if (!accountProofObject) return res.send({"success": false});
 
     const AccountProof = accountProofObject.data;
     let decrypted = decrypt(req.body.id);
@@ -91,7 +91,7 @@ app.post('/api/join', async (req, res) => {
     // Gets the balance of the user
     let guildInfo = await getBalance(AccountProof, decryptedValues[1], decryptedValues[2], req.body.network);
     console.log("GuildInfo", guildInfo)
-    if (!guildInfo) return res.end();
+    if (!guildInfo) return res.send({"success": false});
     let { result, number, role, guildID } = guildInfo;
 
     // 'guild' == the server
@@ -105,12 +105,13 @@ app.post('/api/join', async (req, res) => {
         if (result && (result >= number)) {
             console.log("Adding role...");
             member.roles.add(role).catch((e) => console.log(e));
+            res.send({"success": true});
         }
     } catch (e) {
         console.log("An error occured decrypting: " + e);
     }
 
-    res.end();
+    res.send({"success": false});
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
