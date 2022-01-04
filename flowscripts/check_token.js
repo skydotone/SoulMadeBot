@@ -3,7 +3,7 @@ const t = require("@onflow/types");
 const { setEnvironment } = require("flow-cadut");
 const { nft, ft, find } = require("../scriptcode/holdings.js");
 
-const getBalance = async (AccountProof, guildID, network) => {
+const getBalance = async (AccountProof, guildID, roleId, network) => {
   await setEnvironment(network);
   const Address = AccountProof.address;
   const Timestamp = AccountProof.timestamp;
@@ -21,15 +21,16 @@ const getBalance = async (AccountProof, guildID, network) => {
 
   const guildInfo = await fcl.send([
     fcl.script(`
-      import EmeraldAuthBot from ${process.env.ADDRESS}
+      import EmeraldAuthBotv2 from ${process.env.ADDRESS}
 
-      pub fun main(tenant: Address, guildID: String): EmeraldAuthBot.GuildInfo? {
-        return EmeraldAuthBot.getGuildInfo(tenant, guildID: guildID)
+      pub fun main(tenant: Address, guildID: String, role: String): EmeraldAuthBotv2.VerificationInfo? {
+        return EmeraldAuthBotv2.getVerificationInfo(tenant, guildID: guildID, role: role)
       }
     `),
     fcl.args([
       fcl.arg(process.env.ADDRESS, t.Address),
-      fcl.arg(guildID, t.String)
+      fcl.arg(guildID, t.String),
+      fcl.arg(roleId, t.String)
     ])
   ], { node: 'https://access-testnet.onflow.org' }).then(fcl.decode);
 

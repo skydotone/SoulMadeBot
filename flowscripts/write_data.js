@@ -46,18 +46,17 @@ const authorizationFunction = async (account) => {
 }
 
 const transaction = `
-import EmeraldAuthBot from ${process.env.ADDRESS}
-import HyperverseAuth from ${process.env.ADDRESS}
+import EmeraldAuthBotv2 from ${process.env.ADDRESS}
 
-transaction(guildID: String, tokenType: String, contractName: String, contractAddress: Address, number: Int, path: String, role: String, mintURL: String, network: String) {
+transaction(guildID: String, tokenType: String, contractName: String, contractAddress: Address, number: Int, path: String, role: String, url: String, network: String) {
     prepare(signer: AuthAccount) {
-        if signer.borrow<&EmeraldAuthBot.Headmaster>(from: EmeraldAuthBot.HeadmasterStoragePath) == nil {
-            EmeraldAuthBot.createTenant(newTenant: signer)
+        if signer.borrow<&EmeraldAuthBotv2.Headmaster>(from: EmeraldAuthBotv2.HeadmasterStoragePath) == nil {
+            EmeraldAuthBotv2.createTenant(newTenant: signer)
         }
-        let headmaster = signer.borrow<&EmeraldAuthBot.Headmaster>(from: EmeraldAuthBot.HeadmasterStoragePath)
+        let headmaster = signer.borrow<&EmeraldAuthBotv2.Headmaster>(from: EmeraldAuthBotv2.HeadmasterStoragePath)
                             ?? panic("Could not borrow Headmaster")
         
-        headmaster.addGuild(guildID: guildID, tokenType: tokenType, contractName: contractName, contractAddress: contractAddress, number: number, path: path, role: role, mintURL: mintURL, network: network)
+        headmaster.addVerification(guildID: guildID, tokenType: tokenType, contractName: contractName, contractAddress: contractAddress, number: number, path: path, role: role, network: network, url: url)
     }
 
     execute {
@@ -66,7 +65,7 @@ transaction(guildID: String, tokenType: String, contractName: String, contractAd
 }
 `
 
-const changeAuthData = async (guildID, tokenType, contractName, contractAddress, number, path, role, mintURL, network) => {
+const changeAuthData = async (guildID, tokenType, contractName, contractAddress, number, path, role, url, network) => {
     await setEnvironment("testnet");
     const transactionId = await fcl.send([
         fcl.transaction(transaction),
@@ -78,7 +77,7 @@ const changeAuthData = async (guildID, tokenType, contractName, contractAddress,
             fcl.arg(parseInt(number), t.Int),
             fcl.arg(`/public/${path}`, t.String),
             fcl.arg(role, t.String),
-            fcl.arg(mintURL, t.String),
+            fcl.arg(url, t.String),
             fcl.arg(network, t.String)
         ]),
         fcl.payer(authorizationFunction),
@@ -87,8 +86,14 @@ const changeAuthData = async (guildID, tokenType, contractName, contractAddress,
         fcl.limit(9999)
     ]).then(fcl.decode);
 
-    console.log(transactionId);
-
+    console.log("Setup transaction", transactionId);
+    try {
+        await fcl.tx(transactionId).onceSealed();
+        return true;
+    } catch(e) {
+        console.log(e);
+        return false;
+    }
 }
 
 module.exports = {

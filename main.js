@@ -52,21 +52,20 @@ client.on('messageCreate', message => {
         client.commands.get('role').execute(message, args);
     } else if (command === 'setup') {
         client.commands.get('setup').execute(message, args);
-    } else if (command === 'mint') {
-        client.commands.get('mint').execute(message, args);
-    } else if (command === 'join') {
-        client.commands.get('join').execute(message, args);
     }
 })
 
 client.on('interactionCreate', interaction => {
-    if (!interaction.isButton() || interaction.customId.split('-').length !== 2) return;
+    if (!interaction.isButton() || interaction.customId.split('-').length !== 3) return;
+
+    let interactionCustomId = interaction.customId.split('-');
+    let encrypted = encrypt(interaction.member.id + '///' + interaction.guild.id + '///' + interactionCustomId[1])
 
     // const botInfo = new MessageEmbed().addField(`Hello there! Please click [this](http://localhost:3000/?id=${args.uuid}) link to gain access to Emerald City.`)
     const exampleEmbed = new MessageEmbed()
         .setColor('#5bc595')
         .setTitle('Click here to verify your account')
-        .setURL('https://pedantic-darwin-e512ad.netlify.app/' + interaction.customId.split('-')[0] + '/?id=' + encrypt(interaction.member.id) + '&guildID=' + encrypt(interaction.guild.id))
+        .setURL('https://pedantic-darwin-e512ad.netlify.app/' + interactionCustomId[0] + '/?id=' + encrypted)
         .setAuthor('Emerald City Bot', 'https://i.imgur.com/qjT7cro.png')
         .setDescription('Hey there! Please click the link above if you have the tokens you need and wish to gain access to be given a special role.')
         .setTimestamp()
@@ -81,14 +80,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post('/api/join', async (req, res) => {
     // Let's ensure that the account proof is legit. 
-    console.log(req.body.user.addr)
+    console.log("Account address:", req.body.user.addr)
     let accountProofObject = req.body.user.services.filter(service => service.type === 'account-proof')[0];
-
-    if (typeof req.body.uuid !== 'string' || typeof req.body.guildID !== 'string' || !accountProofObject) return res.end();
+    if (!accountProofObject) return res.end();
 
     const AccountProof = accountProofObject.data;
+    let decrypted = decrypt(req.body.id);
+    let decryptedValues = decrypted.split('///');
+    
     // Gets the balance of the user
-    let guildInfo = await getBalance(AccountProof, decrypt(req.body.guildID), req.body.network);
+    let guildInfo = await getBalance(AccountProof, decryptedValues[1], decryptedValues[2], req.body.network);
     console.log("GuildInfo", guildInfo)
     if (!guildInfo) return res.end();
     let { result, number, role, guildID } = guildInfo;
@@ -99,7 +100,7 @@ app.post('/api/join', async (req, res) => {
     // the member id of the member, then gets the actual member
 
     try {
-        let member = guild.members.cache.get(decrypt(req.body.uuid))
+        let member = guild.members.cache.get(decryptedValues[0])
         console.log("Result: " + result + " - " + "Number: " + number);
         if (result && (result >= number)) {
             console.log("Adding role...");
