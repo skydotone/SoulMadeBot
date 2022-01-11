@@ -88,8 +88,47 @@ const find = () => {
     return script;
 }
 
+const geniacemetalmaneki = () => {
+    let script = `
+    import GeniaceNFT from 0xabda6627c70c7f52
+    
+    pub fun main(address: Address): Int {
+        if let collection = getAccount(address).getCapability(GeniaceNFT.CollectionPublicPath).borrow<&GeniaceNFT.Collection{GeniaceNFT.GeniaceNFTCollectionPublic}>() {
+            let ids = collection.getIDs()
+
+            for id in ids {
+                let geniaceNFT = collection.borrowGeniaceNFT(id: id)!
+                if geniaceNFT.metadata.celebrityName == "METAL MANEKI" {
+                    return 1
+                }
+            }
+        }
+
+        return -1
+    }
+    `;
+    return script;
+}
+
+const flovatar = () => {
+    let script = `
+    import Flovatar from 0x921ea449dffec68a
+    
+    pub fun main(address: Address): Int {
+        if let collection = getAccount(address).getCapability(/public/FlovatarCollection).borrow<&{Flovatar.CollectionPublic}>() {
+            return collection.getIDs().length
+        }
+
+        return -1
+    }
+    `;
+    return script;
+}
+
 module.exports = {
     nft: nft,
     ft: ft,
-    find: find
+    find: find,
+    geniacemetalmaneki: geniacemetalmaneki,
+    flovatar: flovatar
 }

@@ -1,7 +1,7 @@
 const fcl = require("@onflow/fcl");
 const t = require("@onflow/types");
 const { setEnvironment } = require("flow-cadut");
-const { nft, ft, find } = require("../scriptcode/holdings.js");
+const { nft, ft, find, geniacemetalmaneki, flovatar } = require("../scriptcode/holdings.js");
 
 const getBalance = async (AccountProof, guildID, roleId, network) => {
   await setEnvironment(network);
@@ -44,6 +44,10 @@ const getBalance = async (AccountProof, guildID, roleId, network) => {
     script = nft(contractName, contractAddress, network, path);
   } else if (tokenType === "FIND") {
     script = find();
+  } else if (tokenType === "GeniaceMETALMANEKI") {
+    script = geniacemetalmaneki();
+  } else if (tokenType === 'Flovatar') {
+    script = flovatar();
   }
 
   try {
