@@ -1,7 +1,7 @@
 require('dotenv').config();
 const { Client, Intents, Collection, MessageActionRow, MessageButton, MessageEmbed } = require('discord.js');
 const { getBalance } = require('./flowscripts/check_token.js');
-const { checkEmeraldIdentity } = require('./flowscripts/emerald_identity.js');
+const { checkEmeraldIdentityDiscord, checkEmeraldIdentityAccount } = require('./flowscripts/emerald_identity.js');
 const { encrypt, decrypt } = require('./helperfunctions/functions.js');
 
 const fs = require('fs');
@@ -82,7 +82,7 @@ client.on('interactionCreate', async interaction => {
     
         interaction.reply({ ephemeral: true, embeds: [exampleEmbed], components: [row] })
     } else if (interaction.customId === 'verify-emeraldid') {
-        let account = await checkEmeraldIdentity(interaction.member.id);
+        let account = await checkEmeraldIdentityDiscord(interaction.member.id);
         console.log("Returned account from ecid", account);
         // If they have already verified their EmeraldID
         if (account) {
@@ -165,9 +165,15 @@ app.post('/api/join', async (req, res) => {
     res.send({"success": 2});
 });
 
-app.get('/api/checkEmeraldID', async (req, res) => {
-    const discordID = req.query.discordID;
-    let exists = await checkEmeraldIdentity(discordID);
+app.post('/api/checkEmeraldID', async (req, res) => {
+    // Let's ensure that the account proof is legit. 
+    console.log("Account address:", req.body.user.addr)
+    let accountProofObject = req.body.user.services.filter(service => service.type === 'account-proof')[0];
+    if (!accountProofObject) return res.send("Invalid account proof.");
+
+    const accountAddress = accountProofObject.data.address;
+
+    let exists = await checkEmeraldIdentityAccount(accountAddress);
     if (!exists) {
         return res.send(0);
     } else {
