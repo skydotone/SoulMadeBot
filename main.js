@@ -2,7 +2,7 @@ require('dotenv').config();
 const { Client, Intents, Collection, MessageActionRow, MessageButton, MessageEmbed } = require('discord.js');
 const { getBalance } = require('./flowscripts/check_token.js');
 const { getBalancev2 } = require('./flowscripts/check_tokenv2.js');
-const { checkEmeraldIdentityDiscord, checkEmeraldIdentityAccount, initializeEmeraldID } = require('./flowscripts/emerald_identity.js');
+const { checkEmeraldIdentityDiscord, checkEmeraldIdentityAccount, initializeEmeraldID, deleteEmeraldID } = require('./flowscripts/emerald_identity.js');
 const { encrypt, decrypt } = require('./helperfunctions/functions.js');
 
 const fs = require('fs');
@@ -123,7 +123,10 @@ client.on('interactionCreate', async interaction => {
                     .setStyle('LINK')
             );
     
-        interaction.reply({ ephemeral: true, embeds: [exampleEmbed], components: [row] })
+        interaction.reply({ ephemeral: true, embeds: [exampleEmbed], components: [row] });
+    } else if(interaction.customId === 'emeraldiddelete') {
+        await deleteEmeraldID(interaction.member.id);
+        interaction.reply("Deleted your EmeraldID.");
     }
 });
 

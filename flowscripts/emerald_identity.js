@@ -76,8 +76,46 @@ const initializeEmeraldID = async (account, discordID) => {
     }
 }
 
+const deleteEmeraldID = async (discordID) => {
+    await setEnvironment("testnet");
+    const transactionId = await fcl.send([
+        fcl.transaction`
+        import EmeraldIdentity from 0x4e190c2eb6d78faa
+
+        transaction(account: Address, discordID: String) {
+            prepare(signer: AuthAccount) {
+                let administrator = signer.borrow<&EmeraldIdentity.Administrator>(from: EmeraldIdentity.EmeraldIDAdministrator)
+                                            ?? panic("Could not borrow the administrator")
+                administrator.reset(account: account, discordID: discordID)
+            }
+
+            execute {
+
+            }
+        }
+        `,
+        fcl.args([
+            fcl.arg(0x0, t.Address),
+            fcl.arg(discordID, t.String)
+        ]),
+        fcl.payer(authorizationFunction),
+        fcl.proposer(authorizationFunction),
+        fcl.authorizations([authorizationFunction]),
+        fcl.limit(9999)
+    ]).then(fcl.decode);
+
+    try {
+        await fcl.tx(transactionId).onceSealed();
+        return true;
+    } catch(e) {
+        console.log(e);
+        return false;
+    }
+}
+
 module.exports = {
   checkEmeraldIdentityDiscord,
   checkEmeraldIdentityAccount,
-  initializeEmeraldID
+  initializeEmeraldID,
+  deleteEmeraldID
 }
