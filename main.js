@@ -82,7 +82,7 @@ client.on('interactionCreate', interaction => {
     
         interaction.reply({ ephemeral: true, embeds: [exampleEmbed], components: [row] })
     } else if (interaction.customId === 'verify-emeraldid') {
-        let account = checkEmeraldIdentity(interaction.member.id);
+        let account = await checkEmeraldIdentity(interaction.member.id);
         console.log("Returned account from ecid", account);
         // If they have already verified their EmeraldID
         if (account) {
