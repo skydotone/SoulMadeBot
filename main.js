@@ -91,17 +91,17 @@ client.on('interactionCreate', async interaction => {
         if (account) {
             let guildInfo = await getBalancev2(account, interaction.guild.id, roleId);
             if (!guildInfo) {
-                interaction.reply("Error");
+                interaction.reply({content: "Error", ephemeral: true});
                 return;
             };
             let { result, number } = guildInfo;
             if (result && (result >= number)) {
                 console.log("Adding role...");
                 interaction.member.roles.add(roleId).catch((e) => console.log(e));
-                interaction.reply("You have been given the " + `<@&${roleId}>` + " role.");
+                interaction.reply({content: "You have been given the " + `<@&${roleId}>` + " role.", ephemeral: true});
                 return;
             }
-            interaction.reply("You do not have enough tokens.");
+            interaction.reply({content: "You do not have enough tokens.", ephemeral: true});
             return;
         }
 
@@ -127,10 +127,10 @@ client.on('interactionCreate', async interaction => {
     } else if(interaction.customId === 'emeraldiddelete') {
         let account = await checkEmeraldIdentityDiscord(interaction.member.id);
         if (!account) {
-            interaction.reply("You do not have an EmeraldID.");
+            interaction.reply({content: "You do not have an EmeraldID.", ephemeral: true});
         } else {
             deleteEmeraldID(account, interaction.member.id);
-            interaction.reply("Deleting your EmeraldID. Please wait ~20 seconds.");
+            interaction.reply({content: "Deleting your EmeraldID. Please wait ~20 seconds.", ephemeral: true});
         }
     }
 });
