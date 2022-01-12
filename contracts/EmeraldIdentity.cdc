@@ -2,108 +2,77 @@ pub contract EmeraldIdentity {
 
     // Paths
     //
-    pub let EmeraldIDStoragePath: StoragePath
-    pub let EmeraldIDPublicPath: PublicPath
     pub let EmeraldIDAdministrator: StoragePath
 
     // Events
     //
-    pub event EmeraldIDCreated(account: Address, discordID: String, timestamp: UFix64)
-    pub event EmeraldIDUpdated(account: Address, discordID: String, timestamp: UFix64)
-    pub event EmeraldIDDestroyed(account: Address, discordID: String, timestamp: UFix64)
+    pub event EmeraldIDCreated(account: Address, discordID: String)
+    pub event EmeraldIDUpdated(account: Address, discordID: String)
+    pub event EmeraldIDDestroyed(discordID: String)
 
-    // Maps a Discord ID to an on-chain address
-    access(contract) var identifications: {String: Address}
+    // Maps an address to a Discord ID
+    access(contract) var mappings: {Address: String}
+    // Maps a Discord ID to an EmeraldID
+    access(contract) var identifications: {String: EmeraldID}
 
-    // EmeraldIDInfo
+    // EmeraldID
     // A struct holding the data of an EmeraldID
     //
-    pub struct EmeraldIDInfo {
+    pub struct EmeraldID {
         pub var account: Address
         pub var discordID: String
         access(contract) var metadata: {String: String}
+        
+        pub fun updateInfo(account: Address, discordID: String, metadata: {String: String}) {
+            self.account = account
+            self.discordID = discordID
+            self.metadata = metadata
+        }
+
         init(_account: Address, _discordID: String, _metadata: {String: String}) {
             self.account = _account
             self.discordID = _discordID
             self.metadata = _metadata
         }
     }
-
-    // EmeraldID
-    // Represents who you are on Discord
-    //
-    pub resource EmeraldID {
-        pub var info: EmeraldIDInfo?
-        pub var initialized: Bool
-
-        access(contract) fun updateIDInfo(account: Address, discordID: String, metadata: {String: String}) {
-            self.info = EmeraldIDInfo(_account: account, _discordID: discordID, _metadata: metadata)
-
-            if self.initialized {
-                emit EmeraldIDUpdated(account: account, discordID: discordID, timestamp: getCurrentBlock().timestamp)
-            } else {
-                emit EmeraldIDCreated(account: account, discordID: discordID, timestamp: getCurrentBlock().timestamp)
-            }
-        }
-
-        init() {
-            self.info = nil
-            self.initialized = false
-        }
-        
-        destroy() {
-            EmeraldIdentity.identifications.remove(key: self.info!.discordID)
-            emit EmeraldIDDestroyed(account: self.info!.account, discordID: self.info!.discordID, timestamp: getCurrentBlock().timestamp)
-        }
-    }
     
     // Owned by the Emerald Bot
     pub resource Administrator {
         pub fun updateEmeraldID(account: Address, discordID: String, metadata: {String: String}) {
-            EmeraldIdentity.identifications[discordID] = account
-            let id = getAccount(account).getCapability(EmeraldIdentity.EmeraldIDPublicPath)
-                        .borrow<&EmeraldID>()
-                        ?? panic("This account does not have an EmeraldID")
-            id.updateIDInfo(account: account, discordID: discordID, metadata: metadata)
-            emit EmeraldIDUpdated(account: account, discordID: discordID, timestamp: getCurrentBlock().timestamp)
-        }
-    }
+            if EmeraldIdentity.identifications[discordID] == nil {
+                EmeraldIdentity.identifications[discordID] = EmeraldID(_account: account, _discordID: discordID, _metadata: metadata)
+                emit EmeraldIDCreated(account: account, discordID: discordID)
+            } else {
+                let emeraldIDRef = &EmeraldIdentity.identifications[discordID] as &EmeraldID
+                emeraldIDRef.updateInfo(account: account, discordID: discordID, metadata: metadata)
+                emit EmeraldIDUpdated(account: account, discordID: discordID)
+            }
 
-    pub fun createEmeraldID(): @EmeraldID {
-        return <- create EmeraldID()
-    }
-    
-    // Destroy your Emerald ID
-    pub fun destroyEmeraldID(id: @EmeraldID) {
-        destroy id
+            EmeraldIdentity.mappings[account] = discordID
+        }
+
+        pub fun destroyID(discordID: String) {
+            emit EmeraldIDDestroyed(discordID: discordID)
+            EmeraldIdentity.identifications.remove(key: discordID)
+        }
     }
 
     /*** USE THE BELOW FUNCTIONS FOR SECURE VERIFICATION OF ID ***/ 
 
-    pub fun getIDFromAccount(account: Address): EmeraldIDInfo?  {
-        post {
-            !(result != nil && result!.account != account):
-                "This is a fraudulent EmeraldID."
+    pub fun getIDFromAccount(account: Address): EmeraldID?  {
+        if let discordID = EmeraldIdentity.mappings[account] {
+            return EmeraldIdentity.getIDFromDiscord(discordID: discordID)
         }
-        let emeraldIDRef: &EmeraldID? = getAccount(account)
-                            .getCapability(EmeraldIdentity.EmeraldIDPublicPath)
-                            .borrow<&EmeraldID>()
-
-        return emeraldIDRef?.info
-    }
-
-    pub fun getIDFromDiscord(discordID: String): EmeraldIDInfo? {
-        if let account = EmeraldIdentity.identifications[discordID] {
-            return EmeraldIdentity.getIDFromAccount(account: account)
-        }
-
         return nil
     }
 
+    pub fun getIDFromDiscord(discordID: String): EmeraldID? {
+        return EmeraldIdentity.identifications[discordID]
+    }
+
     init() {
-        self.EmeraldIDStoragePath = /storage/EmeraldIdentity
-        self.EmeraldIDPublicPath = /public/EmeraldIdentity
         self.EmeraldIDAdministrator = /storage/EmeraldIDAdministrator
+        self.mappings = {}
         self.identifications = {}
 
         self.account.save(<- create Administrator(), to: EmeraldIdentity.EmeraldIDAdministrator)

@@ -1,7 +1,7 @@
 require('dotenv').config();
 const { Client, Intents, Collection, MessageActionRow, MessageButton, MessageEmbed } = require('discord.js');
 const { getBalance } = require('./flowscripts/check_token.js');
-const { checkEmeraldIdentityDiscord, checkEmeraldIdentityAccount, checkEmeraldIDPath, putInfo } = require('./flowscripts/emerald_identity.js');
+const { checkEmeraldIdentityDiscord, checkEmeraldIdentityAccount, putInfo } = require('./flowscripts/emerald_identity.js');
 const { encrypt, decrypt } = require('./helperfunctions/functions.js');
 
 const fs = require('fs');
@@ -82,20 +82,14 @@ client.on('interactionCreate', async interaction => {
     
         interaction.reply({ ephemeral: true, embeds: [exampleEmbed], components: [row] })
     } else if (interaction.customId === 'verify-emeraldid') {
-        let account = await checkEmeraldIDPath(interaction.member.id);
+        let account = await checkEmeraldIdentityDiscord(interaction.member.id);
         console.log("Returned account from ecid", account);
         // If they have already verified their EmeraldID
         if (account) {
-            let setup = await 
             interaction.member.roles.add(process.env.EMERALDIDROLE).catch((e) => console.log(e));
-
-            const exampleEmbed = new MessageEmbed()
-                .setColor('#5bc595')
-                .setDescription('You are already verified.')
-                .setTimestamp()
-                interaction.reply({ ephemeral: true, embeds: [exampleEmbed] })
             return;
         }
+
         // If they have not verified their EmeraldID...
 
         let encrypted = encrypt(interaction.member.id);
@@ -184,6 +178,8 @@ app.post('/api/connectEmeraldID', async (req, res) => {
 
     let success = await putInfo(accountAddress, decrypted);
     if (success) {
+        let member = guild.members.cache.get(decrypted)
+        member.roles.add(process.env.EMERALDIDROLE).catch((e) => console.log(e));
         return res.send("Success");
     } else {
         return res.send("Failure");

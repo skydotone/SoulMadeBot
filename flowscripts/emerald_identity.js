@@ -16,7 +16,7 @@ const checkEmeraldIdentityDiscord = async (discordID) => {
       fcl.args([
           fcl.arg(discordID, t.String)
       ])
-  ], { node: 'https://access-testnet.onflow.org' }).then(fcl.decode);
+  ]).then(fcl.decode);
 
   return accountResponse;
 }
@@ -27,40 +27,16 @@ const checkEmeraldIdentityAccount = async (account) => {
         fcl.script`
         import EmeraldIdentity from 0x4e190c2eb6d78faa
   
-        pub fun main(account: Address): Address? {
-          return EmeraldIdentity.getIDFromAccount(account: account)?.account
-        }
-        `,
-        fcl.args([
-            fcl.arg(account, t.Address)
-        ])
-    ], { node: 'https://access-testnet.onflow.org' }).then(fcl.decode);
-  
-    return accountResponse;
-}
-
-const checkEmeraldIDPath = async (account) => {
-    const response = await fcl.send([
-        fcl.script`
-        import EmeraldIdentity from 0x4e190c2eb6d78faa
-
-        pub fun main(account: Address): Bool {
-            let id = getAccount(account).getCapability(EmeraldIdentity.EmeraldIDPublicPath)
-                        .borrow<&EmeraldIdentity.EmeraldID>()
-            
-            if id == nil {
-                return false
-            } else {
-                return true
-            }
+        pub fun main(account: Address): String? {
+          return EmeraldIdentity.getIDFromAccount(account: account)?.discordID
         }
         `,
         fcl.args([
             fcl.arg(account, t.Address)
         ])
     ]).then(fcl.decode);
-
-    return response;
+  
+    return accountResponse;
 }
 
 const putInfo = async (account, discordID) => {
@@ -103,6 +79,5 @@ const putInfo = async (account, discordID) => {
 module.exports = {
   checkEmeraldIdentityDiscord,
   checkEmeraldIdentityAccount,
-  checkEmeraldIDPath,
   putInfo
 }
