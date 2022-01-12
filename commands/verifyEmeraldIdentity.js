@@ -93,7 +93,7 @@ const postEmeraldIDVerifier = (message, roleID) => {
         .setColor('#5bc595')
         .setTitle('Verify with your EmeraldID')
         .setAuthor('Emerald City', 'https://i.imgur.com/YbmTuuW.png', 'https://discord.gg/emeraldcity')
-        .setDescription('Click the `Verify` button below to get the ' + `<@&${role.id}>` + ' role with your EmeraldID.')
+        .setDescription('Click the `Verify` button below to get the ' + `<@&${roleID}>` + ' role with your EmeraldID.')
         .setThumbnail('https://i.imgur.com/UgE8FJl.png');
 
     message.channel.send({ ephemeral: true, embeds: [embed], components: [row] }).catch(e => console.log(e));
