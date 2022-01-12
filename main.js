@@ -85,24 +85,32 @@ client.on('interactionCreate', async interaction => {
     } else if (interaction.customId.split('-').length === 2) {
         let interactionCustomId = interaction.customId.split('-');
         let roleId = interactionCustomId[1];
+
         let account = await checkEmeraldIdentityDiscord(interaction.member.id);
         console.log("Returned account from ecid", account);
-        // If they have already verified their EmeraldID
+
         if (account) {
-            let guildInfo = await getBalancev2(account, interaction.guild.id, roleId);
-            if (!guildInfo) {
-                interaction.reply({content: "Error", ephemeral: true});
-                return;
-            };
-            let { result, number } = guildInfo;
-            if (result && (result >= number)) {
-                console.log("Adding role...");
-                interaction.member.roles.add(roleId).catch((e) => console.log(e));
-                interaction.reply({content: "You have been given the " + `<@&${roleId}>` + " role.", ephemeral: true});
+            /* For EmeraldID in EmeraldCity ONLY */
+            if (roleId === process.env.EMERALDIDROLE) {
+                    interaction.member.roles.add(roleId).catch((e) => console.log(e));
+                    interaction.reply({content: "You now have the EmeraldID role.", ephemeral: true});
+                    return;
+            } else {
+                let guildInfo = await getBalancev2(account, interaction.guild.id, roleId);
+                if (!guildInfo) {
+                    interaction.reply({content: "Error", ephemeral: true});
+                    return;
+                };
+                let { result, number } = guildInfo;
+                if (result && (result >= number)) {
+                    console.log("Adding role...");
+                    interaction.member.roles.add(roleId).catch((e) => console.log(e));
+                    interaction.reply({content: "You have been given the " + `<@&${roleId}>` + " role.", ephemeral: true});
+                    return;
+                }
+                interaction.reply({content: "You do not have enough tokens.", ephemeral: true});
                 return;
             }
-            interaction.reply({content: "You do not have enough tokens.", ephemeral: true});
-            return;
         }
 
         // If they have not verified their EmeraldID...
@@ -129,12 +137,12 @@ client.on('interactionCreate', async interaction => {
         if (!account) {
             interaction.reply({content: "You do not have an EmeraldID.", ephemeral: true});
         } else {
-            interaction.reply({content: "Deleting your EmeraldID. Please wait ~20 seconds.", ephemeral: true});
+            interaction.reply({content: "Resetting your EmeraldID. Please wait ~20 seconds.", ephemeral: true});
             let response = await deleteEmeraldID(account, interaction.member.id);
             if (response) {
-                interaction.editReply({content: "Your EmeraldID has been successfully deleted. Please `Verify` again.", ephemeral: true});
+                interaction.editReply({content: "Your EmeraldID has been successfully reset. Please `Verify` again.", ephemeral: true});
             } else {
-                interaction.editReply({content: "There was an error deleting your EmeraldID.", ephemeral: true});
+                interaction.editReply({content: "There was an error resetting your EmeraldID.", ephemeral: true});
             }
         }
     }
