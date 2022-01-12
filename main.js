@@ -93,7 +93,7 @@ client.on('interactionCreate', async interaction => {
             /* For EmeraldID in EmeraldCity ONLY */
             if (roleId === process.env.EMERALDIDROLE) {
                     interaction.member.roles.add(roleId).catch((e) => console.log(e));
-                    interaction.reply({content: "You now have the EmeraldID role.", ephemeral: true});
+                    interaction.reply({content: "You have been given the " + `<@&${roleId}>` + " role.", ephemeral: true});
                     return;
             } else {
                 let guildInfo = await getBalancev2(account, interaction.guild.id, roleId);
