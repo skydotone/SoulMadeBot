@@ -1,7 +1,7 @@
 require('dotenv').config();
 const { Client, Intents, Collection, MessageActionRow, MessageButton, MessageEmbed } = require('discord.js');
 const { getBalance } = require('./flowscripts/check_token.js');
-const { checkEmeraldIdentityDiscord, checkEmeraldIdentityAccount } = require('./flowscripts/emerald_identity.js');
+const { checkEmeraldIdentityDiscord, checkEmeraldIdentityAccount, checkEmeraldIDPath, putInfo } = require('./flowscripts/emerald_identity.js');
 const { encrypt, decrypt } = require('./helperfunctions/functions.js');
 
 const fs = require('fs');
@@ -82,10 +82,11 @@ client.on('interactionCreate', async interaction => {
     
         interaction.reply({ ephemeral: true, embeds: [exampleEmbed], components: [row] })
     } else if (interaction.customId === 'verify-emeraldid') {
-        let account = await checkEmeraldIdentityDiscord(interaction.member.id);
+        let account = await checkEmeraldIDPath(interaction.member.id);
         console.log("Returned account from ecid", account);
         // If they have already verified their EmeraldID
         if (account) {
+            let setup = await 
             interaction.member.roles.add(process.env.EMERALDIDROLE).catch((e) => console.log(e));
 
             const exampleEmbed = new MessageEmbed()
@@ -165,7 +166,7 @@ app.post('/api/join', async (req, res) => {
     res.send({"success": 2});
 });
 
-app.post('/api/checkEmeraldID', async (req, res) => {
+app.post('/api/connectEmeraldID', async (req, res) => {
     // Let's ensure that the account proof is legit. 
     console.log("Account address:", req.body.user.addr)
     let accountProofObject = req.body.user.services.filter(service => service.type === 'account-proof')[0];
@@ -173,12 +174,21 @@ app.post('/api/checkEmeraldID', async (req, res) => {
 
     const accountAddress = accountProofObject.data.address;
 
-    let exists = await checkEmeraldIdentityAccount(accountAddress);
-    if (!exists) {
-        return res.send("DoesNotExist");
-    } else {
-        return res.send("Exists");
+    let decrypted;
+    try {
+        decrypted = decrypt(req.body.id);
+    } catch(e) {
+        console.log(e);
+        return res.send("Decryption error. Please re-launch this page from Discord.");
     }
+
+    let success = await putInfo(accountAddress, decrypted);
+    if (success) {
+        return res.send("Success");
+    } else {
+        return res.send("Failure");
+    }
+    
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

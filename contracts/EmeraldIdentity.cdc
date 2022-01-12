@@ -21,7 +21,7 @@ pub contract EmeraldIdentity {
     pub struct EmeraldIDInfo {
         pub var account: Address
         pub var discordID: String
-        pub var metadata: {String: String}
+        access(contract) var metadata: {String: String}
         init(_account: Address, _discordID: String, _metadata: {String: String}) {
             self.account = _account
             self.discordID = _discordID
@@ -59,12 +59,11 @@ pub contract EmeraldIdentity {
     
     // Owned by the Emerald Bot
     pub resource Administrator {
-        pub fun updateEmeraldID(account: Address, discordID: String, id: &EmeraldID, metadata: {String: String}) {
-            pre {
-                EmeraldIdentity.identifications[discordID] != nil:
-                    "This EmeraldID does not exist. Consider creating it."
-            }
+        pub fun updateEmeraldID(account: Address, discordID: String, metadata: {String: String}) {
             EmeraldIdentity.identifications[discordID] = account
+            let id = getAccount(account).getCapability(EmeraldIdentity.EmeraldIDPublicPath)
+                        .borrow<&EmeraldID>()
+                        ?? panic("This account does not have an EmeraldID")
             id.updateIDInfo(account: account, discordID: discordID, metadata: metadata)
             emit EmeraldIDUpdated(account: account, discordID: discordID, timestamp: getCurrentBlock().timestamp)
         }
