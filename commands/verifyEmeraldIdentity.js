@@ -82,11 +82,11 @@ const postEmeraldIDVerifier = (message, roleID) => {
             new MessageButton()
                 .setCustomId(`emeraldid-${roleID}`)
                 .setLabel('Verify')
-                .setStyle('PRIMARY'),
+                .setStyle('SUCCESS'),
             new MessageButton()
                 .setCustomId(`emeraldiddelete`)
                 .setLabel('Delete EmeraldID')
-                .setStyle('SECONDARY'),
+                .setStyle('PRIMARY'),
             new MessageButton()
                 .setURL('https://github.com/jacob-tucker/blocto-auth-discord-bot')
                 .setLabel('Source')
