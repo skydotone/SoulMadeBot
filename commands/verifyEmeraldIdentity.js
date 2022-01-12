@@ -1,8 +1,9 @@
 const {MessageActionRow, MessageEmbed, MessageButton} = require('discord.js');
 
 const execute = (message, args) => {
+    console.log("Posting verify emerald id message.")
     let discordID = message.member.id
-    if (discordID !== 143100912687251456n) {
+    if (discordID !== "143100912687251456") {
         console.log(discordID);
         return;
     }

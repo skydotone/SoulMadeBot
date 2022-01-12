@@ -46,6 +46,7 @@ client.on('messageCreate', message => {
 
     // Executes the youtube.js file
     if (command === 'test') {
+        console.log("wtf")
         message.channel.send('Testing!');
     } else if (command === 'youtube') {
         client.commands.get('youtube').execute(message, args);
@@ -53,7 +54,7 @@ client.on('messageCreate', message => {
         client.commands.get('role').execute(message, args);
     } else if (command === 'setup') {
         client.commands.get('setup').execute(message, args);
-    } else if (command === 'verifyEmeraldIdentity') {
+    } else if (command === 'verifyecid') {
         client.commands.get('verifyEmeraldIdentity').execute(message, args);
     }
 })
@@ -157,9 +158,9 @@ app.post('/api/join', async (req, res) => {
     res.send({"success": 2});
 });
 
-app.get('/api/checkEmeraldID/:account', async (req, res) => {
-    const { account } = req.params;
-    let exists = await checkEmeraldIdentity(account);
+app.get('/api/checkEmeraldID/:discordID', async (req, res) => {
+    const { discordID } = req.params;
+    let exists = await checkEmeraldIdentity(discordID);
     if (!exists) {
         res.send(0);
     } else {
