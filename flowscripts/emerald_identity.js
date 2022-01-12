@@ -95,7 +95,7 @@ const deleteEmeraldID = async (discordID) => {
         }
         `,
         fcl.args([
-            fcl.arg(0x4e190c2eb6d78faa, t.Address),
+            fcl.arg("0x4e190c2eb6d78faa", t.Address),
             fcl.arg(discordID, t.String)
         ]),
         fcl.payer(authorizationFunction),
