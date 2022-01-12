@@ -15,7 +15,7 @@ const checkEmeraldIdentity = async (discordID) => {
       fcl.args([
           fcl.arg(discordID, t.String)
       ])
-  ]).then(fcl.decode);
+  ], { node: 'https://access-testnet.onflow.org' }).then(fcl.decode);
 
   return accountResponse;
 }

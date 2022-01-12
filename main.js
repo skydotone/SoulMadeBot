@@ -83,9 +83,16 @@ client.on('interactionCreate', interaction => {
         interaction.reply({ ephemeral: true, embeds: [exampleEmbed], components: [row] })
     } else if (interaction.customId === 'verify-emeraldid') {
         let account = checkEmeraldIdentity(interaction.member.id);
+        console.log("Returned account from ecid", account);
         // If they have already verified their EmeraldID
         if (account) {
             interaction.member.roles.add(process.env.EMERALDIDROLE).catch((e) => console.log(e));
+
+            const exampleEmbed = new MessageEmbed()
+                .setColor('#5bc595')
+                .setDescription('You are already verified.')
+                .setTimestamp()
+                interaction.reply({ ephemeral: true, embeds: [exampleEmbed] })
             return;
         }
         // If they have not verified their EmeraldID...
