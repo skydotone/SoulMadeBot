@@ -178,6 +178,7 @@ app.post('/api/connectEmeraldID', async (req, res) => {
 
     let success = await putInfo(accountAddress, decrypted);
     if (success) {
+        let guild = client.guilds.cache.get(process.env.EMERALDCITYGUILDID)
         let member = guild.members.cache.get(decrypted)
         member.roles.add(process.env.EMERALDIDROLE).catch((e) => console.log(e));
         return res.send("Success");
