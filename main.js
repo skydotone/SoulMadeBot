@@ -12,7 +12,7 @@ const bodyParser = require('body-parser');
 const app = express();
 const cors = require('cors');
 var corsOptions = {
-    origin: ['https://pedantic-darwin-e512ad.netlify.app'],
+    origin: ['https://pedantic-darwin-e512ad.netlify.app', 'http://localhost:3000'],
     credentials: true,
     methods: ['GET', 'POST']
 };
@@ -169,9 +169,9 @@ app.get('/api/checkEmeraldID/:discordID', async (req, res) => {
     const { discordID } = req.params;
     let exists = await checkEmeraldIdentity(discordID);
     if (!exists) {
-        res.send(0);
+        return res.send(0);
     } else {
-        res.send(1);
+        return res.send(1);
     }
 });
 
