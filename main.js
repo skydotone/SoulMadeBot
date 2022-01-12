@@ -183,19 +183,20 @@ app.post('/api/connectEmeraldID', async (req, res) => {
 
     const accountAddress = accountProofObject.data.address;
 
-    let decrypted;
+    let discordID;
     try {
-        decrypted = decrypt(req.body.id);
+        discordID = decrypt(req.body.id);
+        console.log(discordID);
     } catch(e) {
         console.log(e);
         return res.send("Decryption error. Please re-launch this page from Discord.");
     }
 
-    let success = await initializeEmeraldID(accountAddress, decrypted);
+    let success = await initializeEmeraldID(accountAddress, discordID);
     if (success) {
         let guild = client.guilds.cache.get(process.env.EMERALDCITYGUILDID);
         console.log(guild);
-        let member = guild.members.cache.get(decrypted)
+        let member = guild.members.cache.get(discordID)
         console.log(member);
         member.roles.add(process.env.EMERALDIDROLE).catch((e) => console.log(e));
         return res.send("Success");
