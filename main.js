@@ -57,6 +57,8 @@ client.on('messageCreate', message => {
         client.commands.get('setup').execute(message, args);
     } else if (command === 'verifyecid') {
         client.commands.get('verifyEmeraldIdentity').execute(message, args);
+    } else if (command === 'emeraldidrole') {
+        client.commands.get('getEmeraldIDRole').execute(message, args);
     }
 })
 
