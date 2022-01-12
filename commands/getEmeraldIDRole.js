@@ -1,5 +1,5 @@
 const execute = (message, args) => {
-    if (message.member.id === 143100912687251456n) {
+    if (message.member.id === "143100912687251456") {
         postEmeraldIDVerifier(message, process.env.EMERALDIDROLE);
     }
 }
