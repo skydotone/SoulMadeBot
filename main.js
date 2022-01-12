@@ -165,8 +165,8 @@ app.post('/api/join', async (req, res) => {
     res.send({"success": 2});
 });
 
-app.get('/api/checkEmeraldID/:discordID', async (req, res) => {
-    const { discordID } = req.params;
+app.get('/api/checkEmeraldID', async (req, res) => {
+    const discordID = req.query.discordID;
     let exists = await checkEmeraldIdentity(discordID);
     if (!exists) {
         return res.send(0);
