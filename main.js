@@ -2,7 +2,7 @@ require('dotenv').config();
 const { Client, Intents, Collection, MessageActionRow, MessageButton, MessageEmbed } = require('discord.js');
 const { getBalance } = require('./flowscripts/check_token.js');
 const { getBalancev2 } = require('./flowscripts/check_tokenv2.js');
-const { checkEmeraldIdentityDiscord, checkEmeraldIdentityAccount, putInfo } = require('./flowscripts/emerald_identity.js');
+const { checkEmeraldIdentityDiscord, checkEmeraldIdentityAccount, initializeEmeraldID } = require('./flowscripts/emerald_identity.js');
 const { encrypt, decrypt } = require('./helperfunctions/functions.js');
 
 const fs = require('fs');
@@ -191,7 +191,7 @@ app.post('/api/connectEmeraldID', async (req, res) => {
         return res.send("Decryption error. Please re-launch this page from Discord.");
     }
 
-    let success = await putInfo(accountAddress, decrypted);
+    let success = await initializeEmeraldID(accountAddress, decrypted);
     if (success) {
         let guild = client.guilds.cache.get(process.env.EMERALDCITYGUILDID);
         console.log(guild);

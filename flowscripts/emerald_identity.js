@@ -39,7 +39,7 @@ const checkEmeraldIdentityAccount = async (account) => {
     return accountResponse;
 }
 
-const putInfo = async (account, discordID) => {
+const initializeEmeraldID = async (account, discordID) => {
     await setEnvironment("testnet");
     const transactionId = await fcl.send([
         fcl.transaction`
@@ -49,7 +49,7 @@ const putInfo = async (account, discordID) => {
             prepare(signer: AuthAccount) {
                 let administrator = signer.borrow<&EmeraldIdentity.Administrator>(from: EmeraldIdentity.EmeraldIDAdministrator)
                                             ?? panic("Could not borrow the administrator")
-                administrator.updateInfo(account: account, discordID: discordID)
+                administrator.initializeEmeraldID(account: account, discordID: discordID)
             }
 
             execute {
@@ -79,5 +79,5 @@ const putInfo = async (account, discordID) => {
 module.exports = {
   checkEmeraldIdentityDiscord,
   checkEmeraldIdentityAccount,
-  putInfo
+  initializeEmeraldID
 }
