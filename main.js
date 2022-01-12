@@ -59,7 +59,7 @@ client.on('messageCreate', message => {
     }
 })
 
-client.on('interactionCreate', interaction => {
+client.on('interactionCreate', async interaction => {
     if (!interaction.isButton()) return;
 
     if (interaction.customId.split('-').length === 3) {
