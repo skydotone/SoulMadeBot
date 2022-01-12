@@ -4,7 +4,7 @@ const { setEnvironment } = require("flow-cadut");
 
 const checkEmeraldIdentity = async (account) => {
   await setEnvironment("testnet");
-  const account = await fcl.send([
+  const accountResponse = await fcl.send([
       fcl.script`
       import EmeraldIdentity from 0x4e190c2eb6d78faa
 
@@ -17,7 +17,7 @@ const checkEmeraldIdentity = async (account) => {
       ])
   ]).then(fcl.decode);
 
-  return account;
+  return accountResponse;
 }
 
 module.exports = {
