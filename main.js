@@ -175,9 +175,9 @@ app.post('/api/checkEmeraldID', async (req, res) => {
 
     let exists = await checkEmeraldIdentityAccount(accountAddress);
     if (!exists) {
-        return res.send(0);
+        return res.send("DoesNotExist");
     } else {
-        return res.send(1);
+        return res.send("Exists");
     }
 });
 
