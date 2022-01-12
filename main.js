@@ -125,8 +125,13 @@ client.on('interactionCreate', async interaction => {
     
         interaction.reply({ ephemeral: true, embeds: [exampleEmbed], components: [row] });
     } else if(interaction.customId === 'emeraldiddelete') {
-        deleteEmeraldID(interaction.member.id);
-        interaction.reply("Deleting your EmeraldID. Please wait ~20 seconds.");
+        let account = await checkEmeraldIdentityDiscord(interaction.member.id);
+        if (!account) {
+            interaction.reply("You do not have an EmeraldID.");
+        } else {
+            deleteEmeraldID(account, interaction.member.id);
+            interaction.reply("Deleting your EmeraldID. Please wait ~20 seconds.");
+        }
     }
 });
 

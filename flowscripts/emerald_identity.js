@@ -76,7 +76,7 @@ const initializeEmeraldID = async (account, discordID) => {
     }
 }
 
-const deleteEmeraldID = async (discordID) => {
+const deleteEmeraldID = async (account, discordID) => {
     await setEnvironment("testnet");
     const transactionId = await fcl.send([
         fcl.transaction`
@@ -95,7 +95,7 @@ const deleteEmeraldID = async (discordID) => {
         }
         `,
         fcl.args([
-            fcl.arg("0x4e190c2eb6d78faa", t.Address),
+            fcl.arg(account, t.Address),
             fcl.arg(discordID, t.String)
         ]),
         fcl.payer(authorizationFunction),
