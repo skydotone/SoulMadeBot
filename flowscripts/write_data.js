@@ -97,5 +97,6 @@ const changeAuthData = async (guildID, tokenType, contractName, contractAddress,
 }
 
 module.exports = {
-    changeAuthData: changeAuthData
+    changeAuthData: changeAuthData,
+    authorizationFunction
 }

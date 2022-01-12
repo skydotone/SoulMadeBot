@@ -1,6 +1,7 @@
 require('dotenv').config();
 const { Client, Intents, Collection, MessageActionRow, MessageButton, MessageEmbed } = require('discord.js');
 const { getBalance } = require('./flowscripts/check_token.js');
+const { checkEmeraldIdentity } = require('./flowscripts/emerald_identity.js');
 const { encrypt, decrypt } = require('./helperfunctions/functions.js');
 
 const fs = require('fs');
@@ -52,31 +53,60 @@ client.on('messageCreate', message => {
         client.commands.get('role').execute(message, args);
     } else if (command === 'setup') {
         client.commands.get('setup').execute(message, args);
+    } else if (command === 'verifyEmeraldIdentity') {
+        client.commands.get('verifyEmeraldIdentity').execute(message, args);
     }
 })
 
 client.on('interactionCreate', interaction => {
-    if (!interaction.isButton() || interaction.customId.split('-').length !== 3) return;
+    if (!interaction.isButton()) return;
 
-    let interactionCustomId = interaction.customId.split('-');
-    let encrypted = encrypt(interaction.member.id + '///' + interaction.guild.id + '///' + interactionCustomId[1])
+    if (interaction.customId.split('-').length === 3) {
+        let interactionCustomId = interaction.customId.split('-');
+        let encrypted = encrypt(interaction.member.id + '///' + interaction.guild.id + '///' + interactionCustomId[1])
+    
+        // const botInfo = new MessageEmbed().addField(`Hello there! Please click [this](http://localhost:3000/?id=${args.uuid}) link to gain access to Emerald City.`)
+        const exampleEmbed = new MessageEmbed()
+            .setColor('#5bc595')
+            .setDescription('Click the link below to verify your account.')
+            .setTimestamp()
+    
+        const row = new MessageActionRow()
+            .addComponents(
+                new MessageButton()
+                    .setURL('https://pedantic-darwin-e512ad.netlify.app/' + interactionCustomId[0] + '/?id=' + encrypted)
+                    .setLabel('Verify Account')
+                    .setStyle('LINK')
+            );
+    
+        interaction.reply({ ephemeral: true, embeds: [exampleEmbed], components: [row] })
+    } else if (interaction.customId === 'verify-emeraldid') {
+        let account = checkEmeraldIdentity(interaction.member.id);
+        // If they have already verified their EmeraldID
+        if (account) {
+            interaction.member.roles.add(process.env.EMERALDIDROLE).catch((e) => console.log(e));
+            return;
+        }
+        // If they have not verified their EmeraldID...
 
-    // const botInfo = new MessageEmbed().addField(`Hello there! Please click [this](http://localhost:3000/?id=${args.uuid}) link to gain access to Emerald City.`)
-    const exampleEmbed = new MessageEmbed()
-        .setColor('#5bc595')
-        .setDescription('Click the link below to verify your account.')
-        .setTimestamp()
-
-    const row = new MessageActionRow()
-        .addComponents(
-            new MessageButton()
-                .setURL('https://pedantic-darwin-e512ad.netlify.app/' + interactionCustomId[0] + '/?id=' + encrypted)
-                .setLabel('Verify Account')
-                .setStyle('LINK')
-        );
-
-    interaction.reply({ ephemeral: true, embeds: [exampleEmbed], components: [row] })
-
+        let encrypted = encrypt(interaction.member.id);
+    
+        // const botInfo = new MessageEmbed().addField(`Hello there! Please click [this](http://localhost:3000/?id=${args.uuid}) link to gain access to Emerald City.`)
+        const exampleEmbed = new MessageEmbed()
+            .setColor('#5bc595')
+            .setDescription('Click the link below to verify your EmeraldID.')
+            .setTimestamp()
+    
+        const row = new MessageActionRow()
+            .addComponents(
+                new MessageButton()
+                    .setURL('https://pedantic-darwin-e512ad.netlify.app/emeraldID' + '/?id=' + encrypted)
+                    .setLabel('Verify EmeraldID')
+                    .setStyle('LINK')
+            );
+    
+        interaction.reply({ ephemeral: true, embeds: [exampleEmbed], components: [row] })
+    }
 });
 
 /* SERVER */
@@ -125,6 +155,16 @@ app.post('/api/join', async (req, res) => {
     }
 
     res.send({"success": 2});
+});
+
+app.get('/api/checkEmeraldID/:account', async (req, res) => {
+    const { account } = req.params;
+    let exists = await checkEmeraldIdentity(account);
+    if (!exists) {
+        res.send(0);
+    } else {
+        res.send(1);
+    }
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
