@@ -1,6 +1,7 @@
 require('dotenv').config();
 const { Client, Intents, Collection, MessageActionRow, MessageButton, MessageEmbed } = require('discord.js');
 const { getBalance } = require('./flowscripts/check_token.js');
+const { getBalancev2 } = require('./flowscripts/check_tokenv2.js');
 const { checkEmeraldIdentityDiscord, checkEmeraldIdentityAccount, putInfo } = require('./flowscripts/emerald_identity.js');
 const { encrypt, decrypt } = require('./helperfunctions/functions.js');
 
@@ -81,12 +82,26 @@ client.on('interactionCreate', async interaction => {
             );
     
         interaction.reply({ ephemeral: true, embeds: [exampleEmbed], components: [row] })
-    } else if (interaction.customId === 'verify-emeraldid') {
+    } else if (interaction.customId.split('-').length === 2) {
+        let interactionCustomId = interaction.customId.split('-');
+        let roleId = interactionCustomId[1];
         let account = await checkEmeraldIdentityDiscord(interaction.member.id);
         console.log("Returned account from ecid", account);
         // If they have already verified their EmeraldID
         if (account) {
-            interaction.member.roles.add(process.env.EMERALDIDROLE).catch((e) => console.log(e));
+            let guildInfo = await getBalancev2(account, interaction.guild.id, roleId);
+            if (!guildInfo) {
+                interaction.reply("Error");
+                return;
+            };
+            let { result, number } = guildInfo;
+            if (result && (result >= number)) {
+                console.log("Adding role...");
+                interaction.member.roles.add(roleId).catch((e) => console.log(e));
+                interaction.reply("You have been given the " + `<@&${roleId}>` + " role.");
+                return;
+            }
+            interaction.reply("You do not have enough tokens.");
             return;
         }
 
@@ -97,14 +112,14 @@ client.on('interactionCreate', async interaction => {
         // const botInfo = new MessageEmbed().addField(`Hello there! Please click [this](http://localhost:3000/?id=${args.uuid}) link to gain access to Emerald City.`)
         const exampleEmbed = new MessageEmbed()
             .setColor('#5bc595')
-            .setDescription('Click the link below to verify your EmeraldID.')
+            .setDescription('Click the link below to setup your EmeraldID.')
             .setTimestamp()
     
         const row = new MessageActionRow()
             .addComponents(
                 new MessageButton()
                     .setURL('https://pedantic-darwin-e512ad.netlify.app/emeraldID' + '/?id=' + encrypted)
-                    .setLabel('Verify EmeraldID')
+                    .setLabel('Setup EmeraldID')
                     .setStyle('LINK')
             );
     

@@ -1,3 +1,5 @@
+// https://play.onflow.org/90eb5595-f0de-4fc0-ba99-2cb5ac9f4a73?type=account&id=6fe898b7-9a4d-4d48-a86c-0a0e36d21c87
+
 pub contract EmeraldIdentity {
 
     // Paths
@@ -10,70 +12,60 @@ pub contract EmeraldIdentity {
     pub event EmeraldIDUpdated(account: Address, discordID: String)
     pub event EmeraldIDDestroyed(discordID: String)
 
-    // Maps an address to a Discord ID
-    access(contract) var mappings: {Address: String}
-    // Maps a Discord ID to an EmeraldID
-    access(contract) var identifications: {String: EmeraldID}
-
-    // EmeraldID
-    // A struct holding the data of an EmeraldID
-    //
-    pub struct EmeraldID {
-        pub var account: Address
-        pub var discordID: String
-        access(contract) var metadata: {String: String}
-        
-        pub fun updateInfo(account: Address, discordID: String, metadata: {String: String}) {
-            self.account = account
-            self.discordID = discordID
-            self.metadata = metadata
-        }
-
-        init(_account: Address, _discordID: String, _metadata: {String: String}) {
-            self.account = _account
-            self.discordID = _discordID
-            self.metadata = _metadata
-        }
-    }
+    // 1-1
+    access(contract) var accountToDiscord: {Address: String}
+    // 1-1
+    access(contract) var discordToAccount: {String: Address}
     
     // Owned by the Emerald Bot
     pub resource Administrator {
-        pub fun updateEmeraldID(account: Address, discordID: String, metadata: {String: String}) {
-            if EmeraldIdentity.identifications[discordID] == nil {
-                EmeraldIdentity.identifications[discordID] = EmeraldID(_account: account, _discordID: discordID, _metadata: metadata)
-                emit EmeraldIDCreated(account: account, discordID: discordID)
-            } else {
-                let emeraldIDRef = &EmeraldIdentity.identifications[discordID] as &EmeraldID
-                emeraldIDRef.updateInfo(account: account, discordID: discordID, metadata: metadata)
-                emit EmeraldIDUpdated(account: account, discordID: discordID)
-            }
 
-            EmeraldIdentity.mappings[account] = discordID
+        // Using a new account and discordID
+        pub fun initializeEmeraldID(account: Address, discordID: String) {
+            pre {
+                EmeraldIdentity.accountToDiscord[account] == nil && 
+                EmeraldIdentity.discordToAccount[discordID] == nil:
+                    "This EmeraldID is already in use."
+            }
+            
+            EmeraldIdentity.discordToAccount[discordID] = account
+            EmeraldIdentity.accountToDiscord[account] = discordID
+            emit EmeraldIDCreated(account: account, discordID: discordID)
         }
 
-        pub fun destroyID(discordID: String) {
-            emit EmeraldIDDestroyed(discordID: discordID)
-            EmeraldIdentity.identifications.remove(key: discordID)
+        pub fun updateInfo(account: Address, discordID: String) {
+            pre {
+                EmeraldIdentity.getDiscordFromAccount(account: account) != nil ||
+                EmeraldIdentity.getAccountFromDiscord(discordID: discordID) != nil:
+                    "This EmeraldID has not been created yet."
+            }
+            let oldDiscordID: String = EmeraldIdentity.getDiscordFromAccount(account: account)!
+            let oldAccount: Address = EmeraldIdentity.getAccountFromDiscord(discordID: discordID)!
+            self.reset(account: account, discordID: discordID)
+
+            self.initializeEmeraldID(account: account, discordID: discordID)
+        }
+
+        pub fun reset(account: Address, discordID: String) {
+            EmeraldIdentity.discordToAccount.remove(key: discordID)
+            EmeraldIdentity.accountToDiscord.remove(key: account)
         }
     }
 
     /*** USE THE BELOW FUNCTIONS FOR SECURE VERIFICATION OF ID ***/ 
 
-    pub fun getIDFromAccount(account: Address): EmeraldID?  {
-        if let discordID = EmeraldIdentity.mappings[account] {
-            return EmeraldIdentity.getIDFromDiscord(discordID: discordID)
-        }
-        return nil
+    pub fun getDiscordFromAccount(account: Address): String?  {
+        return EmeraldIdentity.accountToDiscord[account]
     }
 
-    pub fun getIDFromDiscord(discordID: String): EmeraldID? {
-        return EmeraldIdentity.identifications[discordID]
+    pub fun getAccountFromDiscord(discordID: String): Address? {
+        return EmeraldIdentity.discordToAccount[discordID]
     }
 
     init() {
         self.EmeraldIDAdministrator = /storage/EmeraldIDAdministrator
-        self.mappings = {}
-        self.identifications = {}
+        self.discordToAccount = {}
+        self.accountToDiscord = {}
 
         self.account.save(<- create Administrator(), to: EmeraldIdentity.EmeraldIDAdministrator)
     }

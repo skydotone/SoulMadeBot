@@ -10,7 +10,7 @@ const checkEmeraldIdentityDiscord = async (discordID) => {
       import EmeraldIdentity from 0x4e190c2eb6d78faa
 
       pub fun main(discordID: String): Address? {
-        return EmeraldIdentity.getIDFromDiscord(discordID: discordID)?.account
+        return EmeraldIdentity.getAccountFromDiscord(discordID: discordID)?
       }
       `,
       fcl.args([
@@ -28,7 +28,7 @@ const checkEmeraldIdentityAccount = async (account) => {
         import EmeraldIdentity from 0x4e190c2eb6d78faa
   
         pub fun main(account: Address): String? {
-          return EmeraldIdentity.getIDFromAccount(account: account)?.discordID
+          return EmeraldIdentity.getDiscordFromAccount(account: account)?
         }
         `,
         fcl.args([
@@ -49,7 +49,7 @@ const putInfo = async (account, discordID) => {
             prepare(signer: AuthAccount) {
                 let administrator = signer.borrow<&EmeraldIdentity.Administrator>(from: EmeraldIdentity.EmeraldIDAdministrator)
                                             ?? panic("Could not borrow the administrator")
-                administrator.updateEmeraldID(account: account, discordID: discordID, metadata: {})
+                administrator.updateInfo(account: account, discordID: discordID)
             }
 
             execute {
