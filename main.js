@@ -125,8 +125,8 @@ client.on('interactionCreate', async interaction => {
     
         interaction.reply({ ephemeral: true, embeds: [exampleEmbed], components: [row] });
     } else if(interaction.customId === 'emeraldiddelete') {
-        await deleteEmeraldID(interaction.member.id);
-        interaction.reply("Deleted your EmeraldID.");
+        deleteEmeraldID(interaction.member.id);
+        interaction.reply("Deleting your EmeraldID. Please wait ~20 seconds.");
     }
 });
 

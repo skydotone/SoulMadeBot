@@ -106,10 +106,9 @@ const deleteEmeraldID = async (discordID) => {
 
     try {
         await fcl.tx(transactionId).onceSealed();
-        return true;
+        console.log("Deleted your EmeraldID.");
     } catch(e) {
         console.log(e);
-        return false;
     }
 }
 
