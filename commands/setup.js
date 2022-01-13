@@ -106,5 +106,6 @@ module.exports = {
     name: 'setup',
     description: 'setup a role verification with emeraldid',
     execute: execute,
+    postEmeraldIDVerifier
 }
 
