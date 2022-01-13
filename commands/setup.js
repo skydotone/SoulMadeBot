@@ -87,8 +87,8 @@ const postEmeraldIDVerifier = (message, roleID) => {
                 .setLabel('Reset EmeraldID')
                 .setStyle('PRIMARY'),
             new MessageButton()
-                .setURL('https://github.com/jacob-tucker/blocto-auth-discord-bot')
-                .setLabel('Source')
+                .setURL('https://emeraldcity.gitbook.io/emerald-city/building-guild/emerald-bot')
+                .setLabel('Docs')
                 .setStyle('LINK')
         );
 
