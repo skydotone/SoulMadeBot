@@ -2,8 +2,9 @@ require('dotenv').config();
 const { Client, Intents, Collection, MessageActionRow, MessageButton, MessageEmbed } = require('discord.js');
 const { getBalance } = require('./flowscripts/check_token.js');
 const { getBalancev2 } = require('./flowscripts/check_tokenv2.js');
-const { checkEmeraldIdentityDiscord, checkEmeraldIdentityAccount, initializeEmeraldID, deleteEmeraldID } = require('./flowscripts/emerald_identity.js');
-const { encrypt, decrypt } = require('./helperfunctions/functions.js');
+const { checkEmeraldIdentityDiscord, deleteEmeraldID } = require('./flowscripts/emerald_identity.js');
+const { encrypt, decrypt } = require('./helperfunctions/encryption.js');
+const { sign } = require('./helperfunctions/authorization.js');
 
 const fs = require('fs');
 
@@ -196,30 +197,33 @@ app.post('/api/join', async (req, res) => {
     res.send({"success": 2});
 });
 
-app.post('/api/connectEmeraldID', async (req, res) => {
-    // Let's ensure that the account proof is legit. 
-    console.log("Account address:", req.body.user.addr)
-    let accountProofObject = req.body.user.services.filter(service => service.type === 'account-proof')[0];
-    if (!accountProofObject) return res.send("Invalid account proof.");
-
-    const accountAddress = accountProofObject.data.address;
-
-    let discordID;
-    try {
-        discordID = decrypt(req.body.id);
-        console.log(discordID);
-    } catch(e) {
-        console.log(e);
-        return res.send("Decryption error. Please re-launch this page from Discord.");
-    }
-
-    let success = await initializeEmeraldID(accountAddress, discordID);
-    if (success) {
-        return res.send("Success");
-    } else {
-        return res.send("Failure");
-    }
+app.post('/api/sign', async (req, res) => {
+    const { signable, scriptName } = req.body;
+    let txCode = signable.cadence.replace(/\s/g, "");
     
+    if (scriptName !== 'initEmeraldID') return res.send('ERROR');
+    const comparison = `
+    import EmeraldIdentity from 0x4e190c2eb6d78faa
+
+    transaction(account: Address, discordID: String) {
+        prepare(signer: AuthAccount) {
+            let administrator = signer.borrow<&EmeraldIdentity.Administrator>(from: EmeraldIdentity.EmeraldIDAdministrator)
+                                        ?? panic("Could not borrow the administrator")
+            administrator.initializeEmeraldID(account: account, discordID: discordID)
+        }
+
+        execute {
+
+        }
+    }
+    `.replace(/\s/g, "");
+    
+    if (txCode !== comparison) return res.send('ERROR');
+    
+    const signature = sign(signable.message);
+    res.json({
+      signature,
+    });
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

@@ -1,7 +1,7 @@
 const fcl = require("@onflow/fcl");
 const t = require("@onflow/types");
+const { sendTransaction } = require("../helperfunctions/sendTransaction.js");
 const { setEnvironment } = require("flow-cadut");
-const { authorizationFunction } = require("./write_data.js");
 
 const checkEmeraldIdentityDiscord = async (discordID) => {
   await setEnvironment("testnet");
@@ -40,32 +40,27 @@ const checkEmeraldIdentityAccount = async (account) => {
 }
 
 const initializeEmeraldID = async (account, discordID) => {
-    await setEnvironment("testnet");
-    const transactionId = await fcl.send([
-        fcl.transaction`
-        import EmeraldIdentity from 0x4e190c2eb6d78faa
+    const code = `
+    import EmeraldIdentity from 0x4e190c2eb6d78faa
 
-        transaction(account: Address, discordID: String) {
-            prepare(signer: AuthAccount) {
-                let administrator = signer.borrow<&EmeraldIdentity.Administrator>(from: EmeraldIdentity.EmeraldIDAdministrator)
-                                            ?? panic("Could not borrow the administrator")
-                administrator.initializeEmeraldID(account: account, discordID: discordID)
-            }
-
-            execute {
-
-            }
+    transaction(account: Address, discordID: String) {
+        prepare(signer: AuthAccount) {
+            let administrator = signer.borrow<&EmeraldIdentity.Administrator>(from: EmeraldIdentity.EmeraldIDAdministrator)
+                                        ?? panic("Could not borrow the administrator")
+            administrator.initializeEmeraldID(account: account, discordID: discordID)
         }
-        `,
-        fcl.args([
-            fcl.arg(account, t.Address),
-            fcl.arg(discordID, t.String)
-        ]),
-        fcl.payer(authorizationFunction),
-        fcl.proposer(authorizationFunction),
-        fcl.authorizations([authorizationFunction]),
-        fcl.limit(9999)
-    ]).then(fcl.decode);
+
+        execute {
+
+        }
+    }
+    `;
+    const args = [
+        fcl.arg(account, t.Address),
+        fcl.arg(discordID, t.String)
+    ];
+
+    const transactionId = await sendTransaction(code, args);
 
     try {
         await fcl.tx(transactionId).onceSealed();
@@ -77,32 +72,27 @@ const initializeEmeraldID = async (account, discordID) => {
 }
 
 const deleteEmeraldID = async (account, discordID) => {
-    await setEnvironment("testnet");
-    const transactionId = await fcl.send([
-        fcl.transaction`
-        import EmeraldIdentity from 0x4e190c2eb6d78faa
+    const args = [
+        fcl.arg(account, t.Address),
+        fcl.arg(discordID, t.String)
+    ]
+    const code = `
+    import EmeraldIdentity from 0x4e190c2eb6d78faa
 
-        transaction(account: Address, discordID: String) {
-            prepare(signer: AuthAccount) {
-                let administrator = signer.borrow<&EmeraldIdentity.Administrator>(from: EmeraldIdentity.EmeraldIDAdministrator)
-                                            ?? panic("Could not borrow the administrator")
-                administrator.reset(account: account, discordID: discordID)
-            }
-
-            execute {
-
-            }
+    transaction(account: Address, discordID: String) {
+        prepare(signer: AuthAccount) {
+            let administrator = signer.borrow<&EmeraldIdentity.Administrator>(from: EmeraldIdentity.EmeraldIDAdministrator)
+                                        ?? panic("Could not borrow the administrator")
+            administrator.reset(account: account, discordID: discordID)
         }
-        `,
-        fcl.args([
-            fcl.arg(account, t.Address),
-            fcl.arg(discordID, t.String)
-        ]),
-        fcl.payer(authorizationFunction),
-        fcl.proposer(authorizationFunction),
-        fcl.authorizations([authorizationFunction]),
-        fcl.limit(9999)
-    ]).then(fcl.decode);
+
+        execute {
+
+        }
+    }
+    `;
+    
+    const transactionId = await sendTransaction(code, args)
 
     try {
         await fcl.tx(transactionId).onceSealed();

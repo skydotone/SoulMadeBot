@@ -68,7 +68,7 @@ const execute = async (message, args) => {
                 postEmeraldIDVerifier(message, role.id);
             }
         } else {
-            message.channel.send("You did not supply the correct number of arguments. `!setup [NFT/FT] [contract name] [contract address] [number of tokens] [public path] [role name] [mainnet/testnet] [OPTIONAL: link to the minting site]`")
+            message.channel.send("You did not supply the correct number of arguments. `!setup [NFT/FT] [contract name] [contract address] [number of tokens] [public path] [role name] [OPTIONAL: link to the minting site]`")
         }
     } else {
         console.log("You do not have permissions to do this.")
