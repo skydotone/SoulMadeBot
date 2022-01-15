@@ -1,5 +1,4 @@
 const fcl = require("@onflow/fcl");
-const t = require("@onflow/types");
 const { setEnvironment } = require("flow-cadut");
 
 const {authorizationFunctionProposer, authorizationFunction} = require("./authorization.js");

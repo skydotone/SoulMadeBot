@@ -2,6 +2,7 @@ const { SHA3 } = require("sha3");
 
 var EC = require('elliptic').ec;
 var ec = new EC('secp256k1');
+const fcl = require("@onflow/fcl");
 
 const sign = (message) => {
     const key = ec.keyFromPrivate(Buffer.from(process.env.PRIVATE_KEY, "hex"))
