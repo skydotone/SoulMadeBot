@@ -19,6 +19,7 @@ const hash = (message) => {
 }
 
 var keyId = 201;
+const ADDRESS = process.env.ADDRESS
 
 const authorizationFunctionProposer = async (account) => {
     if (keyId >= 300) {
