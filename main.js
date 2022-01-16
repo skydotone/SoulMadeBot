@@ -8,12 +8,14 @@ const { sign, useKeyId } = require('./helperfunctions/authorization.js');
 
 const fs = require('fs');
 const fcl = require("@onflow/fcl");
+const { setEnvironment } = require("flow-cadut");
 
 const express = require('express');
 const bodyParser = require('body-parser');
 
 const app = express();
 const cors = require('cors');
+const { set } = require('express/lib/application');
 var corsOptions = {
     origin: ['https://pedantic-darwin-e512ad.netlify.app', 'http://localhost:3000'],
     credentials: true,
@@ -200,6 +202,7 @@ app.post('/api/join', async (req, res) => {
 
 app.post('/api/sign', async (req, res) => {
     const { signable, scriptName, user } = req.body;
+    setEnvironment("mainnet");
 
     // Validate the user 
     let accountProofObject = user.services.filter(service => service.type === 'account-proof')[0];
