@@ -8,6 +8,7 @@ const { authorizationFunctionProposer, authorizationFunction } = require('./help
 
 const fs = require('fs');
 const fcl = require("@onflow/fcl");
+const t = require("@onflow/types");
 const { setEnvironment } = require("flow-cadut");
 
 const express = require('express');
