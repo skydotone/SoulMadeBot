@@ -19,15 +19,20 @@ const hash = (message) => {
     return sha.digest();
 }
 
-var keyId = 201;
+var KEY_ID = 201;
+const useKeyId = () => {
+    let oldKeyId = KEY_ID;
+    if (KEY_ID >= 300) {
+        KEY_ID = 201;
+    } else {
+        KEY_ID++;
+    }
+    return oldKeyId;
+}
 const ADDRESS = process.env.ADDRESS
 
 const authorizationFunctionProposer = async (account) => {
-    if (keyId >= 300) {
-        keyId = 201;
-    } else {
-        keyId++;
-    }
+    let keyId = useKeyId();
     // authorization function need to return an account
     return {
         ...account, // bunch of defaults in here, we want to overload some of them though
@@ -68,5 +73,6 @@ const authorizationFunction = async (account) => {
 module.exports = {
     sign,
     authorizationFunction,
-    authorizationFunctionProposer
+    authorizationFunctionProposer,
+    useKeyId
 }

@@ -8,7 +8,7 @@ pub contract EmeraldIdentity {
 
     // Events
     //
-    pub event EmeraldIDUpdated(account: Address, discordID: String)
+    pub event EmeraldIDCreated(account: Address, discordID: String)
     pub event EmeraldIDRemoved(account: Address, discordID: String)
 
     // 1-to-1
@@ -29,7 +29,7 @@ pub contract EmeraldIdentity {
             EmeraldIdentity.discordToAccount[discordID] = account
             EmeraldIdentity.accountToDiscord[account] = discordID
 
-            emit EmeraldIDUpdated(account: account, discordID: discordID)
+            emit EmeraldIDCreated(account: account, discordID: discordID)
         }
 
         pub fun createAdministrator(): @Administrator {

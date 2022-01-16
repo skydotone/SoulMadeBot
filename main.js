@@ -4,7 +4,7 @@ const { getBalance } = require('./flowscripts/check_token.js');
 const { getBalancev2 } = require('./flowscripts/check_tokenv2.js');
 const { checkEmeraldIdentityDiscord, deleteEmeraldID } = require('./flowscripts/emerald_identity.js');
 const { encrypt, decrypt } = require('./helperfunctions/encryption.js');
-const { sign } = require('./helperfunctions/authorization.js');
+const { sign, useKeyId } = require('./helperfunctions/authorization.js');
 
 const fs = require('fs');
 const fcl = require("@onflow/fcl");
@@ -251,6 +251,14 @@ app.post('/api/sign', async (req, res) => {
     const signature = sign(signable.message);
     res.json({
       signature,
+    });
+});
+
+app.get('/api/getAccount', async (req, res) => {
+    let keyIndex = useKeyId();
+    res.json({
+      address: process.env.ADDRESS,
+      keyIndex,
     });
 });
 
