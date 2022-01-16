@@ -198,10 +198,37 @@ app.post('/api/join', async (req, res) => {
 });
 
 app.post('/api/sign', async (req, res) => {
-    const { signable, scriptName } = req.body;
+    const { signable, scriptName, user } = req.body;
+
+    // Validate the user 
+    let accountProofObject = user.services.filter(service => service.type === 'account-proof')[0];
+    if (!accountProofObject) return res.send('ERROR');
+
+    const AccountProof = accountProofObject.data;
+    const Address = AccountProof.address;
+    const Timestamp = AccountProof.timestamp;
+    console.log(Address)
+    console.log(Timestamp)
+    const Message = fcl.WalletUtils.encodeMessageForProvableAuthnVerifying(
+      Address,                    // Address of the user authenticating
+      Timestamp,                  // Timestamp associated with the authentication
+      "APP-V0.0-user"             // Application domain tag  
+    );
+    const isValid = await fcl.verifyUserSignatures(
+      Message,
+      AccountProof.signatures
+    );
+
+    if (!isValid) return res.send('ERROR');
+
+    // User is now validated //
+
+    if (signable.args[0].value !== user.addr) return res.send('ERROR');
+    
     let txCode = signable.cadence.replace(/\s/g, "");
     
     if (scriptName !== 'initEmeraldID') return res.send('ERROR');
+    if (signable.args[0].value !== user.addr) return res.send('ERROR');
     const comparison = `
     import EmeraldIdentity from 0x4e190c2eb6d78faa
 
