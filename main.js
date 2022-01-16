@@ -4,7 +4,7 @@ const { getBalance } = require('./flowscripts/check_token.js');
 const { getBalancev2 } = require('./flowscripts/check_tokenv2.js');
 const { checkEmeraldIdentityDiscord, deleteEmeraldID } = require('./flowscripts/emerald_identity.js');
 const { encrypt, decrypt } = require('./helperfunctions/encryption.js');
-const { sign, useKeyId } = require('./helperfunctions/authorization.js');
+const { authorizationFunctionProposer, authorizationFunction } = require('./helperfunctions/authorization.js');
 
 const fs = require('fs');
 const fcl = require("@onflow/fcl");
@@ -201,7 +201,7 @@ app.post('/api/join', async (req, res) => {
 });
 
 app.post('/api/sign', async (req, res) => {
-    const { signable, scriptName, user } = req.body;
+    const { id, user } = req.body;
     setEnvironment("mainnet");
 
     // Validate the user 
@@ -227,34 +227,42 @@ app.post('/api/sign', async (req, res) => {
 
     // User is now validated //
 
-    if (signable.args[0].value !== user.addr) return res.send('ERROR');
-    
-    let txCode = signable.cadence.replace(/\s/g, "");
-    
-    if (scriptName !== 'initEmeraldID') return res.send('ERROR');
-    if (signable.args[0].value !== user.addr) return res.send('ERROR');
-    const comparison = `
-    import EmeraldIdentity from 0x4e190c2eb6d78faa
+    setEnvironment("testnet");
 
-    transaction(account: Address, discordID: String) {
-        prepare(signer: AuthAccount) {
-            let administrator = signer.borrow<&EmeraldIdentity.Administrator>(from: EmeraldIdentity.EmeraldIDAdministrator)
-                                        ?? panic("Could not borrow the administrator")
-            administrator.initializeEmeraldID(account: account, discordID: discordID)
-        }
+    const transactionId = await fcl.send([
+        fcl.transaction`
+          import EmeraldIdentity from 0x4e190c2eb6d78faa
+      
+          transaction(account: Address, discordID: String) {
+              prepare(admin: AuthAccount) {
+                  let administrator = admin.borrow<&EmeraldIdentity.Administrator>(from: EmeraldIdentity.EmeraldIDAdministrator)
+                                              ?? panic("Could not borrow the administrator")
+                  administrator.initializeEmeraldID(account: account, discordID: discordID)
+              }
+      
+              execute {
+      
+              }
+          }
+          `,
+          fcl.args([
+              fcl.arg(user.addr, t.Address),
+              fcl.arg(id, t.String)
+          ]),
+          fcl.proposer(authorizationFunctionProposer),
+          fcl.payer(authorizationFunction),
+          fcl.authorizations([authorizationFunction]),
+          fcl.limit(9999)
+    ]).then(fcl.decode);
 
-        execute {
-
-        }
+    try {
+        await fcl.tx(transactionId).onceSealed();
+        return res.send('OK');
+    } catch(e) {
+        console.log(e);
+        return res.send('ERROR');
     }
-    `.replace(/\s/g, "");
-    
-    if (txCode !== comparison) return res.send('ERROR');
-    
-    const signature = sign(signable.message);
-    res.json({
-      signature,
-    });
+
 });
 
 app.get('/api/getAccount', async (req, res) => {
