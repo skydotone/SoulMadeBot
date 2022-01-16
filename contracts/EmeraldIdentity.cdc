@@ -8,48 +8,43 @@ pub contract EmeraldIdentity {
 
     // Events
     //
-    pub event EmeraldIDCreated(account: Address, discordID: String)
     pub event EmeraldIDUpdated(account: Address, discordID: String)
-    pub event EmeraldIDDestroyed(discordID: String)
+    pub event EmeraldIDRemoved(account: Address, discordID: String)
 
-    // 1-1
+    // 1-to-1
     access(contract) var accountToDiscord: {Address: String}
-    // 1-1
+    // 1-to-1
     access(contract) var discordToAccount: {String: Address}
     
     // Owned by the Emerald Bot
     pub resource Administrator {
 
-        // Using a new account and discordID
-        pub fun initializeEmeraldID(account: Address, discordID: String) {
+        pub fun createEmeraldID(account: Address, discordID: String) {
             pre {
-                EmeraldIdentity.accountToDiscord[account] == nil && 
-                EmeraldIdentity.discordToAccount[discordID] == nil:
-                    "This EmeraldID is already in use."
+                EmeraldIdentity.getAccountFromDiscord(discordID: discordID) == nil &&
+                EmeraldIdentity.getDiscordFromAccount(account: account) == nil: 
+                "The old account must remove their EmeraldID first."
             }
-            
+
             EmeraldIdentity.discordToAccount[discordID] = account
             EmeraldIdentity.accountToDiscord[account] = discordID
-            emit EmeraldIDCreated(account: account, discordID: discordID)
+
+            emit EmeraldIDUpdated(account: account, discordID: discordID)
         }
 
-        pub fun updateInfo(account: Address, discordID: String) {
-            pre {
-                EmeraldIdentity.getDiscordFromAccount(account: account) != nil ||
-                EmeraldIdentity.getAccountFromDiscord(discordID: discordID) != nil:
-                    "This EmeraldID has not been created yet."
-            }
-            let oldDiscordID: String = EmeraldIdentity.getDiscordFromAccount(account: account)!
-            let oldAccount: Address = EmeraldIdentity.getAccountFromDiscord(discordID: discordID)!
-            self.reset(account: account, discordID: discordID)
-
-            self.initializeEmeraldID(account: account, discordID: discordID)
+        pub fun createAdministrator(): @Administrator {
+            return <- create Administrator()
         }
+    }
 
-        pub fun reset(account: Address, discordID: String) {
-            EmeraldIdentity.discordToAccount.remove(key: discordID)
-            EmeraldIdentity.accountToDiscord.remove(key: account)
-        }
+    pub fun remove(acct: AuthAccount) {
+        let account = acct.address
+        let discordID = EmeraldIdentity.getDiscordFromAccount(account: account) ?? panic("This EmeraldID does not exist!")
+
+        EmeraldIdentity.discordToAccount.remove(key: discordID)
+        EmeraldIdentity.accountToDiscord.remove(key: account)
+
+        emit EmeraldIDRemoved(account: account, discordID: discordID)
     }
 
     /*** USE THE BELOW FUNCTIONS FOR SECURE VERIFICATION OF ID ***/ 
@@ -69,5 +64,4 @@ pub contract EmeraldIdentity {
 
         self.account.save(<- create Administrator(), to: EmeraldIdentity.EmeraldIDAdministrator)
     }
-
 }
