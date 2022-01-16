@@ -257,7 +257,7 @@ app.post('/api/sign', async (req, res) => {
     ]).then(fcl.decode);
     console.log("Transaction Id", transactionId);
 
-    return res.send(transactionId);
+    res.json({transactionId});
 
 });
 
