@@ -255,14 +255,9 @@ app.post('/api/sign', async (req, res) => {
           fcl.authorizations([authorizationFunction]),
           fcl.limit(9999)
     ]).then(fcl.decode);
+    console.log("Transaction Id", transactionId);
 
-    try {
-        await fcl.tx(transactionId).onceSealed();
-        return res.send('OK');
-    } catch(e) {
-        console.log(e);
-        return res.send('ERROR');
-    }
+    return res.send(transactionId);
 
 });
 
