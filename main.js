@@ -7,6 +7,7 @@ const { encrypt, decrypt } = require('./helperfunctions/encryption.js');
 const { sign } = require('./helperfunctions/authorization.js');
 
 const fs = require('fs');
+const fcl = require("@onflow/fcl");
 
 const express = require('express');
 const bodyParser = require('body-parser');
