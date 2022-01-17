@@ -226,6 +226,14 @@ app.post('/api/sign', async (req, res) => {
 
     if (!isValid) return res.send('ERROR');
 
+    let decrypted;
+    try {
+        decrypted = decrypt(id);
+    } catch(e) {
+        console.log(e);
+        return res.send('ERROR');
+    }
+
     // User is now validated //
 
     setEnvironment("testnet");
@@ -248,7 +256,7 @@ app.post('/api/sign', async (req, res) => {
           `,
           fcl.args([
               fcl.arg(user.addr, t.Address),
-              fcl.arg(id, t.String)
+              fcl.arg(decrypted, t.String)
           ]),
           fcl.proposer(authorizationFunctionProposer),
           fcl.payer(authorizationFunction),
