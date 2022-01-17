@@ -2,9 +2,8 @@ require('dotenv').config();
 const { Client, Intents, Collection, MessageActionRow, MessageButton, MessageEmbed } = require('discord.js');
 const { getBalance } = require('./flowscripts/check_token.js');
 const { getBalancev2 } = require('./flowscripts/check_tokenv2.js');
-const { checkEmeraldIdentityDiscord, deleteEmeraldID } = require('./flowscripts/emerald_identity.js');
+const { checkEmeraldIdentityDiscord, initializeEmeraldID, deleteEmeraldID } = require('./flowscripts/emerald_identity.js');
 const { encrypt, decrypt } = require('./helperfunctions/encryption.js');
-const { authorizationFunctionProposer, authorizationFunction } = require('./helperfunctions/authorization.js');
 
 const fs = require('fs');
 const fcl = require("@onflow/fcl");
@@ -238,31 +237,7 @@ app.post('/api/sign', async (req, res) => {
 
     setEnvironment("testnet");
 
-    const transactionId = await fcl.send([
-        fcl.transaction`
-          import EmeraldIdentity from 0x4e190c2eb6d78faa
-      
-          transaction(account: Address, discordID: String) {
-              prepare(admin: AuthAccount) {
-                  let administrator = admin.borrow<&EmeraldIdentity.Administrator>(from: EmeraldIdentity.EmeraldIDAdministrator)
-                                              ?? panic("Could not borrow the administrator")
-                  administrator.initializeEmeraldID(account: account, discordID: discordID)
-              }
-      
-              execute {
-      
-              }
-          }
-          `,
-          fcl.args([
-              fcl.arg(user.addr, t.Address),
-              fcl.arg(decrypted, t.String)
-          ]),
-          fcl.proposer(authorizationFunctionProposer),
-          fcl.payer(authorizationFunction),
-          fcl.authorizations([authorizationFunction]),
-          fcl.limit(9999)
-    ]).then(fcl.decode);
+    const transactionId = await initializeEmeraldID(user.addr, decrypted);
     console.log("Transaction Id", transactionId);
 
     res.json({transactionId});

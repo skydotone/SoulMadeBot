@@ -62,14 +62,7 @@ const initializeEmeraldID = async (account, discordID) => {
     ];
 
     const transactionId = await sendTransaction(code, args);
-
-    try {
-        await fcl.tx(transactionId).onceSealed();
-        return true;
-    } catch(e) {
-        console.log(e);
-        return false;
-    }
+    return transactionId;
 }
 
 const deleteEmeraldID = async (discordID) => {
