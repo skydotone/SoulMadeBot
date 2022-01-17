@@ -77,7 +77,7 @@ const deleteEmeraldID = async (discordID) => {
         prepare(signer: AuthAccount) {
             let administrator = signer.borrow<&EmeraldIdentity.Administrator>(from: EmeraldIdentity.EmeraldIDAdministrator)
                                         ?? panic("Could not borrow the administrator")
-            administrator.removeByDiscord(discordID: String)
+            administrator.removeByDiscord(discordID: discordID)
         }
 
         execute {
