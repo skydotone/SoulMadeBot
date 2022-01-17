@@ -70,13 +70,13 @@ client.on('interactionCreate', async interaction => {
     if (interaction.customId.split('-').length === 3) {
         let interactionCustomId = interaction.customId.split('-');
         let encrypted = encrypt(interaction.member.id + '///' + interaction.guild.id + '///' + interactionCustomId[1])
-    
+
         // const botInfo = new MessageEmbed().addField(`Hello there! Please click [this](http://localhost:3000/?id=${args.uuid}) link to gain access to Emerald City.`)
         const exampleEmbed = new MessageEmbed()
             .setColor('#5bc595')
             .setDescription('Click the link below to verify your account.')
             .setTimestamp()
-    
+
         const row = new MessageActionRow()
             .addComponents(
                 new MessageButton()
@@ -84,7 +84,7 @@ client.on('interactionCreate', async interaction => {
                     .setLabel('Verify Account')
                     .setStyle('LINK')
             );
-    
+
         interaction.reply({ ephemeral: true, embeds: [exampleEmbed], components: [row] })
     } else if (interaction.customId.split('-').length === 2) {
         let interactionCustomId = interaction.customId.split('-');
@@ -96,23 +96,23 @@ client.on('interactionCreate', async interaction => {
         if (account) {
             /* For EmeraldID in EmeraldCity ONLY */
             if (roleId === process.env.EMERALDIDROLE) {
-                    interaction.member.roles.add(roleId).catch((e) => console.log(e));
-                    interaction.reply({content: "You have been given the " + `<@&${roleId}>` + " role.", ephemeral: true});
-                    return;
+                interaction.member.roles.add(roleId).catch((e) => console.log(e));
+                interaction.reply({ content: "You have been given the " + `<@&${roleId}>` + " role.", ephemeral: true });
+                return;
             } else {
                 let guildInfo = await getBalancev2(account, interaction.guild.id, roleId);
                 if (!guildInfo) {
-                    interaction.reply({content: "Error", ephemeral: true});
+                    interaction.reply({ content: "Error", ephemeral: true });
                     return;
                 };
                 let { result, number } = guildInfo;
                 if (result && (result >= number)) {
                     console.log("Adding role...");
                     interaction.member.roles.add(roleId).catch((e) => console.log(e));
-                    interaction.reply({content: "You have been given the " + `<@&${roleId}>` + " role.", ephemeral: true});
+                    interaction.reply({ content: "You have been given the " + `<@&${roleId}>` + " role.", ephemeral: true });
                     return;
                 }
-                interaction.reply({content: "You do not have enough tokens.", ephemeral: true});
+                interaction.reply({ content: "You do not have enough tokens.", ephemeral: true });
                 return;
             }
         }
@@ -120,13 +120,13 @@ client.on('interactionCreate', async interaction => {
         // If they have not verified their EmeraldID...
 
         let encrypted = encrypt(interaction.member.id);
-    
+
         // const botInfo = new MessageEmbed().addField(`Hello there! Please click [this](http://localhost:3000/?id=${args.uuid}) link to gain access to Emerald City.`)
         const exampleEmbed = new MessageEmbed()
             .setColor('#5bc595')
             .setDescription('Click the link below to setup your EmeraldID.')
             .setTimestamp()
-    
+
         const row = new MessageActionRow()
             .addComponents(
                 new MessageButton()
@@ -134,19 +134,19 @@ client.on('interactionCreate', async interaction => {
                     .setLabel('Setup EmeraldID')
                     .setStyle('LINK')
             );
-    
+
         interaction.reply({ ephemeral: true, embeds: [exampleEmbed], components: [row] });
-    } else if(interaction.customId === 'emeraldiddelete') {
+    } else if (interaction.customId === 'emeraldiddelete') {
         let account = await checkEmeraldIdentityDiscord(interaction.member.id);
         if (!account) {
-            interaction.reply({content: "You do not have an EmeraldID.", ephemeral: true});
+            interaction.reply({ content: "You do not have an EmeraldID.", ephemeral: true });
         } else {
-            interaction.reply({content: "Resetting your EmeraldID. Please wait ~20 seconds.", ephemeral: true});
+            interaction.reply({ content: "Resetting your EmeraldID. Please wait ~20 seconds.", ephemeral: true });
             let response = await deleteEmeraldID(interaction.member.id);
             if (response) {
-                interaction.editReply({content: "Your EmeraldID has been successfully reset. Please `Verify` again.", ephemeral: true});
+                interaction.editReply({ content: "Your EmeraldID has been successfully reset. Please `Verify` again.", ephemeral: true });
             } else {
-                interaction.editReply({content: "There was an error resetting your EmeraldID.", ephemeral: true});
+                interaction.editReply({ content: "There was an error resetting your EmeraldID.", ephemeral: true });
             }
         }
     }
@@ -160,24 +160,24 @@ app.post('/api/join', async (req, res) => {
     // Let's ensure that the account proof is legit. 
     console.log("Account address:", req.body.user.addr)
     let accountProofObject = req.body.user.services.filter(service => service.type === 'account-proof')[0];
-    if (!accountProofObject) return res.send({"success": 2});
+    if (!accountProofObject) return res.send({ "success": 2 });
 
     const AccountProof = accountProofObject.data;
 
     let decrypted;
     try {
         decrypted = decrypt(req.body.id);
-    } catch(e) {
+    } catch (e) {
         console.log(e);
-        return res.send({"success": 2});
+        return res.send({ "success": 2 });
     }
 
     let decryptedValues = decrypted.split('///');
-    
+
     // Gets the balance of the user
     let guildInfo = await getBalance(AccountProof, decryptedValues[1], decryptedValues[2], req.body.network);
     console.log("GuildInfo", guildInfo)
-    if (!guildInfo) return res.send({"success": 2});
+    if (!guildInfo) return res.send({ "success": 2 });
     let { result, number, role, guildID } = guildInfo;
 
     // 'guild' == the server
@@ -191,13 +191,13 @@ app.post('/api/join', async (req, res) => {
         if (result && (result >= number)) {
             console.log("Adding role...");
             member.roles.add(role).catch((e) => console.log(e));
-            return res.send({"success": 1});
+            return res.send({ "success": 1 });
         }
     } catch (e) {
         console.log("An error occured decrypting: " + e);
     }
 
-    res.send({"success": 2});
+    res.send({ "success": 2 });
 });
 
 app.post('/api/sign', async (req, res) => {
@@ -205,7 +205,7 @@ app.post('/api/sign', async (req, res) => {
     setEnvironment("mainnet");
 
     // Validate the user 
-    let accountProofObject = user.services.filter(service => service.type === 'account-proof')[0];
+    let accountProofObject = user && user.services.filter(service => service.type === 'account-proof')[0];
     if (!accountProofObject) return res.send('ERROR');
 
     const AccountProof = accountProofObject.data;
@@ -214,13 +214,13 @@ app.post('/api/sign', async (req, res) => {
     console.log(Address)
     console.log(Timestamp)
     const Message = fcl.WalletUtils.encodeMessageForProvableAuthnVerifying(
-      Address,                    // Address of the user authenticating
-      Timestamp,                  // Timestamp associated with the authentication
-      "APP-V0.0-user"             // Application domain tag  
+        Address,                    // Address of the user authenticating
+        Timestamp,                  // Timestamp associated with the authentication
+        "APP-V0.0-user"             // Application domain tag  
     );
     const isValid = await fcl.verifyUserSignatures(
-      Message,
-      AccountProof.signatures
+        Message,
+        AccountProof.signatures
     );
 
     if (!isValid) return res.send('ERROR');
@@ -228,7 +228,7 @@ app.post('/api/sign', async (req, res) => {
     let decrypted;
     try {
         decrypted = decrypt(id);
-    } catch(e) {
+    } catch (e) {
         console.log(e);
         return res.send('ERROR');
     }
@@ -240,15 +240,15 @@ app.post('/api/sign', async (req, res) => {
     const transactionId = await initializeEmeraldID(user.addr, decrypted);
     console.log("Transaction Id", transactionId);
 
-    res.json({transactionId});
+    res.json({ transactionId });
 
 });
 
 app.get('/api/getAccount', async (req, res) => {
     let keyIndex = useKeyId();
     res.json({
-      address: process.env.ADDRESS,
-      keyIndex,
+        address: process.env.ADDRESS,
+        keyIndex,
     });
 });
 
