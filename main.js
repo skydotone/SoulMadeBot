@@ -143,7 +143,7 @@ client.on('interactionCreate', async interaction => {
             interaction.reply({content: "You do not have an EmeraldID.", ephemeral: true});
         } else {
             interaction.reply({content: "Resetting your EmeraldID. Please wait ~20 seconds.", ephemeral: true});
-            let response = await deleteEmeraldID(account, interaction.member.id);
+            let response = await deleteEmeraldID(interaction.member.id);
             if (response) {
                 interaction.editReply({content: "Your EmeraldID has been successfully reset. Please `Verify` again.", ephemeral: true});
             } else {

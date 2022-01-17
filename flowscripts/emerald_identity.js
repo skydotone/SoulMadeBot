@@ -43,15 +43,16 @@ const initializeEmeraldID = async (account, discordID) => {
     const code = `
     import EmeraldIdentity from 0x4e190c2eb6d78faa
 
+    // Signed by Administrator
     transaction(account: Address, discordID: String) {
-        prepare(signer: AuthAccount) {
-            let administrator = signer.borrow<&EmeraldIdentity.Administrator>(from: EmeraldIdentity.EmeraldIDAdministrator)
+        prepare(admin: AuthAccount) {
+            let administrator = admin.borrow<&EmeraldIdentity.Administrator>(from: EmeraldIdentity.EmeraldIDAdministrator)
                                         ?? panic("Could not borrow the administrator")
-            administrator.initializeEmeraldID(account: account, discordID: discordID)
+            administrator.createEmeraldID(account: account, discordID: discordID)
         }
 
         execute {
-
+            log("Created EmeraldID")
         }
     }
     `;
@@ -71,23 +72,23 @@ const initializeEmeraldID = async (account, discordID) => {
     }
 }
 
-const deleteEmeraldID = async (account, discordID) => {
+const deleteEmeraldID = async (discordID) => {
     const args = [
-        fcl.arg(account, t.Address),
         fcl.arg(discordID, t.String)
     ]
     const code = `
     import EmeraldIdentity from 0x4e190c2eb6d78faa
 
-    transaction(account: Address, discordID: String) {
+    // Signed by EmeraldIDOwner
+    transaction(discordID: String) {
         prepare(signer: AuthAccount) {
             let administrator = signer.borrow<&EmeraldIdentity.Administrator>(from: EmeraldIdentity.EmeraldIDAdministrator)
                                         ?? panic("Could not borrow the administrator")
-            administrator.reset(account: account, discordID: discordID)
+            administrator.removeByDiscord(discordID: String)
         }
 
         execute {
-
+            log("Removed EmeraldID")
         }
     }
     `;
