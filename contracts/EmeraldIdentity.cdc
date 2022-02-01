@@ -1,5 +1,3 @@
-// https://play.onflow.org/90eb5595-f0de-4fc0-ba99-2cb5ac9f4a73?type=account&id=6fe898b7-9a4d-4d48-a86c-0a0e36d21c87
-
 pub contract EmeraldIdentity {
 
     // Paths
