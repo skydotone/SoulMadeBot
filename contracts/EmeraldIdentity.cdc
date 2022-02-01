@@ -9,8 +9,8 @@ pub contract EmeraldIdentity {
     //
     // Events
     //
-    pub event EmeraldIDCreated(account: Address, discordID: String, admin: Address)
-    pub event EmeraldIDRemoved(account: Address, discordID: String, admin: Address)
+    pub event EmeraldIDCreated(account: Address, discordID: String)
+    pub event EmeraldIDRemoved(account: Address, discordID: String)
     
     //
     // Administrator
@@ -31,7 +31,7 @@ pub contract EmeraldIdentity {
             self.accountToDiscord[account] = discordID
             self.discordToAccount[discordID] = account
 
-            emit EmeraldIDCreated(account: account, discordID: discordID, admin: self.owner!.address)
+            emit EmeraldIDCreated(account: account, discordID: discordID)
         }
 
         pub fun removeByAccount(account: Address) {
@@ -48,7 +48,7 @@ pub contract EmeraldIdentity {
             self.discordToAccount.remove(key: discordID)
             self.accountToDiscord.remove(key: account)
 
-            emit EmeraldIDRemoved(account: account, discordID: discordID, admin: self.owner!.address)
+            emit EmeraldIDRemoved(account: account, discordID: discordID)
         }
 
         pub fun createAdministrator(): Capability<&Administrator> {
