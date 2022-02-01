@@ -4,8 +4,9 @@ pub contract EmeraldIdentity {
 
     // Paths
     //
-    pub let EmeraldIDAdministrator: StoragePath
-    pub let EmeraldIDEmerald: StoragePath
+    pub let EmeraldIDAdministratorStoragePath: StoragePath
+    pub let EmeraldIDAdministratorPrivatePath: PrivatePath
+    pub let EmeraldIDEmeraldStoragePath: StoragePath
 
     // Events
     //
@@ -14,16 +15,16 @@ pub contract EmeraldIdentity {
 
     pub resource Emerald {
         // 1-to-1
-        access(contract) var accountToDiscord: {Address: String}
+        access(account) var accountToDiscord: {Address: String}
         // 1-to-1
-        access(contract) var discordToAccount: {String: Address}
+        access(account) var discordToAccount: {String: Address}
 
-        access(contract) fun addMapping(account: Address, discordID: String) {
+        access(account) fun addMapping(account: Address, discordID: String) {
             self.accountToDiscord[account] = discordID
             self.discordToAccount[discordID] = account
         }
 
-        access(contract) fun removeMapping(account: Address, discordID: String) {
+        access(account) fun removeMapping(account: Address, discordID: String) {
             self.discordToAccount.remove(key: discordID)
             self.accountToDiscord.remove(key: account)
         }
@@ -44,7 +45,7 @@ pub contract EmeraldIdentity {
                 "The old account must remove their EmeraldID first."
             }
 
-            let emerald = EmeraldIdentity.account.borrow<&Emerald>(from: EmeraldIdentity.EmeraldIDEmerald)!
+            let emerald = EmeraldIdentity.account.borrow<&Emerald>(from: EmeraldIdentity.EmeraldIDEmeraldStoragePath)!
             emerald.addMapping(account: account, discordID: discordID)
 
             emit EmeraldIDCreated(account: account, discordID: discordID, admin: self.owner!.address)
@@ -61,34 +62,36 @@ pub contract EmeraldIdentity {
         }
 
         access(self) fun remove(account: Address, discordID: String) {
-            let emerald = EmeraldIdentity.account.borrow<&Emerald>(from: EmeraldIdentity.EmeraldIDEmerald)!
+            let emerald = EmeraldIdentity.account.borrow<&Emerald>(from: EmeraldIdentity.EmeraldIDEmeraldStoragePath)!
             emerald.removeMapping(account: account, discordID: discordID)
 
             emit EmeraldIDRemoved(account: account, discordID: discordID, admin: self.owner!.address)
         }
 
-        pub fun createAdministrator(): @Administrator {
-            return <- create Administrator()
+        pub fun createAdministrator(): Capability<&Administrator> {
+            return EmeraldIdentity.account.getCapability<&Administrator>(EmeraldIdentity.EmeraldIDAdministratorPrivatePath)
         }
     }
 
     /*** USE THE BELOW FUNCTIONS FOR SECURE VERIFICATION OF ID ***/ 
 
     pub fun getDiscordFromAccount(account: Address): String?  {
-        let emerald = EmeraldIdentity.account.borrow<&Emerald>(from: EmeraldIdentity.EmeraldIDEmerald)!
+        let emerald = EmeraldIdentity.account.borrow<&Emerald>(from: EmeraldIdentity.EmeraldIDEmeraldStoragePath)!
         return emerald.accountToDiscord[account]
     }
 
     pub fun getAccountFromDiscord(discordID: String): Address? {
-        let emerald = EmeraldIdentity.account.borrow<&Emerald>(from: EmeraldIdentity.EmeraldIDEmerald)!
+        let emerald = EmeraldIdentity.account.borrow<&Emerald>(from: EmeraldIdentity.EmeraldIDEmeraldStoragePath)!
         return emerald.discordToAccount[discordID]
     }
 
     init() {
-        self.EmeraldIDAdministrator = /storage/EmeraldIDAdministrator
-        self.EmeraldIDEmerald = /storage/EmeraldIDEmerald
+        self.EmeraldIDAdministratorStoragePath = /storage/EmeraldIDAdministrator
+        self.EmeraldIDAdministratorPrivatePath = /private/EmeraldIDAdministrator
+        self.EmeraldIDEmeraldStoragePath = /storage/EmeraldIDEmerald
 
-        self.account.save(<- create Emerald(), to: EmeraldIdentity.EmeraldIDEmerald)
-        self.account.save(<- create Administrator(), to: EmeraldIdentity.EmeraldIDAdministrator)
+        self.account.save(<- create Emerald(), to: EmeraldIdentity.EmeraldIDEmeraldStoragePath)
+        self.account.save(<- create Administrator(), to: EmeraldIdentity.EmeraldIDAdministratorStoragePath)
+        self.account.link<&Administrator>(EmeraldIdentity.EmeraldIDAdministratorPrivatePath, target: EmeraldIdentity.EmeraldIDAdministratorStoragePath)
     }
 }
