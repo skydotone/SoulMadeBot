@@ -1,11 +1,12 @@
 const { SHA3 } = require("sha3");
 
 var EC = require('elliptic').ec;
-var ec = new EC('secp256k1');
+var ec_secp = new EC('secp256k1');
+var ec_p256 = new EC('P256');
 const fcl = require("@onflow/fcl");
 
 const testnetSign = (message) => {
-    const key = ec.keyFromPrivate(Buffer.from(process.env.TESTNET_PRIVATE_KEY, "hex"))
+    const key = ec_secp.keyFromPrivate(Buffer.from(process.env.TESTNET_PRIVATE_KEY, "hex"))
     const sig = key.sign(hash(message)) // hashMsgHex -> hash
     const n = 32
     const r = sig.r.toArrayLike(Buffer, "be", n)
@@ -14,7 +15,7 @@ const testnetSign = (message) => {
 }
 
 const mainnetSign = (message) => {
-    const key = ec.keyFromPrivate(Buffer.from(process.env.MAINNET_PRIVATE_KEY, "hex"))
+    const key = ec_p256.keyFromPrivate(Buffer.from(process.env.MAINNET_PRIVATE_KEY, "hex"))
     const sig = key.sign(hash(message)) // hashMsgHex -> hash
     const n = 32
     const r = sig.r.toArrayLike(Buffer, "be", n)
