@@ -2,7 +2,7 @@ const { SHA3 } = require("sha3");
 
 var EC = require('elliptic').ec;
 var ec_secp = new EC('secp256k1');
-var ec_p256 = new EC('P256');
+var ec_p256 = new EC('p256');
 const fcl = require("@onflow/fcl");
 
 const testnetSign = (message) => {
