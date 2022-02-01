@@ -35,7 +35,7 @@ const checkEmeraldIdentityAccount = async (account) => {
     return accountResponse;
 }
 
-const initializeEmeraldIDCode = async () => {
+const initializeEmeraldIDCode = () => {
     return `
         import EmeraldIdentity from 0x39e42c67cc851cfb
 
@@ -54,7 +54,7 @@ const initializeEmeraldIDCode = async () => {
     `;
 }
 
-const resetEmeraldIDByDiscordIDCode = async () => {
+const resetEmeraldIDByDiscordIDCode = () => {
     return `
         import EmeraldIdentity from 0x39e42c67cc851cfb
 
@@ -73,7 +73,7 @@ const resetEmeraldIDByDiscordIDCode = async () => {
     `;
 }
 
-const resetEmeraldIDByAccountCode = async () => {
+const resetEmeraldIDByAccountCode = () => {
     return `
         import EmeraldIdentity from 0x39e42c67cc851cfb
 
