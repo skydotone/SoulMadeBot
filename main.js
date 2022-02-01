@@ -64,7 +64,7 @@ client.on('messageCreate', message => {
     } else if (command === 'emeraldidrole') {
         client.commands.get('getEmeraldIDRole').execute(message, args);
     }
-})
+});
 
 client.on('interactionCreate', async interaction => {
     if (!interaction.isButton()) return;

@@ -1,6 +1,4 @@
 const fcl = require("@onflow/fcl");
-fcl.config()
-    .put('accessNode.api', 'https://testnet.onflow.org');
 
 const {authorizationFunctionProposer, authorizationFunction} = require("./authorization.js");
 
@@ -12,7 +10,7 @@ const sendTransaction = async (code, args) => {
         fcl.payer(authorizationFunction),
         fcl.authorizations([authorizationFunction]),
         fcl.limit(9999)
-    ]).then(fcl.decode);
+    ], { node: 'https://access-testnet.onflow.org' }).then(fcl.decode);
 
     return transactionId;
 }

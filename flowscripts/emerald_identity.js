@@ -1,7 +1,5 @@
 const fcl = require("@onflow/fcl");
 const t = require("@onflow/types");
-fcl.config()
-    .put('accessNode.api', 'https://mainnet.onflow.org');
 
 const checkEmeraldIdentityDiscord = async (discordID) => {
   const accountResponse = await fcl.send([

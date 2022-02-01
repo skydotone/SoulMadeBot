@@ -1,5 +1,5 @@
-import EmeraldIdentity from 0x4e190c2eb6d78faa
+import EmeraldIdentity from 0x39e42c67cc851cfb
   
-        pub fun main(account: Address): String? {
-          return EmeraldIdentity.getDiscordFromAccount(account: account)
-        }
+pub fun main(account: Address): String? {
+  return EmeraldIdentity.getDiscordFromAccount(account: account)
+}
