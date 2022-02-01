@@ -1,3 +1,16 @@
+// Welcome to the EmeraldIdentity contract!
+//
+// This contract is a service that maps a user's on-chain address
+// to their DiscordID. 
+//
+// A user cannot configure their own EmeraldID. It must be done 
+// by someone who has access to the Administrator resource.
+//
+// A user can only ever have 1 address mapped to 1 DiscordID, and
+// 1 DiscordID mapped to 1 address. This means you cannot configure
+// multiple addresses to your DiscordID, and you cannot configure
+// multiple DiscordIDs to your address. 1-1.
+
 pub contract EmeraldIdentity {
 
     //
