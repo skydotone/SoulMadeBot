@@ -1,16 +1,20 @@
 pub contract EmeraldIdentity {
 
+    //
     // Paths
     //
     pub let AdministratorStoragePath: StoragePath
     pub let AdministratorPrivatePath: PrivatePath
 
+    //
     // Events
     //
     pub event EmeraldIDCreated(account: Address, discordID: String, admin: Address)
     pub event EmeraldIDRemoved(account: Address, discordID: String, admin: Address)
     
-    // Owned by the Emerald Bot
+    //
+    // Administrator
+    //
     pub resource Administrator {
         // 1-to-1
         access(account) var accountToDiscord: {Address: String}
