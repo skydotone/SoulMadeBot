@@ -69,7 +69,7 @@ client.on('messageCreate', message => {
 client.on('interactionCreate', async interaction => {
     if (!interaction.isButton()) return;
 
-    if (interaction.customId.split('-').length === 2) {
+    if (interaction.customId.split('-').length === 4) {
         let interactionCustomId = interaction.customId.split('-');
         let roleId = interactionCustomId[1];
 
