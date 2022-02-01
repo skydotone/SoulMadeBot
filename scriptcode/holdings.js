@@ -1,6 +1,6 @@
-const nft = (contractName, contractAddress, network, path) => {
-    let script = `
-        import NonFungibleToken from ${network === 'testnet' ? '0x631e88ae7f1d7c20' : '0x1d7e57aa55817448'}
+const nft = ({contractName, contractAddress, path}) => {
+    return `
+        import NonFungibleToken from 0x1d7e57aa55817448
         import ${contractName} from ${contractAddress}
         pub fun main(address: Address): Int {
             if let collection = getAccount(address).getCapability(${path}).borrow<&${contractName}.Collection{NonFungibleToken.CollectionPublic}>() {
@@ -16,13 +16,11 @@ const nft = (contractName, contractAddress, network, path) => {
             return -1
         }
     `;
-
-    return script;
 }
 
-const ft = (contractName, contractAddress, network, path) => {
-    let script = `
-        import FungibleToken from ${network === 'testnet' ? '0x9a0766d93b6608b7' : '0xf233dcee88fe0abe'}
+const ft = ({contractName, contractAddress, path}) => {
+    return `
+        import FungibleToken from 0xf233dcee88fe0abe
         import ${contractName} from ${contractAddress}
         pub fun main(address: Address): UFix64 {
             if let vault = getAccount(address).getCapability(${path}).borrow<&${contractName}.Vault{FungibleToken.Balance}>() {
@@ -38,11 +36,10 @@ const ft = (contractName, contractAddress, network, path) => {
             return 0.0
         }
     `;
-    return script;
 }
 
-const find = () => {
-    let script = `
+const find = (guildInfo) => {
+    return `
         import FIND from 0x097bafa4e0b48eef
         import Profile from 0x097bafa4e0b48eef
 
@@ -85,50 +82,51 @@ const find = () => {
             return 1
         }
     `;
-    return script;
 }
 
-const geniacemetalmaneki = () => {
-    let script = `
-    import GeniaceNFT from 0xabda6627c70c7f52
-    
-    pub fun main(address: Address): Int {
-        if let collection = getAccount(address).getCapability(GeniaceNFT.CollectionPublicPath).borrow<&GeniaceNFT.Collection{GeniaceNFT.GeniaceNFTCollectionPublic}>() {
-            let ids = collection.getIDs()
+const geniacemetalmaneki = (guildInfo) => {
+    return `
+        import GeniaceNFT from 0xabda6627c70c7f52
+        
+        pub fun main(address: Address): Int {
+            if let collection = getAccount(address).getCapability(GeniaceNFT.CollectionPublicPath).borrow<&GeniaceNFT.Collection{GeniaceNFT.GeniaceNFTCollectionPublic}>() {
+                let ids = collection.getIDs()
 
-            for id in ids {
-                let geniaceNFT = collection.borrowGeniaceNFT(id: id)!
-                if geniaceNFT.metadata.celebrityName == "METAL MANEKI" {
-                    return 1
+                for id in ids {
+                    let geniaceNFT = collection.borrowGeniaceNFT(id: id)!
+                    if geniaceNFT.metadata.celebrityName == "METAL MANEKI" {
+                        return 1
+                    }
                 }
             }
-        }
 
-        return -1
-    }
+            return -1
+        }
     `;
-    return script;
 }
 
-const flovatar = () => {
-    let script = `
-    import Flovatar from 0x921ea449dffec68a
-    
-    pub fun main(address: Address): Int {
-        if let collection = getAccount(address).getCapability(/public/FlovatarCollection).borrow<&{Flovatar.CollectionPublic}>() {
-            return collection.getIDs().length
-        }
+const flovatar = (guildInfo) => {
+    return `
+        import Flovatar from 0x921ea449dffec68a
+        
+        pub fun main(address: Address): Int {
+            if let collection = getAccount(address).getCapability(/public/FlovatarCollection).borrow<&{Flovatar.CollectionPublic}>() {
+                return collection.getIDs().length
+            }
 
-        return -1
-    }
+            return -1
+        }
     `;
-    return script;
 }
 
-module.exports = {
+const holdingScripts = {
     nft: nft,
     ft: ft,
     find: find,
     geniacemetalmaneki: geniacemetalmaneki,
     flovatar: flovatar
+}
+
+module.exports = {
+    holdingScripts
 }

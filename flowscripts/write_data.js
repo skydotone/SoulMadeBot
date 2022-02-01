@@ -4,7 +4,7 @@ const t = require("@onflow/types");
 const { sendTransaction } = require("../helperfunctions/sendTransaction.js");
 
 const code = `
-import EmeraldAuthBotv2 from ${process.env.ADDRESS}
+import EmeraldAuthBotv2 from 0x4e190c2eb6d78faa
 
 transaction(guildID: String, tokenType: String, contractName: String, contractAddress: Address, number: Int, path: String, role: String, url: String, network: String) {
     prepare(signer: AuthAccount) {
@@ -21,7 +21,7 @@ transaction(guildID: String, tokenType: String, contractName: String, contractAd
         
     }
 }
-`
+`;
 
 const changeAuthData = async (guildID, tokenType, contractName, contractAddress, number, path, role, url, network) => {
     let args = [

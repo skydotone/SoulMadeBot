@@ -1,11 +1,10 @@
 const fcl = require("@onflow/fcl");
-const { setEnvironment } = require("flow-cadut");
+fcl.config()
+    .put('accessNode.api', 'https://testnet.onflow.org');
 
 const {authorizationFunctionProposer, authorizationFunction} = require("./authorization.js");
 
 const sendTransaction = async (code, args) => {
-    await setEnvironment("testnet");
-
     const transactionId = await fcl.send([
         fcl.transaction(code),
         fcl.args(args),

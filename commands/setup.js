@@ -83,10 +83,6 @@ const postEmeraldIDVerifier = (message, roleID) => {
                 .setLabel('Verify')
                 .setStyle('SUCCESS'),
             new MessageButton()
-                .setCustomId(`emeraldiddelete`)
-                .setLabel('Reset EmeraldID')
-                .setStyle('PRIMARY'),
-            new MessageButton()
                 .setURL('https://emeraldcity.gitbook.io/emerald-city/building-guild/emerald-bot')
                 .setLabel('Docs')
                 .setStyle('LINK')

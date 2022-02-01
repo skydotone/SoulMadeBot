@@ -1,27 +1,29 @@
 require('dotenv').config();
 const { Client, Intents, Collection, MessageActionRow, MessageButton, MessageEmbed } = require('discord.js');
-const { getBalance } = require('./flowscripts/check_token.js');
-const { getBalancev2 } = require('./flowscripts/check_tokenv2.js');
-const { checkEmeraldIdentityDiscord, initializeEmeraldID, deleteEmeraldID } = require('./flowscripts/emerald_identity.js');
+
+const { getTokenBalance } = require('./flowscripts/get_token_balance.js');
+const { checkEmeraldIdentityDiscord, trxScripts } = require('./flowscripts/emerald_identity.js');
 const { encrypt, decrypt } = require('./helperfunctions/encryption.js');
+const { mainnetSign } = require('./helperfunctions/authorization.js')
 
 const fs = require('fs');
 const fcl = require("@onflow/fcl");
-const t = require("@onflow/types");
-const { setEnvironment } = require("flow-cadut");
 
 const express = require('express');
 const bodyParser = require('body-parser');
 
 const app = express();
 const cors = require('cors');
-const { set } = require('express/lib/application');
 var corsOptions = {
     origin: ['https://pedantic-darwin-e512ad.netlify.app', 'http://localhost:3000'],
     credentials: true,
     methods: ['GET', 'POST']
 };
 app.use(cors(corsOptions));
+
+fcl.config()
+    .put('accessNode.api', 'https://mainnet.onflow.org');
+
 const port = process.env.PORT || 5000;
 
 const prefix = '!';
@@ -67,26 +69,7 @@ client.on('messageCreate', message => {
 client.on('interactionCreate', async interaction => {
     if (!interaction.isButton()) return;
 
-    if (interaction.customId.split('-').length === 3) {
-        let interactionCustomId = interaction.customId.split('-');
-        let encrypted = encrypt(interaction.member.id + '///' + interaction.guild.id + '///' + interactionCustomId[1])
-
-        // const botInfo = new MessageEmbed().addField(`Hello there! Please click [this](http://localhost:3000/?id=${args.uuid}) link to gain access to Emerald City.`)
-        const exampleEmbed = new MessageEmbed()
-            .setColor('#5bc595')
-            .setDescription('Click the link below to verify your account.')
-            .setTimestamp()
-
-        const row = new MessageActionRow()
-            .addComponents(
-                new MessageButton()
-                    .setURL('https://pedantic-darwin-e512ad.netlify.app/' + interactionCustomId[0] + '/?id=' + encrypted)
-                    .setLabel('Verify Account')
-                    .setStyle('LINK')
-            );
-
-        interaction.reply({ ephemeral: true, embeds: [exampleEmbed], components: [row] })
-    } else if (interaction.customId.split('-').length === 2) {
+    if (interaction.customId.split('-').length === 2) {
         let interactionCustomId = interaction.customId.split('-');
         let roleId = interactionCustomId[1];
 
@@ -94,13 +77,13 @@ client.on('interactionCreate', async interaction => {
         console.log("Returned account from ecid", account);
 
         if (account) {
-            /* For EmeraldID in EmeraldCity ONLY */
+            /* For EmeraldID in Emerald City ONLY */
             if (roleId === process.env.EMERALDIDROLE) {
                 interaction.member.roles.add(roleId).catch((e) => console.log(e));
                 interaction.reply({ content: "You have been given the " + `<@&${roleId}>` + " role.", ephemeral: true });
                 return;
             } else {
-                let guildInfo = await getBalancev2(account, interaction.guild.id, roleId);
+                let guildInfo = await getTokenBalance(account, interaction.guild.id, roleId);
                 if (!guildInfo) {
                     interaction.reply({ content: "Error", ephemeral: true });
                     return;
@@ -136,19 +119,6 @@ client.on('interactionCreate', async interaction => {
             );
 
         interaction.reply({ ephemeral: true, embeds: [exampleEmbed], components: [row] });
-    } else if (interaction.customId === 'emeraldiddelete') {
-        let account = await checkEmeraldIdentityDiscord(interaction.member.id);
-        if (!account) {
-            interaction.reply({ content: "You do not have an EmeraldID.", ephemeral: true });
-        } else {
-            interaction.reply({ content: "Resetting your EmeraldID. Please wait ~20 seconds.", ephemeral: true });
-            let response = await deleteEmeraldID(interaction.member.id);
-            if (response) {
-                interaction.editReply({ content: "Your EmeraldID has been successfully reset. Please `Verify` again.", ephemeral: true });
-            } else {
-                interaction.editReply({ content: "There was an error resetting your EmeraldID.", ephemeral: true });
-            }
-        }
     }
 });
 
@@ -156,100 +126,77 @@ client.on('interactionCreate', async interaction => {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.post('/api/join', async (req, res) => {
-    // Let's ensure that the account proof is legit. 
-    console.log("Account address:", req.body.user.addr)
-    let accountProofObject = req.body.user.services.filter(service => service.type === 'account-proof')[0];
-    if (!accountProofObject) return res.send({ "success": 2 });
-
-    const AccountProof = accountProofObject.data;
-
-    let decrypted;
-    try {
-        decrypted = decrypt(req.body.id);
-    } catch (e) {
-        console.log(e);
-        return res.send({ "success": 2 });
-    }
-
-    let decryptedValues = decrypted.split('///');
-
-    // Gets the balance of the user
-    let guildInfo = await getBalance(AccountProof, decryptedValues[1], decryptedValues[2], req.body.network);
-    console.log("GuildInfo", guildInfo)
-    if (!guildInfo) return res.send({ "success": 2 });
-    let { result, number, role, guildID } = guildInfo;
-
-    // 'guild' == the server
-    const guild = client.guilds.cache.get(guildID)
-    // gets the member by first decrypting the uuid and getting back
-    // the member id of the member, then gets the actual member
-
-    try {
-        let member = guild.members.cache.get(decryptedValues[0])
-        console.log("Result: " + result + " - " + "Number: " + number);
-        if (result && (result >= number)) {
-            console.log("Adding role...");
-            member.roles.add(role).catch((e) => console.log(e));
-            return res.send({ "success": 1 });
-        }
-    } catch (e) {
-        console.log("An error occured decrypting: " + e);
-    }
-
-    res.send({ "success": 2 });
-});
-
-app.post('/api/sign', async (req, res) => {
-    const { id, user } = req.body;
-    setEnvironment("mainnet");
-
-    // Validate the user 
-    let accountProofObject = user && user.services.filter(service => service.type === 'account-proof')[0];
-    if (!accountProofObject) return res.send('ERROR');
-
-    const AccountProof = accountProofObject.data;
-    const Address = AccountProof.address;
-    const Timestamp = AccountProof.timestamp;
-    console.log(Address)
-    console.log(Timestamp)
+const verifyUserDataWithBlocto = async (user) => {
+    // Validate the user
+    let accountProofObject = user.services.filter((service) => service.type === 'account-proof')[0]
+    if (!accountProofObject) return false
+  
+    const AccountProof = accountProofObject.data
+    const Address = AccountProof.address
+    const Timestamp = AccountProof.timestamp
     const Message = fcl.WalletUtils.encodeMessageForProvableAuthnVerifying(
-        Address,                    // Address of the user authenticating
-        Timestamp,                  // Timestamp associated with the authentication
-        "APP-V0.0-user"             // Application domain tag  
-    );
+      Address, // Address of the user authenticating
+      Timestamp, // Timestamp associated with the authentication
+      'APP-V0.0-user', // Application domain tag
+    )
     const isValid = await fcl.verifyUserSignatures(
-        Message,
+        Message, 
         AccountProof.signatures
-    );
+    )
+    return isValid
+}
 
-    if (!isValid) return res.send('ERROR');
-
-    let decrypted;
-    try {
-        decrypted = decrypt(id);
-    } catch (e) {
-        console.log(e);
-        return res.send('ERROR');
-    }
-
-    // User is now validated //
-
-    setEnvironment("testnet");
-
-    const transactionId = await initializeEmeraldID(user.addr, decrypted);
-    console.log("Transaction Id", transactionId);
-
-    res.json({ transactionId });
-
+app.get('/api/getDiscordID/:discordID', async (req, res) => {
+    const { discordID } = req.params;
+    res.json({
+        discordID: decrypt(discordID)
+    })
 });
 
 app.get('/api/getAccount', async (req, res) => {
-    let keyIndex = useKeyId();
+    // todo: support multi key and defualt key both
+    let keyIndex = 0
     res.json({
-        address: process.env.ADDRESS,
+        address: "0x39e42c67cc851cfb",
         keyIndex,
-    });
+    })
+});
+
+app.get('/api/getScript/:scriptName', async (req, res) => {
+    // only support the script with server sign and verify with signWithVerify api
+    const { scriptName } = req.params
+    const scriptCode = trxScripts[scriptName]()
+    if (scriptName && scriptCode) {
+        res.json({
+        scriptCode,
+        })
+    } else {
+        res.status(500).json({
+        message: 'Cannot get script with script name',
+        })
+    }
+});
+  
+app.post('/api/signWithVerify', async (req, res) => {
+    const { user, signable, scriptName } = req.body
+    // get the script that verify the sign cadence code
+    const scriptCode = trxScripts[scriptName]()
+
+    // validate user data with blocto
+    const isValid = await verifyUserDataWithBlocto(user)
+    if (!isValid) return res.status(500).json({ mesage: 'User data validate failed' })
+
+    // User is now validated //
+
+    const { voucher = {}, message } = signable
+    const { cadence = '' } = voucher
+    if (scriptCode == cadence) {
+        // when the code match , will sign the transaction
+        const signature = mainnetSign(message)
+        res.json({ signature })
+    } else {
+        res.status(500).json({ message: 'Script code not supported' })
+    }
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
