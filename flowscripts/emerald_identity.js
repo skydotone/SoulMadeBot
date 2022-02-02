@@ -64,7 +64,7 @@ const resetEmeraldIDByDiscordIDCode = () => {
         // Signed by Administrator
         transaction(discordID: String) {
             prepare(signer: AuthAccount) {
-                let administrator = signer.borrow<&EmeraldIdentity.Administrator>(from: EmeraldIdentity.EmeraldIDAdministrator)
+                let administrator = signer.borrow<&EmeraldIdentity.Administrator>(from: EmeraldIdentity.AdministratorStoragePath)
                                             ?? panic("Could not borrow the administrator")
                 administrator.removeByDiscord(discordID: discordID)
             }
@@ -83,7 +83,7 @@ const resetEmeraldIDByAccountCode = () => {
         // Signed by Administrator
         transaction(account: Address) {
             prepare(signer: AuthAccount) {
-                let administrator = signer.borrow<&EmeraldIdentity.Administrator>(from: EmeraldIdentity.EmeraldIDAdministrator)
+                let administrator = signer.borrow<&EmeraldIdentity.Administrator>(from: EmeraldIdentity.AdministratorStoragePath)
                                             ?? panic("Could not borrow the administrator")
                 administrator.removeByAccount(account: account)
             }
