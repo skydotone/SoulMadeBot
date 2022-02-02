@@ -165,9 +165,7 @@ app.get('/api/getAccount', async (req, res) => {
 app.get('/api/getScript/:scriptName', async (req, res) => {
     // only support the script with server sign and verify with signWithVerify api
     const { scriptName } = req.params
-    console.log(scriptName)
     const scriptCode = trxScripts[scriptName]()
-    console.log(scriptCode);
     if (scriptName && scriptCode) {
         res.json({
         scriptCode,
