@@ -192,12 +192,6 @@ app.post('/api/signWithVerify', async (req, res) => {
 
     const { voucher = {}, message } = signable
     const { cadence = '' } = voucher
-    console.log(signable);
-    console.log("PAUSE")
-    console.log(scriptCode.replace(/\s/g, ""))
-    console.log("PAUSE")
-    console.log(cadence.replace(/\s/g, ""))
-    console.log(scriptCode.replace(/\s/g, "") == cadence.replace(/\s/g, ""))
     if (scriptCode.replace(/\s/g, "") === cadence.replace(/\s/g, "")) {
         // when the code match , will sign the transaction
         const signature = mainnetSign(message)
