@@ -79,7 +79,7 @@ const postEmeraldIDVerifier = (message, roleID) => {
     const row = new MessageActionRow()
         .addComponents(
             new MessageButton()
-                .setCustomId(`emeraldid-${roleID}`)
+                .setCustomId(`mainnetemeraldid-${roleID}`)
                 .setLabel('Verify')
                 .setStyle('SUCCESS'),
             new MessageButton()

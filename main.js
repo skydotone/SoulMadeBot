@@ -69,7 +69,9 @@ client.on('messageCreate', message => {
 client.on('interactionCreate', async interaction => {
     if (!interaction.isButton()) return;
 
-    if (interaction.customId.split('-').length === 2) {
+    let customIdArray = interaction.customId.split('-');
+
+    if (customIdArray.length === 2 && customIdArray[0] === 'mainnetemeraldid') {
         let interactionCustomId = interaction.customId.split('-');
         let roleId = interactionCustomId[1];
 
