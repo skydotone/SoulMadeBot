@@ -1,7 +1,9 @@
 const fcl = require("@onflow/fcl");
 const t = require("@onflow/types");
+const { setEnvironment } = require("flow-cadut");
 
 const checkEmeraldIdentityDiscord = async (discordID) => {
+  await setEnvironment("mainnet");
   const accountResponse = await fcl.send([
       fcl.script`
       import EmeraldIdentity from 0x39e42c67cc851cfb
@@ -19,6 +21,7 @@ const checkEmeraldIdentityDiscord = async (discordID) => {
 }
 
 const checkEmeraldIdentityAccount = async (account) => {
+    await setEnvironment("mainnet");
     const accountResponse = await fcl.send([
         fcl.script`
         import EmeraldIdentity from 0x39e42c67cc851cfb

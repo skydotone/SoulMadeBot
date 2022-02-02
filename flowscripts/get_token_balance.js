@@ -1,8 +1,10 @@
 const fcl = require("@onflow/fcl");
 const t = require("@onflow/types");
 const { holdingScripts } = require("../scriptcode/holdings.js");
+const { setEnvironment } = require("flow-cadut");
 
 const getTokenBalance = async (account, guildID, roleId) => {
+  await setEnvironment("mainnet");
   const guildInfo = await fcl.send([
     fcl.script(`
       import EmeraldAuthBotv2 from 0x4e190c2eb6d78faa
