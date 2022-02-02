@@ -1,4 +1,4 @@
-const nft = ({contractName, contractAddress, path}) => {
+const nftCode = ({contractName, contractAddress, path}) => {
     return `
         import NonFungibleToken from 0x1d7e57aa55817448
         import ${contractName} from ${contractAddress}
@@ -18,7 +18,7 @@ const nft = ({contractName, contractAddress, path}) => {
     `;
 }
 
-const ft = ({contractName, contractAddress, path}) => {
+const ftCode = ({contractName, contractAddress, path}) => {
     return `
         import FungibleToken from 0xf233dcee88fe0abe
         import ${contractName} from ${contractAddress}
@@ -38,7 +38,7 @@ const ft = ({contractName, contractAddress, path}) => {
     `;
 }
 
-const find = (guildInfo) => {
+const findCode = (guildInfo) => {
     return `
         import FIND from 0x097bafa4e0b48eef
         import Profile from 0x097bafa4e0b48eef
@@ -84,7 +84,7 @@ const find = (guildInfo) => {
     `;
 }
 
-const geniacemetalmaneki = (guildInfo) => {
+const geniacemetalmanekiCode = (guildInfo) => {
     return `
         import GeniaceNFT from 0xabda6627c70c7f52
         
@@ -105,7 +105,7 @@ const geniacemetalmaneki = (guildInfo) => {
     `;
 }
 
-const flovatar = (guildInfo) => {
+const flovatarCode = (guildInfo) => {
     return `
         import Flovatar from 0x921ea449dffec68a
         
@@ -120,11 +120,11 @@ const flovatar = (guildInfo) => {
 }
 
 const holdingScripts = {
-    nft: nft,
-    ft: ft,
-    find: find,
-    geniacemetalmaneki: geniacemetalmaneki,
-    flovatar: flovatar
+    nft: nftCode,
+    ft: ftCode,
+    find: findCode,
+    geniacemetalmaneki: geniacemetalmanekiCode,
+    flovatar: flovatarCode
 }
 
 module.exports = {

@@ -22,7 +22,8 @@ const getTokenBalance = async (account, guildID, roleId) => {
 
   const { tokenType } = guildInfo;
   if (!tokenType) return;
-
+  console.log(holdingScripts)
+  console.log(tokenType)
   var script = holdingScripts[tokenType](guildInfo);
   if (!script) return;
 

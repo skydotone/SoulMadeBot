@@ -83,6 +83,10 @@ const postEmeraldIDVerifier = (message, roleID) => {
                 .setLabel('Verify')
                 .setStyle('SUCCESS'),
             new MessageButton()
+                .setURL('https://pedantic-darwin-e512ad.netlify.app/emeraldID')
+                .setLabel('Reset')
+                .setStyle('LINK'),
+            new MessageButton()
                 .setURL('https://emeraldcity.gitbook.io/emerald-city/building-guild/emerald-bot')
                 .setLabel('Docs')
                 .setStyle('LINK')
