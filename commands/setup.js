@@ -1,7 +1,7 @@
 const { changeAuthData } = require('../flowscripts/write_data.js');
 const { Permissions, MessageActionRow, MessageButton, MessageEmbed } = require('discord.js');
 /*
-    args[0] == NFT/FT/FIND
+    args[0] == NFT/FT/find
     args[1] == contract name
     args[2] == contract address
     args[3] == # of token
@@ -35,7 +35,7 @@ const execute = async (message, args) => {
             
             postEmeraldIDVerifier(message, role.id);
         } else if (args.length === 2) {
-            if (args[0] === 'FIND' || args[0] === 'GeniaceMETALMANEKI' || args[0] === 'Flovatar') {
+            if (args[0] === 'find' || args[0] === 'GeniaceMETALMANEKI' || args[0] === 'Flovatar') {
                 console.log("Setting up", args[0]);
                 let role = message.guild.roles.cache.find(role => role.name === args[1]);
                 if (!role) {
@@ -43,7 +43,7 @@ const execute = async (message, args) => {
                     return;
                 }
 
-                let contractAddress = args[0] === 'FIND' 
+                let contractAddress = args[0] === 'find' 
                                         ? "0x097bafa4e0b48eef"
                                         : args[0] === 'GeniaceMETALMANEKI'
                                         ? "0xabda6627c70c7f52"
@@ -51,7 +51,7 @@ const execute = async (message, args) => {
                                         ? "0x921ea449dffec68a"
                                         : null
 
-                let url = args[0] === 'FIND' 
+                let url = args[0] === 'find' 
                             ? "https://find.xyz/"
                             : args[0] === 'GeniaceMETALMANEKI'
                             ? "https://www.geniace.com/"
