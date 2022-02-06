@@ -35,38 +35,21 @@ const execute = async (message, args) => {
             
             postEmeraldIDVerifier(message, role.id);
         } else if (args.length === 2) {
-            if (args[0] === 'find' || args[0] === 'GeniaceMETALMANEKI' || args[0] === 'Flovatar') {
-                console.log("Setting up", args[0]);
-                let role = message.guild.roles.cache.find(role => role.name === args[1]);
-                if (!role) {
-                    message.channel.send("This role does not exist!");
-                    return;
-                }
-
-                let contractAddress = args[0] === 'find' 
-                                        ? "0x097bafa4e0b48eef"
-                                        : args[0] === 'GeniaceMETALMANEKI'
-                                        ? "0xabda6627c70c7f52"
-                                        : args[0] === 'Flovatar'
-                                        ? "0x921ea449dffec68a"
-                                        : null
-
-                let url = args[0] === 'find' 
-                            ? "https://find.xyz/"
-                            : args[0] === 'GeniaceMETALMANEKI'
-                            ? "https://www.geniace.com/"
-                            : args[0] === 'Flovatar'
-                            ? "https://flovatar.com/"
-                            : null
-
-                let setupResult = await changeAuthData(message.guild.id, args[0], "", contractAddress, 1, "", role.id, url, "mainnet");
-                if (!setupResult) {
-                    message.channel.send("The setup failed.");
-                    return;
-                }
-                
-                postEmeraldIDVerifier(message, role.id);
+            console.log("Setting up", args[0]);
+            let role = message.guild.roles.cache.find(role => role.name === args[1]);
+            if (!role) {
+                message.channel.send("This role does not exist!");
+                return;
             }
+
+            let setupResult = await changeAuthData(message.guild.id, args[0], "", "0x097bafa4e0b48eef", 1, "", role.id, "", "mainnet");
+            if (!setupResult) {
+                message.channel.send("The setup failed.");
+                return;
+            }
+            
+            postEmeraldIDVerifier(message, role.id);
+            
         } else {
             message.channel.send("You did not supply the correct number of arguments. `!setup [NFT/FT] [contract name] [contract address] [number of tokens] [public path] [role name] [OPTIONAL: link to the minting site]`")
         }
