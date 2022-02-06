@@ -119,12 +119,259 @@ const flovatarCode = (guildInfo) => {
     `;
 }
 
+const flovatarApeCode = (guildInfo) => {
+    return `
+        import Flovatar from 0x921ea449dffec68a
+        
+        pub fun main(address: Address): Int {
+              if let collection = getAccount(address).getCapability(Flovatar.CollectionPublicPath).borrow<&{Flovatar.CollectionPublic}>() {
+                  var count: Int = 0;
+                  let flovatarsData: [Flovatar.FlovatarData] = Flovatar.getFlovatars(address: address)
+                  
+                  for flovatar in flovatarsData {
+                    if(flovatar.metadata.combination.slice(from: 0, upTo: 4) == "B35H"){
+                      count = count + Int(1)
+                    }
+                  }
+                  
+                  return count
+              }
+              
+              return -1
+        }
+    `;
+}
+
+const flovatarDevilCode = (guildInfo) => {
+    return `
+        import Flovatar from 0x921ea449dffec68a
+        
+        pub fun main(address: Address): Int {
+            if let collection = getAccount(address).getCapability(Flovatar.CollectionPublicPath).borrow<&{Flovatar.CollectionPublic}>() {
+                  var count: Int = 0;
+                  let flovatarsData: [Flovatar.FlovatarData] = Flovatar.getFlovatars(address: address)
+                  
+                  for flovatar in flovatarsData {
+                    if(flovatar.metadata.combination.slice(from: 0, upTo: 4) == "B39H"){
+                      count = count + Int(1)
+                    }
+                  }
+                  
+                  return count
+              }
+              
+              return -1
+        }
+    `;
+}
+
+const flovatarFlotrotterCode = (guildInfo) => {
+    return `
+        import Flovatar from 0x921ea449dffec68a
+        
+        pub fun main(address: Address): Int {
+            if let collection = getAccount(address).getCapability(Flovatar.CollectionPublicPath).borrow<&{Flovatar.CollectionPublic}>() {
+                  var count: Int = 0;
+                  let flovatarsData: [Flovatar.FlovatarData] = Flovatar.getFlovatars(address: address)
+                  
+                  for flovatar in flovatarsData {
+                    let str = flovatar.metadata.combination.slice(from: flovatar.metadata.combination.length - Int(3), upTo: flovatar.metadata.combination.length)
+                    if(str == "C84" || str == "C85" || str == "C86"){
+                      count = count + Int(1)
+                    }
+                  }
+                  
+                  return count
+              }
+              
+              return -1
+        }
+    `;
+}
+
+const flovatarDroidCode = (guildInfo) => {
+    return `
+        import Flovatar from 0x921ea449dffec68a
+        
+        pub fun main(address: Address): Int {
+            if let collection = getAccount(address).getCapability(Flovatar.CollectionPublicPath).borrow<&{Flovatar.CollectionPublic}>() {
+                  var count: Int = 0;
+                  let flovatarsData: [Flovatar.FlovatarData] = Flovatar.getFlovatars(address: address)
+                  
+                  for flovatar in flovatarsData {
+                    let str = flovatar.metadata.combination.slice(from: 0, upTo: 4)
+                    if(str == "B37H" || str == "B57H" || str == "B58H"){
+                      count = count + Int(1)
+                    }
+                  }
+                  
+                  return count
+              }
+              
+              return -1
+        }
+    `;
+}
+
+const flovatarRacerCode = (guildInfo) => {
+    return `
+        import Flovatar from 0x921ea449dffec68a
+        
+        pub fun main(address: Address): Int {
+            if let collection = getAccount(address).getCapability(Flovatar.CollectionPublicPath).borrow<&{Flovatar.CollectionPublic}>() {
+                  var count: Int = 0;
+                  let flovatarsData: [Flovatar.FlovatarData] = Flovatar.getFlovatars(address: address)
+                  
+                  for flovatar in flovatarsData {
+                    let str = flovatar.metadata.combination.slice(from: flovatar.metadata.combination.length - Int(4), upTo: flovatar.metadata.combination.length)
+                    if(str == "C133" || str == "C134" || str == "C135" || str == "C136" || str == "C137"){
+                      count = count + Int(1)
+                    }
+                  }
+                  
+                  return count
+              }
+              
+              return -1
+        }
+    `;
+}
+
+const flovatarCatCode = (guildInfo) => {
+    return `
+        import Flovatar from 0x921ea449dffec68a
+        
+        pub fun main(address: Address): Int {
+            if let collection = getAccount(address).getCapability(Flovatar.CollectionPublicPath).borrow<&{Flovatar.CollectionPublic}>() {
+                  var count: Int = 0;
+                  let flovatarsData: [Flovatar.FlovatarData] = Flovatar.getFlovatars(address: address)
+                  
+                  for flovatar in flovatarsData {
+                    if(flovatar.metadata.combination.slice(from: 0, upTo: 4) == "B36H"){
+                      count = count + Int(1)
+                    }
+                  }
+                  
+                  return count
+              }
+              
+              return -1
+        }
+    `;
+}
+
+const flovatarNakedCode = (guildInfo) => {
+    return `
+        import Flovatar from 0x921ea449dffec68a
+        
+        pub fun main(address: Address): Int {
+            if let collection = getAccount(address).getCapability(Flovatar.CollectionPublicPath).borrow<&{Flovatar.CollectionPublic}>() {
+              var count: Int = 0;
+              let flovatarsData: [Flovatar.FlovatarData] = Flovatar.getFlovatars(address: address)
+              for flovatar in flovatarsData {
+                let str = flovatar.metadata.combination.slice(from: flovatar.metadata.combination.length - Int(4), upTo: flovatar.metadata.combination.length)
+                if(str == "C121"){
+                  count = count + Int(1)
+                }
+              }
+              
+              return count
+            }
+            
+            return -1
+        }
+    `;
+}
+
+const flovatarUndeadCode = (guildInfo) => {
+    return `
+        import Flovatar from 0x921ea449dffec68a
+        
+        pub fun main(address: Address): Int {
+            if let collection = getAccount(address).getCapability(Flovatar.CollectionPublicPath).borrow<&{Flovatar.CollectionPublic}>() {
+              var count: Int = 0;
+              let flovatarsData: [Flovatar.FlovatarData] = Flovatar.getFlovatars(address: address)
+              
+              for flovatar in flovatarsData {
+                let str = flovatar.metadata.combination.slice(from: 0, upTo: 4)
+                if(str == "B40H" || str == "B41H" || str == "B42H" || str == "B72H"){
+                  count = count + Int(1)
+                }
+              }
+              
+              return count
+            }
+            
+            return -1
+        }
+    `;
+}
+
+const flovatarPowerCode = (guildInfo) => {
+    return `
+        import Flovatar from 0x921ea449dffec68a
+        
+        pub fun main(address: Address): Int {
+          if let collection = getAccount(address).getCapability(Flovatar.CollectionPublicPath).borrow<&{Flovatar.CollectionPublic}>() {
+              var count: Int = 0;
+              let flovatarsData: [Flovatar.FlovatarData] = Flovatar.getFlovatars(address: address)
+              
+              for flovatar in flovatarsData {
+                let str = flovatar.metadata.combination.slice(from: flovatar.metadata.combination.length - Int(4), upTo: flovatar.metadata.combination.length)
+                if(str == "C127" || str == "C128" || str == "C129" || str == "C130" || str == "C131" || str == "C132"){
+                  count = count + Int(1)
+                }
+              }
+              
+              return count
+          }
+          
+          return -1
+        }
+    `;
+}
+
+const flovatarStarbattleCode = (guildInfo) => {
+    return `
+        import Flovatar from 0x921ea449dffec68a
+        
+        pub fun main(address: Address): Int {
+            if let collection = getAccount(address).getCapability(Flovatar.CollectionPublicPath).borrow<&{Flovatar.CollectionPublic}>() {
+              var count: Int = 0;
+              let flovatarsData: [Flovatar.FlovatarData] = Flovatar.getFlovatars(address: address)
+              
+              for flovatar in flovatarsData {
+                  let str = flovatar.metadata.combination.slice(from: 0, upTo: 4)
+                  let str2 = flovatar.metadata.combination.slice(from: flovatar.metadata.combination.length - Int(4), upTo: flovatar.metadata.combination.length)
+                if(str == "B66H" || str2 == "C166" || str2 == "C167" || str2 == "C168"){
+                  count = count + Int(1)
+                }
+              }
+              
+              return count
+            }
+            
+            return -1
+        }
+    `;
+}
+
 const holdingScripts = {
     nft: nftCode,
     ft: ftCode,
     find: findCode,
     geniacemetalmaneki: geniacemetalmanekiCode,
-    flovatar: flovatarCode
+    flovatar: flovatarCode,
+    flovatarape: flovatarApeCode,
+    flovatardevil: flovatarDevilCode,
+    flovatarflotrotter: flovatarFlotrotterCode,
+    flovatardroid: flovatarDroidCode,
+    flovatarracer: flovatarRacerCode,
+    flovatarcat: flovatarCatCode,
+    flovatarnaked: flovatarNakedCode,
+    flovatarundead: flovatarUndeadCode,
+    flovatarpower: flovatarPowerCode,
+    flovatarstarbattle: flovatarStarbattleCode
 }
 
 module.exports = {
