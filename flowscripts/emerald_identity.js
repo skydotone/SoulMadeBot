@@ -3,21 +3,22 @@ const t = require("@onflow/types");
 const { setEnvironment } = require("flow-cadut");
 
 const checkEmeraldIdentityDiscord = async (discordID) => {
-  await setEnvironment("mainnet");
-  const accountResponse = await fcl.send([
-      fcl.script`
+    await setEnvironment("mainnet");
+    console.log("Checkpoint 1");
+    const accountResponse = await fcl.send([
+        fcl.script`
       import EmeraldIdentity from 0x39e42c67cc851cfb
 
       pub fun main(discordID: String): Address? {
         return EmeraldIdentity.getAccountFromDiscord(discordID: discordID)
       }
       `,
-      fcl.args([
-          fcl.arg(discordID, t.String)
-      ])
-  ]).then(fcl.decode);
+        fcl.args([
+            fcl.arg(discordID, t.String)
+        ])
+    ]).then(fcl.decode);
 
-  return accountResponse;
+    return accountResponse;
 }
 
 const checkEmeraldIdentityAccount = async (account) => {
@@ -34,7 +35,7 @@ const checkEmeraldIdentityAccount = async (account) => {
             fcl.arg(account, t.Address)
         ])
     ]).then(fcl.decode);
-  
+
     return accountResponse;
 }
 
@@ -102,7 +103,7 @@ const trxScripts = {
 }
 
 module.exports = {
-  checkEmeraldIdentityDiscord,
-  checkEmeraldIdentityAccount,
-  trxScripts
+    checkEmeraldIdentityDiscord,
+    checkEmeraldIdentityAccount,
+    trxScripts
 }

@@ -11,6 +11,7 @@ const { Permissions, MessageActionRow, MessageButton, MessageEmbed } = require('
 */
 const execute = async (message, args) => {
     if (message.member.permissions.has(Permissions.FLAGS.MANAGE_GUILD)) {
+        console.log("Person is setting up a verification.");
         if ((args.length === 6 || args.length === 7) && (!isNaN(args[3])) && (args[0] === 'NFT' || args[0] === 'FT')) {
             let role = message.guild.roles.cache.find(role => role.name === args[5]);
             if (!role) {
@@ -32,7 +33,7 @@ const execute = async (message, args) => {
                 message.channel.send("The setup failed.");
                 return;
             }
-            
+
             postEmeraldIDVerifier(message, role.id);
         } else if (args.length === 2) {
             console.log("Setting up", args[0]);
@@ -47,9 +48,9 @@ const execute = async (message, args) => {
                 message.channel.send("The setup failed.");
                 return;
             }
-            
+
             postEmeraldIDVerifier(message, role.id);
-            
+
         } else {
             message.channel.send("You did not supply the correct number of arguments. `!setup [NFT/FT] [contract name] [contract address] [number of tokens] [public path] [role name] [OPTIONAL: link to the minting site]`")
         }
