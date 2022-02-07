@@ -1,1 +1,1 @@
-The source code for the Emerald bot.
+The source code for the Emerald bot. Join the Emerald City Discord here: https://discord.gg/emeraldcity
