@@ -400,7 +400,7 @@ const holdingScripts = {
     flovatarundead: flovatarUndeadCode,
     flovatarpower: flovatarPowerCode,
     flovatarstarbattle: flovatarStarbattleCode,
-    dropchasePartner: dropchasePartnerCode
+    dropchasepartner: dropchasePartnerCode
 }
 
 module.exports = {
