@@ -5,6 +5,7 @@ const { getTokenBalance } = require('./flowscripts/get_token_balance.js');
 const { checkEmeraldIdentityDiscord, trxScripts } = require('./flowscripts/emerald_identity.js');
 const { encrypt, decrypt } = require('./helperfunctions/encryption.js');
 const { mainnetSign } = require('./helperfunctions/authorization.js')
+const { decode } = require('rlp');
 
 const fs = require('fs');
 const fcl = require("@onflow/fcl");
@@ -190,8 +191,10 @@ app.post('/api/signWithVerify', async (req, res) => {
 
     // User is now validated //
 
-    const { voucher = {}, message } = signable
-    const { cadence = '' } = voucher
+    const { message } = signable;
+    const decoded = decode(Buffer.from(message.slice(64), 'hex'));
+    const cadence = decoded[0][0].toString();
+    console.log(cadence);
     if (scriptCode.replace(/\s/g, "") === cadence.replace(/\s/g, "")) {
         // when the code match , will sign the transaction
         const signature = mainnetSign(message)
