@@ -141,42 +141,49 @@ const verifyUserDataWithBlocto = async (user) => {
       Address, // Address of the user authenticating
       Timestamp, // Timestamp associated with the authentication
       'APP-V0.0-user', // Application domain tag
-    )
+    );
     const isValid = await fcl.verifyUserSignatures(
         Message, 
         AccountProof.signatures
-    )
-    return isValid
+    );
+    return isValid;
 }
 
 app.get('/api/getDiscordID/:discordID', async (req, res) => {
     const { discordID } = req.params;
-    res.json({
-        discordID: decrypt(discordID)
-    })
+    try {
+        let decryptedDiscordID = decrypt(discordID);
+        res.json({
+            discordID: decryptedDiscordID
+        })
+    } catch(e) {
+        res.status(500).json({
+            message: 'Cannot decode the discordID. Please try the process again.',
+        })
+    }
 });
 
 app.get('/api/getAccount', async (req, res) => {
     // todo: support multi key and defualt key both
-    let keyIndex = 0
+    let keyIndex = 0;
     res.json({
         address: "0x39e42c67cc851cfb",
         keyIndex,
-    })
+    });
 });
 
 app.get('/api/getScript/:scriptName', async (req, res) => {
     // only support the script with server sign and verify with signWithVerify api
-    const { scriptName } = req.params
-    const scriptCode = trxScripts[scriptName]()
+    const { scriptName } = req.params;
+    const scriptCode = trxScripts[scriptName]();
     if (scriptName && scriptCode) {
         res.json({
-        scriptCode,
-        })
+            scriptCode,
+        });
     } else {
         res.status(500).json({
-        message: 'Cannot get script with script name',
-        })
+            message: 'Cannot get script with script name',
+        });
     }
 });
   
@@ -186,15 +193,16 @@ app.post('/api/signWithVerify', async (req, res) => {
     const scriptCode = trxScripts[scriptName]()
 
     // validate user data with blocto
-    const isValid = await verifyUserDataWithBlocto(user)
-    if (!isValid) return res.status(500).json({ mesage: 'User data validate failed' })
+    const isValid = await verifyUserDataWithBlocto(user);
+    if (!isValid) {
+        return res.status(500).json({ mesage: 'User data validate failed' });
+    }
 
     // User is now validated //
 
     const { message } = signable;
     const decoded = decode(Buffer.from(message.slice(64), 'hex'));
     const cadence = decoded[0][0].toString();
-    console.log(cadence);
     if (scriptCode.replace(/\s/g, "") === cadence.replace(/\s/g, "")) {
         // when the code match , will sign the transaction
         const signature = mainnetSign(message)
