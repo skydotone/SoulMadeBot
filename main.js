@@ -122,6 +122,8 @@ client.on('interactionCreate', async interaction => {
             );
 
         interaction.reply({ ephemeral: true, embeds: [exampleEmbed], components: [row] });
+    } else {
+        interaction.reply({ content: "This verification is outdated.", ephemeral: true });
     }
 });
 
