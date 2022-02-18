@@ -68,8 +68,7 @@ client.on('messageCreate', message => {
 });
 
 client.on('interactionCreate', async interaction => {
-    // if (!interaction.isButton()) return;
-    console.log("User clicked.");
+    if (!interaction.isButton()) return;
 
     let customIdArray = interaction.customId.split('-');
 
