@@ -126,8 +126,10 @@ client.on('interactionCreate', async interaction => {
         let roleId = customIdArray[2];
         if (customIdArray[1] === 'join') {
             interaction.member.roles.add(roleId).catch((e) => console.log(e));
+            interaction.reply({ content: `You received the <@&${roleId}> role.`, ephemeral: true });
         } else if (customIdArray[1] === 'remove') {
             interaction.member.roles.remove(roleId).catch((e) => console.log(e));
+            interaction.reply({ content: `You removed the <@&${roleId}> role.`, ephemeral: true });
         }
     } else {
         interaction.reply({ content: "This interaction is outdated.", ephemeral: true });
