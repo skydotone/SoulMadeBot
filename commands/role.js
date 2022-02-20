@@ -1,13 +1,28 @@
 const execute = (message, args) => {
     let role = message.guild.roles.cache.find(role => role.name === args[0]);
-    if (!role) {
-        message.channel.send('This is not a valid role you can add.')
-    } else if (role.editable && (role.name === 'Developer' || role.name === 'Artist')) {
-        message.member.roles.add(role);
-        message.channel.send('There you go! You now have the ' + role.name + ' role. :)');
-    } else {
-        message.channel.send('You do not have permissions to add this role to yourself.');
-    }
+    getRole(message, role.id);
+}
+
+const getRole = (message, roleID) => {
+    const row = new MessageActionRow()
+        .addComponents(
+            new MessageButton()
+                .setCustomId(`role-join-${roleID}`)
+                .setLabel('Join')
+                .setStyle('SUCCESS'),
+            new MessageButton()
+                .setCustomId(`role-remove-${roleID}`)
+                .setLabel('Remove')
+                .setStyle('SECONDARY'),
+        );
+
+    const embed = new MessageEmbed()
+        .setColor('#5bc595')
+        .setTitle('Receive Emerald Academy Pings')
+        .setAuthor('Emerald City', 'https://i.imgur.com/YbmTuuW.png', 'https://discord.gg/emeraldcity')
+        .setThumbnail('https://i.imgur.com/27H7J1a.png');
+
+    message.channel.send({ ephemeral: true, embeds: [embed], components: [row] }).catch(e => console.log(e));
 }
 
 module.exports = {

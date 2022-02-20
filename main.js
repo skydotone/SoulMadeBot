@@ -122,8 +122,15 @@ client.on('interactionCreate', async interaction => {
             );
 
         interaction.reply({ ephemeral: true, embeds: [exampleEmbed], components: [row] });
+    } else if (customIdArray.length === 3 && customIdArray[0] === 'role') {
+        let roleId = customIdArray[2];
+        if (customIdArray[1] === 'join') {
+            interaction.member.roles.add(roleId).catch((e) => console.log(e));
+        } else if (customIdArray[1] === 'remove') {
+            interaction.member.roles.remove(roleId).catch((e) => console.log(e));
+        }
     } else {
-        interaction.reply({ content: "This verification is outdated.", ephemeral: true });
+        interaction.reply({ content: "This interaction is outdated.", ephemeral: true });
     }
 });
 
