@@ -43,7 +43,11 @@ const execute = async (message, args) => {
                 return;
             }
 
-            let setupResult = await changeAuthData(message.guild.id, args[0], "", "0x097bafa4e0b48eef", 1, "", role.id, "", "mainnet");
+            /* TOPSHOT SPECIFIC */
+            let number = args[0] === 'CoolCatsTotal' ? 3 : args[0] === 'CoolCatsUnique' ? 30 : null;
+
+            /* GENERAL */
+            let setupResult = await changeAuthData(message.guild.id, args[0], "", "0x097bafa4e0b48eef", number || 1, "", role.id, "", "mainnet");
             if (!setupResult) {
                 message.channel.send("The setup failed.");
                 return;
