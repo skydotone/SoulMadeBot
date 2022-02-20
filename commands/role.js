@@ -2,6 +2,9 @@ const { MessageActionRow, MessageButton, MessageEmbed } = require('discord.js');
 
 const execute = (message, args) => {
     let role = message.guild.roles.cache.find(role => role.name === args[0]);
+    if (!role) {
+        return;
+    }
     getRole(message, role.id);
 }
 
