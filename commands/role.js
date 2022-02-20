@@ -24,7 +24,6 @@ const getRole = (message, roleID) => {
     const embed = new MessageEmbed()
         .setColor('#5bc595')
         .setTitle('Receive Emerald Academy Pings')
-        .setAuthor('Emerald City', 'https://i.imgur.com/YbmTuuW.png', 'https://discord.gg/emeraldcity')
         .setThumbnail('https://i.imgur.com/27H7J1a.png');
 
     message.channel.send({ ephemeral: true, embeds: [embed], components: [row] }).catch(e => console.log(e));
