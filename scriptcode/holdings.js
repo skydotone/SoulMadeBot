@@ -105,6 +105,27 @@ const geniacemetalmanekiCode = (guildInfo) => {
     `;
 }
 
+const geniacemanekigemsCode = (guildInfo) => {
+    return `
+        import GeniaceNFT from 0xabda6627c70c7f52
+        
+        pub fun main(address: Address): Int {
+            if let collection = getAccount(address).getCapability(GeniaceNFT.CollectionPublicPath).borrow<&GeniaceNFT.Collection{GeniaceNFT.GeniaceNFTCollectionPublic}>() {
+                let ids = collection.getIDs()
+
+                for id in ids {
+                    let geniaceNFT = collection.borrowGeniaceNFT(id: id)!
+                    if geniaceNFT.metadata.celebrityName == "MANEKI GEMS" {
+                        return 1
+                    }
+                }
+            }
+
+            return -1
+        }
+    `;
+}
+
 const flovatarCode = (guildInfo) => {
     return `
         import Flovatar from 0x921ea449dffec68a
@@ -437,6 +458,7 @@ const holdingScripts = {
     ft: ftCode,
     find: findCode,
     geniacemetalmaneki: geniacemetalmanekiCode,
+    geniacemanekigems: geniacemanekigemsCode,
     flovatar: flovatarCode,
     flovatarape: flovatarApeCode,
     flovatardevil: flovatarDevilCode,
