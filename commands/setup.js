@@ -39,6 +39,7 @@ const execute = async (message, args) => {
             console.log("Setting up", args[0]);
             let role = message.guild.roles.cache.find(role => role.name === args[1]);
             if (!role) {
+                console.log("Role doesn't exist: " + role.name);
                 message.channel.send("This role does not exist!");
                 return;
             }
