@@ -377,6 +377,267 @@ const flovatarStarbattleCode = (guildInfo) => {
     `;
 }
 
+const flovatarSuitCode = (guildInfo) => {
+    return `
+        import Flovatar from 0x921ea449dffec68a
+        
+        pub fun main(address: Address): Int {
+            if let collection = getAccount(address).getCapability(Flovatar.CollectionPublicPath).borrow<&{Flovatar.CollectionPublic}>() {
+              var count: Int = 0;
+              let flovatarsData: [Flovatar.FlovatarData] = Flovatar.getFlovatars(address: address)
+              
+              for flovatar in flovatarsData {
+                  let str = flovatar.metadata.combination.slice(from: flovatar.metadata.combination.length - Int(3), upTo: flovatar.metadata.combination.length)
+                  let str2 = flovatar.metadata.combination.slice(from: flovatar.metadata.combination.length - Int(4), upTo: flovatar.metadata.combination.length)
+                if(str == "C90" || str2 == "C173" || str2 == "C174" || str2 == "C175" || str2 == "C176" || str2 == "C177" || str2 == "C178" || str2 == "C179" || str2 == "C180"){
+                  count = count + Int(1)
+                }
+              }
+              
+              return count
+            }
+            
+            return -1
+        }
+    `;
+}
+
+const flovatarFindCode = (guildInfo) => {
+    return `
+        import Flovatar from 0x921ea449dffec68a
+        import FIND from 0x097bafa4e0b48eef
+        import Profile from 0x097bafa4e0b48eef
+        
+        pub fun main(address: Address): Int {
+            
+            let account=getAccount(address)
+            
+            if let collection = account.getCapability(/public/FlovatarCollection).borrow<&{Flovatar.CollectionPublic}>() {
+                
+            } else {
+                return -1
+            }
+            
+            let leaseCap = account.getCapability<&FIND.LeaseCollection{FIND.LeaseCollectionPublic}>(FIND.LeasePublicPath)
+
+            if !leaseCap.check() {
+                return 0
+            }
+
+            let profile= Profile.find(address).asProfile()
+            let leases = leaseCap.borrow()!.getLeaseInformation() 
+            var time : UFix64?= nil
+            var name :String?= nil
+            for lease in leases {
+
+                //filter out all leases that are FREE or LOCKED since they are not actice
+                if lease.status != "TAKEN" {
+                    continue
+                }
+
+                //if we have not set a 
+                if profile.findName == "" {
+                    if time == nil || lease.validUntil < time! {
+                        time=lease.validUntil
+                        name=lease.name
+                    }
+                }
+
+                if profile.findName == lease.name {
+                    return 1
+                }
+            }
+
+            if name == nil {
+                return 0
+            } 
+            return 1
+        }
+    `;
+}
+
+const flovatarGirlPowerCode = (guildInfo) => {
+    return `
+        import Flovatar from 0x921ea449dffec68a
+        
+        pub fun main(address: Address): Int {
+            if let collection = getAccount(address).getCapability(Flovatar.CollectionPublicPath).borrow<&{Flovatar.CollectionPublic}>() {
+              var count: Int = 0;
+              let flovatarsData: [Flovatar.FlovatarData] = Flovatar.getFlovatars(address: address)
+              
+              for flovatar in flovatarsData {
+                  let str = flovatar.metadata.combination.slice(from: 3, upTo: 7)
+                  let str2 = flovatar.metadata.combination.slice(from: flovatar.metadata.combination.length - Int(4), upTo: flovatar.metadata.combination.length)
+                if(
+                    (str2 == "C100" || str2 == "C101" || str2 == "C145" || str2 == "C115" || str2 == "C116" || str2 == "C204" || str2 == "C189")
+                    &&
+                    (str == "H295" || str == "H296" || str == "H297" || str == "H298" || str == "H299" || str == "H300" || str == "H334" || str == "H335" || str == "H336" || str == "H337" || str == "H338" || str == "H339" || str == "H371" || str == "H372" || str == "H373" || str == "H331" || str == "H332" || str == "H333" || str == "H356" || str == "H357" || str == "H358" || str == "H383" || str == "H384" || str == "H385" || str == "H386")
+                    ){
+                  count = count + Int(1)
+                }
+              }
+              
+              return count
+            }
+            
+            return -1
+        }
+    `;
+}
+
+const flovatarStonerCode = (guildInfo) => {
+    return `
+        import Flovatar from 0x921ea449dffec68a
+        
+        pub fun main(address: Address): Int {
+            if let collection = getAccount(address).getCapability(Flovatar.CollectionPublicPath).borrow<&{Flovatar.CollectionPublic}>() {
+              var count: Int = 0;
+              let flovatarsData: [Flovatar.FlovatarData] = Flovatar.getFlovatars(address: address)
+              
+              for flovatar in flovatarsData {
+                  let accessoryId: UInt64 = flovatar.accessoryId ?? 0
+                  let str = flovatar.metadata.combination.slice(from: flovatar.metadata.combination.length - Int(8), upTo: flovatar.metadata.combination.length - Int(4))
+                  let str2 = flovatar.metadata.combination.slice(from: flovatar.metadata.combination.length - Int(7), upTo: flovatar.metadata.combination.length - Int(3))
+                if(str == "M444" || str2 == "M444" || str == "M443" || str2 == "M443" || accessoryId == UInt64(15)){
+                  count = count + Int(1)
+                }
+              }
+              
+              return count
+            }
+            
+            return -1
+        }
+    `;
+}
+
+const flovatarMustacheCode = (guildInfo) => {
+    return `
+        import Flovatar from 0x921ea449dffec68a
+        
+        pub fun main(address: Address): Int {
+            if let collection = getAccount(address).getCapability(Flovatar.CollectionPublicPath).borrow<&{Flovatar.CollectionPublic}>() {
+              var count: Int = 0;
+              let flovatarsData: [Flovatar.FlovatarData] = Flovatar.getFlovatars(address: address)
+              
+              for flovatar in flovatarsData {
+                  let str = flovatar.metadata.combination.slice(from: 7, upTo: 9)
+                if(str != "Fx"){
+                  count = count + Int(1)
+                }
+              }
+              
+              return count
+            }
+            
+            return -1
+        }
+    `;
+}
+
+const flovatarFirst100Code = (guildInfo) => {
+    return `
+        import Flovatar from 0x921ea449dffec68a
+        
+        pub fun main(address: Address): Int {
+            if let collection = getAccount(address).getCapability(Flovatar.CollectionPublicPath).borrow<&{Flovatar.CollectionPublic}>() {
+              var count: Int = 0;
+              let flovatarsData: [Flovatar.FlovatarData] = Flovatar.getFlovatars(address: address)
+              
+              for flovatar in flovatarsData {
+                if(flovatar.id <= UInt64(100)){
+                  count = count + Int(1)
+                }
+              }
+              
+              return count
+            }
+            
+            return -1
+        }
+    `;
+}
+
+const flovatarAstronautCode = (guildInfo) => {
+    return `
+        import Flovatar from 0x921ea449dffec68a
+        
+        pub fun main(address: Address): Int {
+            if let collection = getAccount(address).getCapability(Flovatar.CollectionPublicPath).borrow<&{Flovatar.CollectionPublic}>() {
+              var count: Int = 0;
+              let flovatarsData: [Flovatar.FlovatarData] = Flovatar.getFlovatars(address: address)
+              
+              for flovatar in flovatarsData {
+                  let str = flovatar.metadata.combination.slice(from: flovatar.metadata.combination.length - Int(4), upTo: flovatar.metadata.combination.length)
+                if(str == "C158" || str == "C159" || str == "C160" || str == "C161" || str == "C162" || str == "C163" || str == "C164" || str == "C165"){
+                  count = count + Int(1)
+                }
+              }
+              
+              return count
+            }
+            
+            return -1
+        }
+    `;
+}
+
+const flovatarLegendaryCode = (guildInfo) => {
+    return `
+        import Flovatar from 0x921ea449dffec68a
+        
+        pub fun main(address: Address): Int {
+            if let collection = getAccount(address).getCapability(Flovatar.CollectionPublicPath).borrow<&{Flovatar.CollectionPublic}>() {
+              var count: Int = 0;
+              let flovatarsData: [Flovatar.FlovatarData] = Flovatar.getFlovatars(address: address)
+              
+              for flovatar in flovatarsData {
+                if(flovatar.metadata.legendaryCount > UInt8(0)){
+                  count = count + Int(1)
+                }
+              }
+              
+              return count
+            }
+            
+            return -1
+        }
+    `;
+}
+
+const flovatarGrayCode = (guildInfo) => {
+    return `
+        import Flovatar from 0x921ea449dffec68a
+        
+        pub fun main(address: Address): Int {
+            if let collection = getAccount(address).getCapability(Flovatar.CollectionPublicPath).borrow<&{Flovatar.CollectionPublic}>() {
+              var count: Int = 0;
+              let flovatarsData: [Flovatar.FlovatarData] = Flovatar.getFlovatars(address: address)
+              
+              for flovatar in flovatarsData {
+                  let strB = flovatar.metadata.combination.slice(from: 0, upTo: 3)
+                  let strH = flovatar.metadata.combination.slice(from: 3, upTo: 7)
+                  let strC = flovatar.metadata.combination.slice(from: flovatar.metadata.combination.length - Int(3), upTo: flovatar.metadata.combination.length)
+                  let strC2 = flovatar.metadata.combination.slice(from: flovatar.metadata.combination.length - Int(4), upTo: flovatar.metadata.combination.length)
+                if(
+                    (strB == "B47" || strB == "B67" || strB == "B36" || strB == "B71" || str == "B58")
+                    &&
+                    (strC == "C81" || strC == "C83" || strC == "C92" || strC == "C93" || strC == "C95" || strC == "C76" || strC == "C78" || strC2 == "C101" || strC2 == "C151" || strC2 == "C207" || strC2 == "C211" || strC2 == "C102" || strC2 == "C115" || strC2 == "C138" || strC2 == "C155" || strC2 == "C171" || strC2 == "C197" || strC2 == "C121" || strC2 == "C122" || strC2 == "C124" || strC2 == "C127" || strC2 == "C167" || strC2 == "C181")
+                    &&
+                    (strH == "H288" || strH == "H289" || strH == "H295" || strH == "H296" || strH == "H301" || strH == "H303" || strH == "H307" || strH == "H313" || strH == "H316" || strH == "H319" || strH == "H334" || strH == "H359" || strH == "H367" || strH == "H371" || strH == "H381" || strH == "H291" || strH == "H293" || strH == "H323" || strH == "H348" || strH == "H352" || strH == "H384" || strH == "H290" || strH == "H327" || strH == "H329" || strH == "H340" || strH == "H341")
+                    ){
+                  count = count + Int(1)
+                }
+              }
+              
+              return count
+            }
+            
+            return -1
+        }
+    `;
+}
+
 const dropchasePartnerCode = (guildInfo) => {
     return `
         import Dropchase from 0x328670be4971a064
@@ -470,6 +731,15 @@ const holdingScripts = {
     flovatarundead: flovatarUndeadCode,
     flovatarpower: flovatarPowerCode,
     flovatarstarbattle: flovatarStarbattleCode,
+    flovatarsuit: flovatarSuitCode,
+    flovatarfind: flovatarFindCode,
+    flovatargirlpower: flovatarGirlPowerCode,
+    flovatarstoner: flovatarStonerCode,
+    flovatarmustache: flovatarMustacheCode,
+    flovatarfirst100: flovatarFirst100Code,
+    flovatarastronaut: flovatarAstronautCode,
+    flovatarlegendary: flovatarLegendaryCode,
+    flovatargray: flovatarGrayCode,
     dropchasepartner: dropchasePartnerCode,
     coolcatstotal: coolCatsTotalCode,
     coolcatsunique: coolCatsUniqueCode
