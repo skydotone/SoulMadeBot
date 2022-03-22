@@ -10,7 +10,7 @@ const execute = async (interaction, options) => {
         }
 
         const customName = options.getString('customname');
-        if (!holdingScripts[customName]) {
+        if (!holdingScripts[customName.toLowerCase()]) {
             interaction.reply({ ephemeral: true, content: 'This custom name does not exist.' }).catch(e => console.log(e));
             return;
         }
