@@ -143,7 +143,6 @@ client.on('interactionCreate', async interaction => {
         client.commands.get(commandName)?.execute(interaction, customIdArray);
     } else if (interaction.isCommand()) {
         const { commandName, options } = interaction;
-        console.log(options)
         client.commands.get(commandName)?.execute(interaction, options);
     }
 });

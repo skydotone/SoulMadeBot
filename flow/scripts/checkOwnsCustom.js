@@ -12,7 +12,6 @@ const checkOwnsCustom = async (customName, user) => {
         fcl.arg(user, t.Address),
       ])
     ]).then(fcl.decode);
-    console.log(result);
     return result;
   } catch (e) {
     console.log(e)

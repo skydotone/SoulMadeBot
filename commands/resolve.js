@@ -3,7 +3,6 @@ const { resolveAddressObject } = require('../flow/scripts/resolveNames');
 
 const execute = async (interaction, options) => {
     let obj = await resolveAddressObject(options.getString('account'));
-    console.log(obj)
     sendNames(interaction, obj.address, obj.resolvedNames.find, obj.resolvedNames.fn)
 }
 
