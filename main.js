@@ -134,18 +134,17 @@ client.on('interactionCreate', async interaction => {
         const account = await checkEmeraldID(interaction.member.id);
         console.log("Returned account from ecid", account);
         if (!account) {
-            client.commands.get('initializeEmeraldID').execute(interaction);
+            client.commands.get('initializeEmeraldID')?.execute(interaction);
             return;
         }
 
         let customIdArray = interaction.customId.split('-').concat(account);
         const commandName = customIdArray.shift();
-        client.commands.get(commandName).execute(interaction, customIdArray);
-    }
-    else if (interaction.isCommand()) {
+        client.commands.get(commandName)?.execute(interaction, customIdArray);
+    } else if (interaction.isCommand()) {
         const { commandName, options } = interaction;
         console.log(options)
-        client.commands.get(commandName).execute(interaction, options);
+        client.commands.get(commandName)?.execute(interaction, options);
     }
 });
 

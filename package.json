@@ -8,7 +8,7 @@
   "main": "main.js",
   "scripts": {
     "client": "cd client && yarn start",
-    "bot": "node main.js",
+    "dev": "nodemon main.js",
     "start": "node main.js"
   },
   "author": "Jacob Tucker",
