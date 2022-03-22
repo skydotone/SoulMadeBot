@@ -18,7 +18,7 @@ const sendNames = (interaction, address, find, fn) => {
         .setAuthor('Emerald City', 'https://i.imgur.com/YbmTuuW.png', 'https://discord.gg/emeraldcity')
         .setThumbnail('https://i.imgur.com/UgE8FJl.png');
 
-    interaction.reply({ embeds: [embed] }).catch(e => console.log(e));
+    interaction.reply({ ephemeral: true, embeds: [embed] }).catch(e => console.log(e));
 }
 
 module.exports = {
