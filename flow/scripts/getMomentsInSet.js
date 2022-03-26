@@ -29,12 +29,15 @@ pub fun main(account: Address, setName: String): Result {
                       ?? panic("GG")
   let ids = collection.getIDs()
   let moments: [MomentData] = []
+  let playIds: [UInt32] = []
   for id in ids {
     let moment = collection.borrowMoment(id: id)!
-    if moment.data.setID == setID {
-      let play: {String: String} = TopShot.getPlayMetaData(playID: moment.data.playID)!
+    let playID = moment.data.playID
+    if moment.data.setID == setID && !playIds.contains(playID) {
+      let play: {String: String} = TopShot.getPlayMetaData(playID: playID)!
       let momentData = MomentData(_serialNumber: moment.data.serialNumber, _player: play["FullName"]!, _team: play["TeamAtMoment"]!, _date: play["DateOfMoment"]!, _playCategory: play["PlayCategory"]!, _setName: setName)
       moments.append(momentData)
+      playIds.append(playID)
     }
   }
   return Result(_owner: account, _setData: setData, _moments: moments)
