@@ -112,6 +112,25 @@ client.once('ready', () => {
         name: 'god',
         description: 'Take a look at God.'
     });
+
+    commands?.create({
+        name: 'momentsinset',
+        description: 'View the moments a user has from a TopShot set',
+        options: [
+            {
+                name: 'address',
+                description: 'The users Dapper Wallet address',
+                required: true,
+                type: Constants.ApplicationCommandOptionTypes.STRING
+            },
+            {
+                name: 'setname',
+                description: 'The name of the set (ex. Cool Cats)',
+                required: true,
+                type: Constants.ApplicationCommandOptionTypes.STRING
+            }
+        ]
+    });
 })
 
 // When a user types a message
