@@ -59,6 +59,19 @@ client.once('ready', () => {
     });
 
     commands?.create({
+        name: 'identify',
+        description: 'Identify on-chain information about a user.',
+        options: [
+            {
+                name: 'user',
+                description: 'A Discord User',
+                required: true,
+                type: Constants.ApplicationCommandOptionTypes.USER
+            }
+        ]
+    });
+
+    commands?.create({
         name: 'nftverifier',
         description: 'Setup a button to verify a user owns a NFT from a certain collection.',
         options: [
