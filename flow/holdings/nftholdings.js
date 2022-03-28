@@ -780,7 +780,8 @@ const holdingScripts = {
   dropchasepartner,
   coolcatstotal,
   coolcatsunique,
-  emeraldid
+  emeraldid,
+  communityisutility
 }
 
 module.exports = {
