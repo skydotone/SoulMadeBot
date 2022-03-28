@@ -752,6 +752,33 @@ const communityisutility = () => {
   `
 }
 
+const barteryardclub = () => {
+  return `
+  import NonFungibleToken from 0x1d7e57aa55817448
+  import BarterYardClubWerewolf from 0x28abb9f291cadaf2
+  pub fun main(address: Address): Bool {
+      // Attempts the normal way of looking at a collection
+      if let collection = getAccount(address).getCapability(/public/BarterYardClubWerewolfCollection).borrow<&BarterYardClubWerewolf.Collection{NonFungibleToken.CollectionPublic}>() {
+        if collection.getIDs().length > 0 {
+          return true
+        }
+      } 
+
+      // Attempts the annoying way of looking at a collection if the project
+      // creator is an idiot and doesn't link things correctly
+      if let collection = getAccount(address).getCapability(/public/BarterYardClubWerewolfCollection).borrow<&{NonFungibleToken.CollectionPublic}>() {
+          if collection.getType().identifier == "A.28abb9f291cadaf2.BarterYardClubWerewolf.Collection" {
+            if collection.getIDs().length > 0 {
+              return true
+            }
+          }
+      }
+      
+      return false
+  }
+  `
+}
+
 const holdingScripts = {
   find,
   geniacemetalmaneki,
@@ -782,7 +809,8 @@ const holdingScripts = {
   coolcatsunique,
   emeraldid,
   flowversesock,
-  communityisutility
+  communityisutility,
+  barteryardclub
 }
 
 module.exports = {
