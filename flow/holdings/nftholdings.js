@@ -716,7 +716,7 @@ const flowversesock = () => {
   pub fun main(user: Address): Bool {
     if let collection = getAccount(user).getCapability(RaribleNFT.collectionPublicPath).borrow<&{NonFungibleToken.CollectionPublic}>() {
       let arrayOfSocks: [UInt64] = [15029, 15027, 15026, 15025, 15024, 15023, 15021, 15020, 15019, 15017, 15016, 15015, 15013, 15010, 15009, 15008, 15007, 15006, 15005, 15004, 15002, 15000, 14998, 14996, 14993, 14992, 14991, 14990, 14988, 14986, 14985, 14979, 14977, 14974, 14973, 14972, 14970, 14969, 14966, 14962, 14961, 14960, 14959, 14957, 14955, 14953, 14950, 14948, 14947, 14946, 14939, 14899, 14898, 14897, 14894, 14892, 14889, 14886, 14883, 14881, 14878, 14876, 14875, 14873, 14869, 14867, 14863, 14862, 14857, 14856, 14855, 14850, 14849, 14847, 14844, 14843, 14840, 14838, 14837, 14835, 14833, 14830, 14826, 14824, 14822, 14819, 14818, 14817, 14816, 14815, 14814, 14813, 14812, 14810, 14808, 14805, 14803, 14802, 14801, 14800, 14799, 14798, 14797, 14796, 14795, 14792, 14791, 14790, 14789, 14787, 14786]
-      let ids = collection.getIDs()
+      let ids: [UInt64] = collection.getIDs()
       for sock in arrayOfSocks {
         if ids.contains(sock) {
           return true
@@ -738,7 +738,7 @@ const communityisutility = () => {
   pub fun main(user: Address): Bool {
     if let collection = getAccount(user).getCapability(RaribleNFT.collectionPublicPath).borrow<&{NonFungibleToken.CollectionPublic}>() {
       let arrayOfCommunityIsUtility: [UInt64] = [191970, 189230, 191923, 189713, 189264, 189752, 189244, 189722, 189710, 189707, 189698, 189436, 189439, 189465, 189259, 189255, 188995, 189231, 189440, 189465, 189442, 189436, 189223, 191984, 191988, 189214, 189051, 189239, 188908, 189274, 189264, 189263, 189243, 189239, 189231, 189230, 189223, 189222, 189214, 189212, 189200, 189065, 189051, 189043, 189026, 189043, 188986, 188975, 189029, 189024, 188969, 189026, 188975, 188965]
-      let ids = collection.getIDs()
+      let ids: [UInt64] = collection.getIDs()
       for nftId in arrayOfCommunityIsUtility {
         if ids.contains(nftId) {
           return true
@@ -781,6 +781,7 @@ const holdingScripts = {
   coolcatstotal,
   coolcatsunique,
   emeraldid,
+  flowversesock,
   communityisutility
 }
 
