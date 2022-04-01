@@ -2,16 +2,16 @@ const { MessageEmbed } = require('discord.js');
 const { checkEmeraldID } = require('../flow/scripts/checkEmeraldID');
 
 const execute = async (interaction, options) => {
-  const role = interaction.guild.roles.cache.find(role => role === options.getRole('role'));
+  const role = options.getRole('role');
   if (!role) {
     interaction.reply({ ephemeral: true, content: 'This role does not exist.' }).catch(e => console.log(e));
     return;
   }
-  sendInfo(interaction, role.id);
+  sendInfo(interaction, role);
 }
 
-const sendInfo = async (interaction, roleId) => {
-  let usersWithRole = interaction.guild.roles.fetch(roleId).members.map(m => {
+const sendInfo = async (interaction, role) => {
+  const usersWithRole = role.members.map(m => {
     return {
       id: m.user.id,
       tag: m.user.tag
@@ -33,7 +33,7 @@ const sendInfo = async (interaction, roleId) => {
       fields
     )
 
-  interaction.reply({ content: `Users with the <@&${roleId}> role:`, embeds: [embed] });
+  interaction.reply({ content: `Users with the <@&${role.id}> role:`, embeds: [embed] });
 }
 
 module.exports = {
