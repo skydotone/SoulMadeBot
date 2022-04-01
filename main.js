@@ -144,6 +144,19 @@ client.once('ready', () => {
             }
         ]
     });
+
+    commands?.create({
+        name: 'userswithrole',
+        description: 'Get a list of all the users with a certain role.',
+        options: [
+            {
+                name: 'role',
+                description: 'The role you wish to give',
+                required: true,
+                type: Constants.ApplicationCommandOptionTypes.ROLE
+            }
+        ]
+    });
 })
 
 // When a user types a message
