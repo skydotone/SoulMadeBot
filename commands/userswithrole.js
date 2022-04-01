@@ -11,7 +11,7 @@ const execute = async (interaction, options) => {
 }
 
 const sendInfo = async (interaction, roleId) => {
-  let usersWithRole = interaction.guild.roles.cache.get(roleId).members.map(m => {
+  let usersWithRole = interaction.guild.roles.fetch(roleId).members.map(m => {
     return {
       id: m.user.id,
       tag: m.user.tag
