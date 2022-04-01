@@ -34,7 +34,7 @@ const sendInfo = async (interaction, role) => {
       fields
     )
 
-  interaction.reply({ embeds: [embed], ephemeral: true });
+  interaction.deferReply({ embeds: [embed], ephemeral: true });
 }
 
 module.exports = {
