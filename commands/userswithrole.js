@@ -29,11 +29,12 @@ const sendInfo = async (interaction, role) => {
   }
 
   const embed = new MessageEmbed()
+    .setDescription(`Users with the <@&${role.id}> role:`)
     .addFields(
       fields
     )
 
-  interaction.reply({ content: `Users with the <@&${role.id}> role:`, embeds: [embed] });
+  interaction.reply({ embeds: [embed], ephemeral: true });
 }
 
 module.exports = {
