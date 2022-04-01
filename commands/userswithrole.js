@@ -11,7 +11,7 @@ const execute = async (interaction, options) => {
 }
 
 const sendInfo = async (interaction, role) => {
-  interaction.deferReply({ ephemeral: true });
+  await interaction.deferReply({ ephemeral: true });
   const usersWithRole = role.members.map(m => {
     return {
       id: m.user.id,
@@ -35,7 +35,7 @@ const sendInfo = async (interaction, role) => {
       fields
     )
 
-  interaction.editReply({ embeds: [embed], ephemeral: true });
+  await interaction.editReply({ embeds: [embed], ephemeral: true });
 }
 
 module.exports = {
