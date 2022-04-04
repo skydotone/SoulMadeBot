@@ -1,7 +1,7 @@
 const { getFloatInfo } = require('../flow/scripts/getFloatInfo.js');
 
 const execute = async (interaction, options) => {
-    let float = await getFloatInfo(options.getString('address'), options.getNumber('floatid'));
+    let float = await getFloatInfo(options.getString('account'), options.getNumber('floatid'));
     if (float.error) {
         interaction.reply({ ephemeral: true, content: float.message }).catch(e => console.log(e));
         return;
