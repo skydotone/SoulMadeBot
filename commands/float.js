@@ -13,10 +13,10 @@ const postFloat = (interaction, float) => {
     const embed = {
         color: '#5bc595',
         title: float.eventName,
-        url: `https://mainnet.floats.city/${float.owner}/float/${float.id}`,
+        url: `https://floats.city/${float.owner}/float/${float.id}`,
         author: {
             name: 'FLOAT',
-            url: 'https://mainnet.floats.city/',
+            url: 'https://floats.city/',
             iconURL: 'https://i.imgur.com/qOC18pn.png'
         },
         description: `${float.eventDescription}`,
