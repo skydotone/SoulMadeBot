@@ -11,7 +11,7 @@ const app = express();
 
 fcl.config()
     .put('accessNode.api', 'https://mainnet.onflow.org')
-    // .put('0xFLOAT', '0x0afe396ebc8eee65')
+    .put('0xFLOAT', '0x2d4c3caffbeab845')
     .put('0xFIND', '0x097bafa4e0b48eef')
     .put('0xFN', '0x233eb012d34b0070')
     .put('0xNFT', '0x1d7e57aa55817448')
@@ -155,6 +155,25 @@ client.once('ready', () => {
                 required: true,
                 type: Constants.ApplicationCommandOptionTypes.ROLE
             }
+        ]
+    });
+
+    commands?.create({
+        name: 'float',
+        description: 'View a FLOAT from someones collection',
+        options: [
+          {
+            name: 'account',
+            description: 'The users address, .find, or .fn name',
+            required: true,
+            type: Constants.ApplicationCommandOptionTypes.STRING
+          },
+          {
+            name: 'floatid',
+            description: 'The ID of the FLOAT',
+            required: true,
+            type: Constants.ApplicationCommandOptionTypes.NUMBER
+          }
         ]
     });
 })
