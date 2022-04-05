@@ -176,6 +176,31 @@ client.once('ready', () => {
           }
         ]
     });
+
+    commands?.create({
+        name: 'togglerole',
+        description: 'Give someone the ability to get or remove a specific role.',
+        options: [
+          {
+            name: 'role',
+            description: 'The role you wish to give',
+            required: true,
+            type: Constants.ApplicationCommandOptionTypes.ROLE
+          },
+          {
+            name: 'description',
+            description: 'A description of what this toggle does',
+            required: true,
+            type: Constants.ApplicationCommandOptionTypes.STRING
+          },
+          {
+            name: 'image',
+            description: 'A URL to an image that will display',
+            required: false,
+            type: Constants.ApplicationCommandOptionTypes.STRING
+          }
+        ]
+      });
 })
 
 // When a user types a message
