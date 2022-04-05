@@ -37,7 +37,7 @@ const getRole = (interaction, roleID, description, image) => {
       .setThumbnail(image);
   }
 
-  interaction.reply({ ephemeral: true, embeds: [embed], components: [row] }).catch(
+  interaction.reply({ embeds: [embed], components: [row] }).catch(
     interaction.reply({ ephemeral: true, content: 'You did not pass a valid URL for the image.' })
   );
 }
