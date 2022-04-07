@@ -162,18 +162,18 @@ client.once('ready', () => {
         name: 'float',
         description: 'View a FLOAT from someones collection',
         options: [
-          {
-            name: 'account',
-            description: 'The users address, .find, or .fn name',
-            required: true,
-            type: Constants.ApplicationCommandOptionTypes.STRING
-          },
-          {
-            name: 'floatid',
-            description: 'The ID of the FLOAT',
-            required: true,
-            type: Constants.ApplicationCommandOptionTypes.NUMBER
-          }
+            {
+                name: 'account',
+                description: 'The users address, .find, or .fn name',
+                required: true,
+                type: Constants.ApplicationCommandOptionTypes.STRING
+            },
+            {
+                name: 'floatid',
+                description: 'The ID of the FLOAT',
+                required: true,
+                type: Constants.ApplicationCommandOptionTypes.NUMBER
+            }
         ]
     });
 
@@ -181,26 +181,45 @@ client.once('ready', () => {
         name: 'togglerole',
         description: 'Give someone the ability to get or remove a specific role.',
         options: [
-          {
-            name: 'role',
-            description: 'The role you wish to give',
-            required: true,
-            type: Constants.ApplicationCommandOptionTypes.ROLE
-          },
-          {
-            name: 'description',
-            description: 'A description of what this toggle does',
-            required: true,
-            type: Constants.ApplicationCommandOptionTypes.STRING
-          },
-          {
-            name: 'image',
-            description: 'A URL to an image that will display',
-            required: false,
-            type: Constants.ApplicationCommandOptionTypes.STRING
-          }
+            {
+                name: 'role',
+                description: 'The role you wish to give',
+                required: true,
+                type: Constants.ApplicationCommandOptionTypes.ROLE
+            },
+            {
+                name: 'description',
+                description: 'A description of what this toggle does',
+                required: true,
+                type: Constants.ApplicationCommandOptionTypes.STRING
+            },
+            {
+                name: 'image',
+                description: 'A URL to an image that will display',
+                required: false,
+                type: Constants.ApplicationCommandOptionTypes.STRING
+            }
         ]
-      });
+    });
+
+    commands?.create({
+        name: 'floatverifier',
+        description: 'Setup a button to verify a user owns a FLOAT from a specified Event and give them a role for it.',
+        options: [
+            {
+                name: 'eventid',
+                description: 'The id of the event',
+                required: true,
+                type: Constants.ApplicationCommandOptionTypes.NUMBER
+            },
+            {
+                name: 'role',
+                description: 'The role you wish to give',
+                required: true,
+                type: Constants.ApplicationCommandOptionTypes.ROLE
+            }
+        ]
+    });
 })
 
 // When a user types a message
@@ -221,7 +240,7 @@ client.on('interactionCreate', async interaction => {
     if (interaction.isButton()) {
         // Check the interactor's EmeraldID (null if they don't have one)
         const account = await checkEmeraldID(interaction.member.id);
-        console.log("Returned account from ecid", account);
+        console.log("EmeraldID", account);
         if (!account) {
             client.commands.get('initializeEmeraldID')?.execute(interaction);
             return;
