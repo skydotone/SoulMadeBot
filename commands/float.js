@@ -48,5 +48,5 @@ const postFloat = (interaction, float) => {
 module.exports = {
     name: 'float',
     description: 'display information about a float',
-    execute: execute,
+    execute,
 }
