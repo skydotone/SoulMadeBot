@@ -18,5 +18,5 @@ const execute = async (interaction, options) => {
 module.exports = {
     name: 'verifyFloat',
     description: 'verifies if a user has a float from a specific event and gives them the role for it',
-    execute: execute,
+    execute,
 }
