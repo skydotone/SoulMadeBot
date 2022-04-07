@@ -53,5 +53,5 @@ const postTopShot = (interaction, topshot) => {
 module.exports = {
   name: 'momentsinset',
   description: 'display all the moments a user has from a topshot set',
-  execute: execute,
+  execute,
 }
