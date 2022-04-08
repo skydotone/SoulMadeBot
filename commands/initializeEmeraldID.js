@@ -1,6 +1,6 @@
 const { MessageActionRow, MessageButton, MessageEmbed } = require('discord.js');
 
-const execute = (interaction) => {
+const execute = async (interaction) => {
     const embed = new MessageEmbed()
         .setColor('#5bc595')
         .setDescription('Click the link below to setup your EmeraldID.')
