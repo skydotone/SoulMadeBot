@@ -8,9 +8,9 @@ const execute = async (interaction, options) => {
     let emeraldID = await checkEmeraldID(discordId);
     if (!emeraldID) {
         interaction.reply({ ephemeral: true, content: 'This user does not have an EmeraldID.' })
+        return;
     }
-    let obj = await resolveAddressObject(emeraldID);
-    console.log(obj)
+    const obj = await resolveAddressObject(emeraldID);
     sendIdentification(interaction, obj.address, obj.resolvedNames.find, obj.resolvedNames.fn)
 }
 
