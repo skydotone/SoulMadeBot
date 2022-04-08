@@ -3,13 +3,13 @@ const { getMomentsInSet } = require('../flow/scripts/getMomentsInSet.js');
 const execute = async (interaction, options) => {
   let topshot = await getMomentsInSet(options.getString('address'), options.getString('setname'));
   if (topshot.error) {
-    interaction.reply({ ephemeral: true, content: topshot.message }).catch(e => console.log(e));
+    await interaction.editReply({ ephemeral: true, content: topshot.message }).catch(e => console.log(e));
     return;
   }
   postTopShot(interaction, topshot);
 }
 
-const postTopShot = (interaction, topshot) => {
+const postTopShot = async (interaction, topshot) => {
   let fields = [
     {
       name: "Moments owned",
@@ -47,7 +47,7 @@ const postTopShot = (interaction, topshot) => {
     fields,
   };
 
-  interaction.reply({ embeds: [embed] }).catch(e => console.log(e));
+  await interaction.editReply({ embeds: [embed] }).catch(e => console.log(e));
 }
 
 module.exports = {

@@ -6,7 +6,7 @@ const execute = async (interaction, options) => {
     sendNames(interaction, obj.address, obj.resolvedNames.find, obj.resolvedNames.fn)
 }
 
-const sendNames = (interaction, address, find, fn) => {
+const sendNames = async (interaction, address, find, fn) => {
     console.log(address, find, fn)
     const embed = new MessageEmbed()
         .setColor('#5bc595')
@@ -18,7 +18,7 @@ const sendNames = (interaction, address, find, fn) => {
         .setAuthor('Emerald City', 'https://i.imgur.com/YbmTuuW.png', 'https://discord.gg/emeraldcity')
         .setThumbnail('https://i.imgur.com/UgE8FJl.png');
 
-    interaction.reply({ embeds: [embed] }).catch(e => console.log(e));
+    await interaction.editReply({ embeds: [embed] }).catch(e => console.log(e));
 }
 
 module.exports = {

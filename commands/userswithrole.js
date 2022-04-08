@@ -4,7 +4,7 @@ const { checkEmeraldID } = require('../flow/scripts/checkEmeraldID');
 const execute = async (interaction, options) => {
   const role = options.getRole('role');
   if (!role) {
-    interaction.reply({ ephemeral: true, content: 'This role does not exist.' }).catch(e => console.log(e));
+    await interaction.editReply({ ephemeral: true, content: 'This role does not exist.' }).catch(e => console.log(e));
     return;
   }
   sendInfo(interaction, role);

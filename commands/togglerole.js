@@ -12,7 +12,7 @@ const execute = (interaction, options) => {
   getRole(interaction, role.id, description, image);
 }
 
-const getRole = (interaction, roleID, description, image) => {
+const getRole = async (interaction, roleID, description, image) => {
   const row = new MessageActionRow()
     .addComponents(
       new MessageButton()
@@ -37,8 +37,8 @@ const getRole = (interaction, roleID, description, image) => {
       .setThumbnail(image);
   }
 
-  interaction.reply({ embeds: [embed], components: [row] }).catch(e => 
-    interaction.reply({ ephemeral: true, content: 'You did not pass a valid URL for the image.' })
+  await interaction.editReply({ embeds: [embed], components: [row] }).catch(e => 
+    await interaction.editReply({ ephemeral: true, content: 'You did not pass a valid URL for the image.' })
   );
 }
 

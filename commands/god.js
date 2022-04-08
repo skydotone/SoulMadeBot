@@ -8,7 +8,7 @@ const execute = async (interaction, options) => {
       .setURL('https://www.youtube.com/channel/UCf6DzMRwj7SJ3nPrZqd5hHw')
       .setThumbnail('https://i.imgur.com/zpaLqTk.png')
 
-    interaction.reply({ embeds: [embed] }).catch(e => console.log(e));
+    await interaction.editReply({ embeds: [embed] }).catch(e => console.log(e));
 }
 
 module.exports = {

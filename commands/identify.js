@@ -7,14 +7,14 @@ const execute = async (interaction, options) => {
     let discordId = discordUser.id;
     let emeraldID = await checkEmeraldID(discordId);
     if (!emeraldID) {
-        interaction.reply({ ephemeral: true, content: 'This user does not have an EmeraldID.' })
+        await interaction.editReply({ ephemeral: true, content: 'This user does not have an EmeraldID.' })
         return;
     }
     const obj = await resolveAddressObject(emeraldID);
     sendIdentification(interaction, obj.address, obj.resolvedNames.find, obj.resolvedNames.fn)
 }
 
-const sendIdentification = (interaction, address, find, fn) => {
+const sendIdentification = async (interaction, address, find, fn) => {
     console.log(address, find, fn)
     const embed = new MessageEmbed()
         .setColor('#5bc595')
@@ -27,7 +27,7 @@ const sendIdentification = (interaction, address, find, fn) => {
         .setAuthor('Emerald City', 'https://i.imgur.com/YbmTuuW.png', 'https://discord.gg/emeraldcity')
         .setThumbnail('https://i.imgur.com/UgE8FJl.png');
 
-    interaction.reply({ embeds: [embed] }).catch(e => console.log(e));
+    await interaction.editReply({ embeds: [embed] }).catch(e => console.log(e));
 }
 
 module.exports = {

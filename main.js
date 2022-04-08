@@ -237,8 +237,8 @@ client.on('messageCreate', message => {
 });
 
 client.on('interactionCreate', async interaction => {
+    await interaction.deferReply({ ephemeral: true });
     if (interaction.isButton()) {
-        await interaction.deferReply({ ephemeral: true });
         // Check the interactor's EmeraldID (null if they don't have one)
         const account = await checkEmeraldID(interaction.member.id);
         console.log("EmeraldID", account);

@@ -3,13 +3,13 @@ const { getFloatInfo } = require('../flow/scripts/getFloatInfo.js');
 const execute = async (interaction, options) => {
     let float = await getFloatInfo(options.getString('account'), options.getNumber('floatid'));
     if (float.error) {
-        interaction.reply({ ephemeral: true, content: float.message }).catch(e => console.log(e));
+        await interaction.editReply({ ephemeral: true, content: float.message }).catch(e => console.log(e));
         return;
     }
     postFloat(interaction, float);
 }
 
-const postFloat = (interaction, float) => {
+const postFloat = async (interaction, float) => {
     const embed = {
         color: '#5bc595',
         title: float.eventName,
@@ -42,7 +42,7 @@ const postFloat = (interaction, float) => {
         ],
     };
 
-    interaction.reply({ embeds: [embed] }).catch(e => console.log(e));
+    await interaction.editReply({ embeds: [embed] }).catch(e => console.log(e));
 }
 
 module.exports = {
