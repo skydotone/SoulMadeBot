@@ -3,11 +3,12 @@ const { checkEmeraldID } = require('../flow/scripts/checkEmeraldID');
 const { resolveAddressObject } = require('../flow/scripts/resolveNames');
 
 const execute = async (interaction, options) => {
+    await interaction.deferReply();
     let discordUser = options.getUser('user');
     let discordId = discordUser.id;
     let emeraldID = await checkEmeraldID(discordId);
     if (!emeraldID) {
-        await interaction.editReply({ ephemeral: true, content: 'This user does not have an EmeraldID.' })
+        await interaction.editReply({ content: 'This user does not have an EmeraldID.' })
         return;
     }
     const obj = await resolveAddressObject(emeraldID);

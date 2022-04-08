@@ -5,13 +5,13 @@ const execute = async (interaction, options) => {
     if (interaction.member.permissions.has(Permissions.FLAGS.MANAGE_GUILD)) {
         const role = interaction.guild.roles.cache.find(role => role === options.getRole('role'));
         if (!role) {
-            await interaction.editReply({ ephemeral: true, content: 'This role does not exist.' }).catch(e => console.log(e));
+            await interaction.reply({ ephemeral: true, content: 'This role does not exist.' }).catch(e => console.log(e));
             return;
         }
 
         const customName = options.getString('customname');
         if (!holdingScripts[customName.toLowerCase()]) {
-            await interaction.editReply({ ephemeral: true, content: 'This custom name does not exist.' }).catch(e => console.log(e));
+            await interaction.reply({ ephemeral: true, content: 'This custom name does not exist.' }).catch(e => console.log(e));
             return;
         }
         verifyCustomButton(interaction, customName, role.id);
@@ -38,7 +38,7 @@ const verifyCustomButton = async (interaction, customName, roleId) => {
         .setDescription('Click the `Verify` button below to get the ' + `<@&${roleId}>` + ' role with your EmeraldID.')
         .setThumbnail('https://i.imgur.com/UgE8FJl.png');
 
-    await interaction.followUp({ ephemeral: false, embeds: [embed], components: [row] }).catch(e => console.log(e));
+    await interaction.reply({ ephemeral: false, embeds: [embed], components: [row] }).catch(e => console.log(e));
 }
 
 module.exports = {

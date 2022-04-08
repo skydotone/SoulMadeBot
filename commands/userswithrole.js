@@ -2,6 +2,7 @@ const { MessageEmbed } = require('discord.js');
 const { checkEmeraldID } = require('../flow/scripts/checkEmeraldID');
 
 const execute = async (interaction, options) => {
+  await interaction.deferReply({ ephemeral: true });
   const role = options.getRole('role');
   if (!role) {
     await interaction.editReply({ ephemeral: true, content: 'This role does not exist.' }).catch(e => console.log(e));
@@ -11,7 +12,6 @@ const execute = async (interaction, options) => {
 }
 
 const sendInfo = async (interaction, role) => {
-  await interaction.deferReply({ ephemeral: true });
   const usersWithRole = role.members.map(m => {
     return {
       id: m.user.id,

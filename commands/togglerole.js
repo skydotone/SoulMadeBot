@@ -37,7 +37,7 @@ const getRole = async (interaction, roleID, description, image) => {
       .setThumbnail(image);
   }
 
-  await interaction.editReply({ embeds: [embed], components: [row] }).catch(e => 
+  await interaction.reply({ embeds: [embed], components: [row] }).catch(e => 
     console.log('You did not pass a valid URL for the image in togglerole.js.')
   );
 }

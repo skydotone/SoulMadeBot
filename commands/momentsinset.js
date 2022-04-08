@@ -1,9 +1,10 @@
 const { getMomentsInSet } = require('../flow/scripts/getMomentsInSet.js');
 
 const execute = async (interaction, options) => {
+  await interaction.deferReply();
   let topshot = await getMomentsInSet(options.getString('address'), options.getString('setname'));
   if (topshot.error) {
-    await interaction.editReply({ ephemeral: true, content: topshot.message }).catch(e => console.log(e));
+    await interaction.editReply({ content: topshot.message }).catch(e => console.log(e));
     return;
   }
   postTopShot(interaction, topshot);

@@ -14,7 +14,7 @@ const execute = async (interaction) => {
                 .setStyle('LINK')
         );
 
-    await interaction.editReply({ ephemeral: true, embeds: [embed], components: [row] });
+    await interaction.reply({ ephemeral: true, embeds: [embed], components: [row] });
 }
 
 module.exports = {

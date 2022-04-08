@@ -2,6 +2,7 @@ const { MessageEmbed } = require('discord.js');
 const { resolveAddressObject } = require('../flow/scripts/resolveNames');
 
 const execute = async (interaction, options) => {
+    await interaction.deferReply();
     let obj = await resolveAddressObject(options.getString('account'));
     sendNames(interaction, obj.address, obj.resolvedNames.find, obj.resolvedNames.fn)
 }
