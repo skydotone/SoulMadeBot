@@ -4,10 +4,10 @@ const execute = async (interaction, options) => {
 
   if (onOrOff === 'join') {
     interaction.member.roles.add(roleId).catch((e) => console.log(e));
-    interaction.reply({ content: "You have been given the " + `<@&${roleId}>` + " role.", ephemeral: true });
+    await interaction.editReply({ content: "You have been given the " + `<@&${roleId}>` + " role.", ephemeral: true });
   } else {
     interaction.member.roles.remove(roleId).catch((e) => console.log(e));
-    interaction.reply({ content: `You removed the <@&${roleId}> role.`, ephemeral: true });
+    await interaction.editReply({ content: `You removed the <@&${roleId}> role.`, ephemeral: true });
   }
 }
 

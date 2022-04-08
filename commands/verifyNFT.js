@@ -1,7 +1,6 @@
 const { checkOwnsNFT } = require('../flow/scripts/checkOwnsNFT.js');
 
 const execute = async (interaction, options) => {
-    await interaction.deferReply({ ephemeral: true });
     const contractName = options[0];
     const contractAddress = options[1];
     const publicPath = options[2];

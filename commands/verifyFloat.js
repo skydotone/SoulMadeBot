@@ -8,9 +8,9 @@ const execute = async (interaction, options) => {
     const ownsFloat = await checkOwnsFloat(user, eventId);
     if (ownsFloat === true) {
         interaction.member.roles.add(roleId).catch((e) => console.log(e));
-        interaction.reply({ content: "You have been given the " + `<@&${roleId}>` + " role.", ephemeral: true });
+        await interaction.editReply({ content: "You have been given the " + `<@&${roleId}>` + " role.", ephemeral: true });
     } else {
-        interaction.reply({ content: "You do not own a FLOAT from this Event.", ephemeral: true });
+        await interaction.editReply({ content: "You do not own a FLOAT from this Event.", ephemeral: true });
     }
 }
 

@@ -1,7 +1,6 @@
 const { checkOwnsCustom } = require('../flow/scripts/checkOwnsCustom.js');
 
 const execute = async (interaction, options) => {
-    await interaction.deferReply({ ephemeral: true });
     const customName = options[0];
     const roleId = options[1];
     const user = options[2];
