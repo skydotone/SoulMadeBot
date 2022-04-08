@@ -24,5 +24,5 @@ const sendNames = (interaction, address, find, fn) => {
 module.exports = {
     name: 'resolve',
     description: 'resolve a .find or .fn name',
-    execute: execute,
+    execute,
 }
