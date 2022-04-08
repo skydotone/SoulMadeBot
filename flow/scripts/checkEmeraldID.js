@@ -2,14 +2,18 @@ const fcl = require('@onflow/fcl');
 const t = require('@onflow/types');
 
 const checkEmeraldID = async (discordID) => {
-  const accountResponse = await fcl.send([
-    fcl.script(scriptCode),
-    fcl.args([
-      fcl.arg(discordID, t.String)
-    ])
-  ]).then(fcl.decode);
-
-  return accountResponse;
+  try {
+    const accountResponse = await fcl.send([
+      fcl.script(scriptCode),
+      fcl.args([
+        fcl.arg(discordID, t.String)
+      ])
+    ]).then(fcl.decode);
+  
+    return accountResponse;
+  } catch(e) {
+    return null;
+  }
 }
 
 const scriptCode = `
