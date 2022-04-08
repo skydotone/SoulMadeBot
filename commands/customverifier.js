@@ -38,7 +38,7 @@ const verifyCustomButton = async (interaction, customName, roleId) => {
         .setDescription('Click the `Verify` button below to get the ' + `<@&${roleId}>` + ' role with your EmeraldID.')
         .setThumbnail('https://i.imgur.com/UgE8FJl.png');
 
-    await interaction.editReply({ ephemeral: false, embeds: [embed], components: [row] }).catch(e => console.log(e));
+    await interaction.followUp({ ephemeral: false, embeds: [embed], components: [row] }).catch(e => console.log(e));
 }
 
 module.exports = {
