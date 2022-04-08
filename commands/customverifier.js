@@ -44,5 +44,5 @@ const verifyCustomButton = (interaction, customName, roleId) => {
 module.exports = {
     name: 'customverifier',
     description: 'setup a role verification with emeraldid for a custom entity (must be added to ./flow/holdings/nftholdings.js through a PR)',
-    execute: execute,
+    execute,
 }
