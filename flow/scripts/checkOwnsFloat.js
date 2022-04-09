@@ -12,7 +12,7 @@ const checkOwnsFloat = async (account, eventId) => {
     ]).then(fcl.decode);
     return result;
   } catch(e) {
-    console.log(e)
+    console.log('Does not have a FLOAT Collection');
     return {error: true, message: 'You do not own this FLOAT.'};
   }
 }
