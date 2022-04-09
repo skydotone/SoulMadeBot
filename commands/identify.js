@@ -8,7 +8,8 @@ const execute = async (interaction, options) => {
     let discordId = discordUser.id;
     let emeraldID = await checkEmeraldID(discordId);
     if (!emeraldID) {
-        await interaction.editReply({ content: 'This user does not have an EmeraldID.' })
+        await interaction.deleteReply();
+        await interaction.followUp({ ephemeral: true, content: 'This user does not have an EmeraldID.' })
         return;
     }
     const obj = await resolveAddressObject(emeraldID);
