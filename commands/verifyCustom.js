@@ -17,5 +17,5 @@ const execute = async (interaction, options) => {
 module.exports = {
     name: 'verifyCustom',
     description: 'verifies if a user has a custom entity that is pre-defined in ./flow/holdings/nftholdings.js',
-    execute: execute,
+    execute,
 }
