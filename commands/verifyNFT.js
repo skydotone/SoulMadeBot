@@ -19,5 +19,5 @@ const execute = async (interaction, options) => {
 module.exports = {
     name: 'verifyNFT',
     description: 'verifies if a user has a nft from a certain contract',
-    execute: execute,
+    execute,
 }
