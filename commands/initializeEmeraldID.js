@@ -9,7 +9,7 @@ const execute = async (interaction) => {
     const row = new MessageActionRow()
         .addComponents(
             new MessageButton()
-                .setURL('https://id.ecdao.org' + '/create')
+                .setURL('https://id.ecdao.org/')
                 .setLabel('Create your own EmeraldID')
                 .setStyle('LINK')
         );

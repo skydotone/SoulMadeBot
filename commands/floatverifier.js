@@ -19,7 +19,11 @@ const verifyFloatButton = async (interaction, eventId, roleId) => {
             new MessageButton()
                 .setCustomId(`verifyFloat-${eventId}-${roleId}`)
                 .setLabel('Verify')
-                .setStyle('SUCCESS')
+                .setStyle('SUCCESS'),
+            new MessageButton()
+                .setURL('https://id.ecdao.org/')
+                .setLabel('Reset')
+                .setStyle('LINK')
         );
 
     const embed = new MessageEmbed()

@@ -23,7 +23,7 @@ const verifyNFTButton = async (interaction, contractName, contractAddress, publi
                 .setLabel('Verify')
                 .setStyle('SUCCESS'),
             new MessageButton()
-                .setURL('https://id.ecdao.org' + '/reset')
+                .setURL('https://id.ecdao.org/')
                 .setLabel('Reset')
                 .setStyle('LINK')
         );
