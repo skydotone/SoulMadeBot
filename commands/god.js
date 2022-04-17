@@ -14,5 +14,5 @@ const execute = async (interaction, options) => {
 module.exports = {
     name: 'god',
     description: 'take a look at god',
-    execute: execute,
+    execute,
 }
