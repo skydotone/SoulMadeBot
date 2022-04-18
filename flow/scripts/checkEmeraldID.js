@@ -16,6 +16,21 @@ const checkEmeraldID = async (discordID) => {
   }
 }
 
+const checkEmeraldIDFromAccount = async (account) => {
+  try {
+    const discordID = await fcl.send([
+      fcl.script(scriptCode3),
+      fcl.args([
+        fcl.arg(account, t.Address)
+      ])
+    ]).then(fcl.decode);
+  
+    return discordID;
+  } catch(e) {
+    return null;
+  }
+}
+
 const checkEmeraldIDBatch = async (discordIDs) => {
   try {
     const accounts = await fcl.send([
@@ -39,6 +54,14 @@ pub fun main(discordID: String): Address? {
 }
 `;
 
+const scriptCode3 = `
+import EmeraldIdentity from 0xEmeraldIdentity
+
+pub fun main(account: Address): String? {
+  return EmeraldIdentity.getDiscordFromAccount(account: account)
+}
+`;
+
 const scriptCode2 = `
 import EmeraldIdentity from 0xEmeraldIdentity
 
@@ -53,5 +76,6 @@ pub fun main(discordIDs: [String]): {String: Address?} {
 
 module.exports = {
   checkEmeraldID,
-  checkEmeraldIDBatch
+  checkEmeraldIDBatch,
+  checkEmeraldIDFromAccount
 }
