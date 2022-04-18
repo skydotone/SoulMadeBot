@@ -17,7 +17,10 @@ const execute = async (interaction, options) => {
 const sendNames = async (interaction, address, find, fn, emeraldID) => {
     let roleMap;
     if (emeraldID) {
-        roleMap = interaction.guild.members.cache.get(emeraldID).roles.cache.sort((a, b) => b.position - a.position).map(r => r).join(", ");
+        const member = interaction.guild.members.cache.get(emeraldID);
+        if (member) {
+            roleMap = member.roles.cache.sort((a, b) => b.position - a.position).map(r => r).join(", ");   
+        }
     }
     console.log(roleMap)
     const embed = new MessageEmbed()
