@@ -1,5 +1,5 @@
-const { MessageEmbed } = require('discord.js');
-const { checkEmeraldID } = require('../flow/scripts/checkEmeraldID');
+const { MessageAttachment } = require('discord.js');
+const { checkEmeraldIDBatch } = require('../flow/scripts/checkEmeraldID');
 
 const execute = async (interaction, options) => {
   await interaction.deferReply({ ephemeral: true });
@@ -12,30 +12,29 @@ const execute = async (interaction, options) => {
 }
 
 const sendInfo = async (interaction, role) => {
-  const usersWithRole = role.members.map(m => {
-    return {
-      id: m.user.id,
-      tag: m.user.tag
-    }
-  });
+  await interaction.guild.members.fetch();
 
-  let fields = [];
-  for (let i = 0; i < usersWithRole.length; i++) {
-    const user = usersWithRole[i];
-    const emeraldID = await checkEmeraldID(user.id)
-    fields.push({
-      name: user.tag,
-      value: emeraldID || 'N/A'
-    });
+  // Maps discordID => discord username
+  const usersWithRole = {};
+  role.members.forEach(member => {
+    usersWithRole[member.user.id] = member.user.tag;
+  })
+
+  // Maps discord username => emeraldID
+  let fields = {};
+  // A list of discordIDs
+  const userIDs = Object.keys(usersWithRole);
+  // Maps discordID => emeraldID
+  const answer = await checkEmeraldIDBatch(userIDs);
+  for (let i = 0; i < userIDs.length; i++) {
+    let emeraldID = answer[userIDs[i]];
+    let userTag = usersWithRole[userIDs[i]];
+    fields[userTag] = emeraldID || 'N/A';
   }
+  const csv = csvmaker(fields);
 
-  const embed = new MessageEmbed()
-    .setDescription(`Users with the <@&${role.id}> role:`)
-    .addFields(
-      fields
-    )
-
-  await interaction.editReply({ embeds: [embed], ephemeral: true });
+  const userList = new MessageAttachment(Buffer.from(csv), 'users.csv');
+  await interaction.editReply({content: `Users with the <@&${role.id}> role:`, files: [userList]});
 }
 
 module.exports = {

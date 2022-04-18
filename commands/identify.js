@@ -35,5 +35,5 @@ const sendIdentification = async (interaction, address, find, fn) => {
 module.exports = {
     name: 'identify',
     description: 'identify an on-chain user',
-    execute: execute,
+    execute,
 }
