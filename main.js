@@ -20,7 +20,7 @@ fcl.config()
 const port = process.env.PORT || 5000;
 
 const prefix = '!';
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MEMBERS] });
 
 // Gets all of our commands from our commands folder
 client.commands = new Collection();
