@@ -232,7 +232,7 @@ client.on('messageCreate', message => {
     // Executes the youtube.js file
     if (command === 'test') {
         console.log("wtf")
-        message.channel.send('Jacob is so talented, smart, and attractive. I was not forced to say this.');
+        message.channel.send('Jacob is so talented, smart, and attractive. I was not forced to say this.').catch((e) => console.log(e));
     }
 });
 
