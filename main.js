@@ -20,7 +20,7 @@ fcl.config()
 const port = process.env.PORT || 5000;
 
 const prefix = '!';
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.GUILD_MEMBERS] });
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MEMBERS] });
 
 // Gets all of our commands from our commands folder
 client.commands = new Collection();
@@ -232,7 +232,7 @@ client.on('messageCreate', message => {
     // Executes the youtube.js file
     if (command === 'test') {
         console.log("wtf")
-        message.channel.send('Testing!');
+        message.channel.send('Jacob is so talented, smart, and attractive. I was not forced to say this.');
     }
 });
 
