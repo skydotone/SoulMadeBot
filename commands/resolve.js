@@ -22,7 +22,7 @@ const sendNames = async (interaction, address, find, fn, emeraldID) => {
             roleMap = member.roles.cache.sort((a, b) => b.position - a.position).map(r => r).join(", ");   
         }
     }
-    console.log(roleMap)
+
     const embed = new MessageEmbed()
         .setColor('#5bc595')
         .addFields(
