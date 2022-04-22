@@ -1,6 +1,5 @@
 const fcl = require('@onflow/fcl');
 const t = require('@onflow/types');
-const { toAddress } = require('./resolveNames');
 
 const getGroupInfo = async (account, groupName) => {
 
