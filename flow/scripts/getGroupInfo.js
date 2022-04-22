@@ -22,11 +22,11 @@ const getGroupInfo = async (account, groupName) => {
 const scriptCode = `
 import FLOAT from 0xFLOAT
 
-pub fun main(account: Address, groupName: String): &FLOAT.Group? {
+pub fun main(account: Address, groupName: String): &FLOAT.Group {
   let floatEventCollection = getAccount(account).getCapability(FLOAT.FLOATEventsPublicPath)
                               .borrow<&FLOAT.FLOATEvents{FLOAT.FLOATEventsPublic}>()
                               ?? panic("Could not borrow the FLOAT Events Collection from the account.")
-  return floatEventCollection.getGroup(groupName: groupName)
+  return floatEventCollection.getGroup(groupName: groupName)!
 }
 `;
 
