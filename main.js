@@ -220,6 +220,31 @@ client.once('ready', () => {
             }
         ]
     });
+
+    commands?.create({
+        name: 'groupverifier',
+        description: 'Setup a button to verify a user owns a FLOAT from a certain group of FLOAT Events.',
+        options: [
+            {
+                name: 'creator',
+                description: 'The Group creators address',
+                required: true,
+                type: Constants.ApplicationCommandOptionTypes.STRING
+            },
+            {
+                name: 'groupname',
+                description: 'The name of the Group',
+                required: true,
+                type: Constants.ApplicationCommandOptionTypes.STRING
+            },
+            {
+                name: 'role',
+                description: 'The role you wish to give',
+                required: true,
+                type: Constants.ApplicationCommandOptionTypes.ROLE
+            }
+        ]
+    });
 })
 
 // When a user types a message
@@ -240,7 +265,7 @@ client.on('interactionCreate', async interaction => {
     if (interaction.isButton()) {
         // If it's a button, we always want to make it ephemeral.
         await interaction.deferReply({ ephemeral: true });
-        
+
         // Check the interactor's EmeraldID (null if they don't have one)
         const account = await checkEmeraldID(interaction.member.id);
         console.log("EmeraldID", account);
