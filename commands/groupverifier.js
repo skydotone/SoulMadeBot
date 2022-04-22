@@ -1,4 +1,5 @@
 const { MessageActionRow, MessageButton, MessageEmbed, Permissions } = require('discord.js');
+const { toAddress } = require('../flow/scripts/resolveNames');
 
 const execute = async (interaction, options) => {
   if (interaction.member.permissions.has(Permissions.FLAGS.MANAGE_GUILD)) {
@@ -8,17 +9,25 @@ const execute = async (interaction, options) => {
       return;
     }
 
-    let creator = options.getString('creator');
-    let groupName = options.getString('groupname');
-    verifyGroupButton(interaction, creator, groupName, role.id);
+    const creator = options.getString('creator');
+    let resolved = creator;
+    if (resolved.includes('.') || resolved.slice(0, 2) !== '0x') {
+      resolved = await toAddress(creator);
+    }
+    if (!resolved) {
+      return {error: true, message: 'This account is invalid.'};
+    }
+
+    const groupName = options.getString('groupname');
+    verifyGroupButton(interaction, creator, resolved, groupName, role.id);
   }
 }
 
-const verifyGroupButton = (interaction, creator, groupName, roleId) => {
+const verifyGroupButton = (interaction, creator, resolved, groupName, roleId) => {
   const row = new MessageActionRow()
     .addComponents(
       new MessageButton()
-        .setCustomId(`verifyGroup-${creator}-${groupName}-${roleId}`)
+        .setCustomId(`verifyGroup-${resolved}-${groupName}-${roleId}`)
         .setLabel('Verify')
         .setStyle('SUCCESS'),
       new MessageButton()

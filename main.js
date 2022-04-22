@@ -227,7 +227,7 @@ client.once('ready', () => {
         options: [
             {
                 name: 'creator',
-                description: 'The Group creators address',
+                description: 'The Group creators address, .find, or .fn name',
                 required: true,
                 type: Constants.ApplicationCommandOptionTypes.STRING
             },
