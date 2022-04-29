@@ -801,7 +801,7 @@ const abdlegendary = () => {
     // Attempts the normal way of looking at a collection
     if let collection = getAccount(address).getCapability(/public/MomentCollection).borrow<&{ABD.MomentCollectionPublic}>() {
       for id in collection.getIDs() {
-        if id >= 1 || id <= 150 {
+        if id >= 1 && id <= 150 {
           return true
         }
       }
