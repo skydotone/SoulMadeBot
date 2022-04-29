@@ -779,6 +779,21 @@ const barteryardclub = () => {
   `
 }
 
+const abdholder = () => {
+  return `
+  import ABD from 0x67af7ecf76556cd3
+  pub fun main(address: Address): Bool {
+    // Attempts the normal way of looking at a collection
+    if let collection = getAccount(address).getCapability(/public/MomentCollection).borrow<&{ABD.MomentCollectionPublic}>() {
+      if collection.getIDs().length > 0 {
+        return true
+      }
+    } 
+    return false
+  }
+  `
+}
+
 const holdingScripts = {
   find,
   geniacemetalmaneki,
@@ -810,7 +825,8 @@ const holdingScripts = {
   emeraldid,
   flowversesock,
   communityisutility,
-  barteryardclub
+  barteryardclub,
+  abdholder
 }
 
 module.exports = {
