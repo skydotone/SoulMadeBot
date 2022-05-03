@@ -811,6 +811,48 @@ const abdlegendary = () => {
   `
 }
 
+const fabricantitemnft = () => {
+  return `
+  import ItemNFT from 0xfc91de5e6566cc7c
+  pub fun main(address: Address): Bool {
+    if let collection = getAccount(address).getCapability(ItemNFT.CollectionPublicPath).borrow<&{ItemNFT.ItemCollectionPublic}>() {
+      if collection.getIDs().length > 0 {
+        return true
+      }
+    } 
+    return false
+  }
+  `
+}
+
+const fabricants1itemnft = () => {
+  return `
+  import TheFabricantS1ItemNFT from 0x09e03b1f871b3513
+  pub fun main(address: Address): Bool {
+    if let collection = getAccount(address).getCapability(TheFabricantS1ItemNFT.CollectionPublicPath).borrow<&{TheFabricantS1ItemNFT.ItemCollectionPublic}>() {
+      if collection.getIDs().length > 0 {
+        return true
+      }
+    } 
+    return false
+  }
+  `
+}
+
+const fabricants2itemnft = () => {
+  return `
+  import TheFabricantS2ItemNFT from 0x7752ea736384322f
+  pub fun main(address: Address): Bool {
+    if let collection = getAccount(address).getCapability(TheFabricantS2ItemNFT.CollectionPublicPath).borrow<&{TheFabricantS2ItemNFT.ItemCollectionPublic}>() {
+      if collection.getIDs().length > 0 {
+        return true
+      }
+    } 
+    return false
+  }
+  `
+}
+
 const holdingScripts = {
   find,
   geniacemetalmaneki,
@@ -844,7 +886,10 @@ const holdingScripts = {
   communityisutility,
   barteryardclub,
   abdholder,
-  abdlegendary
+  abdlegendary,
+  fabricantitemnft,
+  fabricants1itemnft,
+  fabricants2itemnft
 }
 
 module.exports = {
