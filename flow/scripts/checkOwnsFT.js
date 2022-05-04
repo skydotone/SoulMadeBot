@@ -9,7 +9,7 @@ const checkOwnsFT = async (contractName, contractAddress, publicPath, amount, us
       if let vault = getAccount(address).getCapability(${publicPath}).borrow<&${contractName}.Vault{FungibleToken.Balance}>() {
           return vault.balance >= ${amount}
       } else {
-          if let vaultPublic = getAccount(address).getCapability(${path}).borrow<&{FungibleToken.Balance}>() {
+          if let vaultPublic = getAccount(address).getCapability(${publicPath}).borrow<&{FungibleToken.Balance}>() {
               if vaultPublic.getType().identifier == "A.${contractAddress.slice(2)}.${contractName}.Vault" {
                   return vaultPublic.balance >= ${amount}
               }
