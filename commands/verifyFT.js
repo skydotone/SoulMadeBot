@@ -7,8 +7,8 @@ const execute = async (interaction, options) => {
     const amount = options[3];
     const roleId = options[4];
     const user = options[5];
-    const ownsNFT = await checkOwnsFT(contractName, contractAddress, publicPath, amount, user);
-    if (ownsNFT === true) {
+    const ownsFT = await checkOwnsFT(contractName, contractAddress, publicPath, amount, user);
+    if (ownsFT === true) {
         interaction.member.roles.add(roleId).catch((e) => console.log(e));
         await interaction.editReply({ content: "You have been given the " + `<@&${roleId}>` + " role.", ephemeral: true });
     } else {

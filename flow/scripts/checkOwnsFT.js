@@ -30,7 +30,7 @@ const checkOwnsFT = async (contractName, contractAddress, publicPath, amount, us
     return result;
   } catch(e) {
     console.log(e)
-    return {error: true, message: 'You do not own this NFT.'};
+    return {error: true, message: 'You do not own this token.'};
   }
 }
 
