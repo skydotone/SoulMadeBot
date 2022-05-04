@@ -2,7 +2,7 @@ const fcl = require('@onflow/fcl');
 const t = require('@onflow/types');
 
 const checkOwnsFT = async (contractName, contractAddress, publicPath, amount, user) => {
-  const fixedAmount = amount.toFixed(2);
+  const fixedAmount = parseFloat(amount).toFixed(2);
   const scriptCode = `
   import FungibleToken from 0xf233dcee88fe0abe
   import ${contractName} from ${contractAddress}
