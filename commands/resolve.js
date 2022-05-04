@@ -30,6 +30,7 @@ const sendNames = async (interaction, address, find, fn, emeraldID) => {
             { name: '.find', value: find || "N/A", inline: true },
             { name: '.fn', value: fn || "N/A", inline: true },
             { name: 'EmeraldID', value: (emeraldID ? '✅' : "N/A"), inline: true },
+            { name: 'Discord User', value: (emeraldID ? `<@${emeraldID}>` : 'N/A'), inline: true },
             { name: 'Roles', value: roleMap || "N/A", inline: true }
         )
         .setAuthor('Emerald City', 'https://i.imgur.com/YbmTuuW.png', 'https://discord.gg/emeraldcity')
