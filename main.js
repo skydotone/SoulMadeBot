@@ -245,6 +245,43 @@ client.once('ready', () => {
             }
         ]
     });
+
+    commands?.create({
+        name: 'tokenverifier',
+        description: 'Setup a button to verify a user owns X tokens from a certain vault.',
+        options: [
+            {
+                name: 'contractname',
+                description: 'The name of the contract',
+                required: true,
+                type: Constants.ApplicationCommandOptionTypes.STRING
+            },
+            {
+                name: 'contractaddress',
+                description: 'The address of the contract',
+                required: true,
+                type: Constants.ApplicationCommandOptionTypes.STRING
+            },
+            {
+                name: 'publicpath',
+                description: 'The public path to the vault',
+                required: true,
+                type: Constants.ApplicationCommandOptionTypes.STRING
+            },
+            {
+                name: 'amount',
+                description: 'The amount of tokens the user must hold',
+                required: true,
+                type: Constants.ApplicationCommandOptionTypes.STRING
+            },
+            {
+                name: 'role',
+                description: 'The role you wish to give',
+                required: true,
+                type: Constants.ApplicationCommandOptionTypes.ROLE
+            }
+        ]
+    });
 })
 
 // When a user types a message
