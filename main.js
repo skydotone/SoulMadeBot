@@ -316,7 +316,7 @@ client.on('interactionCreate', async interaction => {
             client.commands.get('initializeEmeraldID')?.execute(interaction);
             return;
         }
-
+        console.log(interaction.customId)
         let customIdArray = interaction.customId.split('-').concat(account);
         const commandName = customIdArray.shift();
         client.commands.get(commandName)?.execute(interaction, customIdArray);

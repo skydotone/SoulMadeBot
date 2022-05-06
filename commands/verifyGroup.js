@@ -6,6 +6,7 @@ const execute = async (interaction, options) => {
   const roleId = options[2];
   const all = options[3];
   const user = options[4]; 
+  console.log(options)
 
   let passed;
   console.log(all === 'true');
