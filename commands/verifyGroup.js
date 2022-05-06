@@ -8,7 +8,8 @@ const execute = async (interaction, options) => {
   const user = options[4]; 
 
   let passed;
-  console.log('All', all);
+  console.log('All', all)
+  console.log(all === true);
   if (all === true) {
     passed = await checkOwnsAllFloatsFromGroup(creator, groupName, user);
   } else {
