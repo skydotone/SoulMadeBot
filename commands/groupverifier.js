@@ -20,21 +20,22 @@ const execute = async (interaction, options) => {
     }
 
     const groupName = options.getString('groupname');
+    const all = options.getBoolean('all');
     const groupInfo = await getGroupInfo(resolved, groupName);
     if (groupInfo.error) {
       interaction.reply({ ephemeral: true, content: groupInfo.message }).catch(e => console.log(e));
       return;
     }
 
-    verifyGroupButton(interaction, creator, resolved, groupInfo, role.id);
+    verifyGroupButton(interaction, creator, resolved, groupInfo, role.id, all);
   }
 }
 
-const verifyGroupButton = (interaction, creator, resolved, groupInfo, roleId) => {
+const verifyGroupButton = (interaction, creator, resolved, groupInfo, roleId, all) => {
   const row = new MessageActionRow()
     .addComponents(
       new MessageButton()
-        .setCustomId(`verifyGroup-${resolved}-${groupInfo.name}-${roleId}`)
+        .setCustomId(`verifyGroup-${resolved}-${groupInfo.name}-${roleId}-${all}`)
         .setLabel('Verify')
         .setStyle('SUCCESS'),
       new MessageButton()

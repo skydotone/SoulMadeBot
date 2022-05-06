@@ -1,16 +1,24 @@
-const { checkOwnsFloatFromGroup } = require('../flow/scripts/checkOwnsFloatFromGroup.js');
+const { checkOwnsFloatFromGroup, checkOwnsAllFloatsFromGroup } = require('../flow/scripts/checkOwnsFloatFromGroup.js');
 
 const execute = async (interaction, options) => {
   const creator = options[0];
   const groupName = options[1];
   const roleId = options[2];
-  const user = options[3];
-  const ownsFloatInGroup = await checkOwnsFloatFromGroup(creator, groupName, user);
-  if (ownsFloatInGroup === true) {
+  const all = options[3];
+  const user = options[4]; 
+
+  let passed;
+  console.log('All', all);
+  if (all === true) {
+    passed = await checkOwnsAllFloatsFromGroup(creator, groupName, user);
+  } else {
+    passed = await checkOwnsFloatFromGroup(creator, groupName, user || all);
+  }
+  if (passed === true) {
     interaction.member.roles.add(roleId).catch((e) => console.log(e));
     await interaction.editReply({ content: "You have been given the " + `<@&${roleId}>` + " role.", ephemeral: true });
   } else {
-    await interaction.editReply({ content: "You do not own a FLOAT in this Group.", ephemeral: true });
+    await interaction.editReply({ content: passed.message, ephemeral: true });
   }
 }
 

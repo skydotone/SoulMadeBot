@@ -242,6 +242,12 @@ client.once('ready', () => {
                 description: 'The role you wish to give',
                 required: true,
                 type: Constants.ApplicationCommandOptionTypes.ROLE
+            },
+            {
+                name: 'all',
+                description: 'If the user has to own ALL the FLOATs from this group',
+                required: true,
+                type: Constants.ApplicationCommandOptionTypes.BOOLEAN
             }
         ]
     });
