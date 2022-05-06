@@ -21,6 +21,7 @@ const execute = async (interaction, options) => {
 
     const groupName = options.getString('groupname');
     const all = options.getBoolean('all');
+    console.log({all})
     const groupInfo = await getGroupInfo(resolved, groupName);
     if (groupInfo.error) {
       interaction.reply({ ephemeral: true, content: groupInfo.message }).catch(e => console.log(e));
