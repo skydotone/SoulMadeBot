@@ -20,7 +20,7 @@ const execute = async (interaction, options) => {
     }
 
     const groupName = options.getString('groupname');
-    const all = options.getBoolean('all');
+    const all = options.getBoolean('all').toString();
 
     const groupInfo = await getGroupInfo(resolved, groupName);
     if (groupInfo.error) {
@@ -33,11 +33,10 @@ const execute = async (interaction, options) => {
 }
 
 const verifyGroupButton = (interaction, creator, resolved, groupInfo, roleId, all) => {
-  const allString = all.toString();
   const row = new MessageActionRow()
     .addComponents(
       new MessageButton()
-        .setCustomId(`verifyGroup-${resolved}-${groupInfo.name}-${roleId}-${allString}`)
+        .setCustomId(`verifyGroup-${resolved}-${groupInfo.name}-${roleId}-${all}`)
         .setLabel('Verify')
         .setStyle('SUCCESS'),
       new MessageButton()
@@ -48,7 +47,7 @@ const verifyGroupButton = (interaction, creator, resolved, groupInfo, roleId, al
 
   const embed = new MessageEmbed()
     .setColor('#5bc595')
-    .setTitle(all ? `Verify you own all the FLOATs from ${groupInfo.name}` : `Verify you own a FLOAT from ${groupInfo.name}`)
+    .setTitle(all == true ? `Verify you own all the FLOATs from ${groupInfo.name}` : `Verify you own a FLOAT from ${groupInfo.name}`)
     .addFields(
       { name: 'Group creator', value: creator },
       { name: 'Group description', value: groupInfo.description }
