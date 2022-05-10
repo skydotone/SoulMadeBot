@@ -2,7 +2,7 @@ const { checkOwnsFloatFromGroup, checkOwnsAllFloatsFromGroup } = require('../flo
 
 const execute = async (interaction, options) => {
   const creator = options[0];
-  const groupName = options[1];
+  const groupName = options[1].replaceAll(" : ", " - ");
   const roleId = options[2];
   const all = options[3];
   const user = options[4]; 
