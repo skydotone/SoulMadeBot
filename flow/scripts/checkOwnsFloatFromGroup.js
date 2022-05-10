@@ -11,7 +11,7 @@ const checkOwnsFloatFromGroup = async (creator, groupName, user) => {
         fcl.arg(user, t.Address),
       ])
     ]).then(fcl.decode);
-    return result;
+    return result || {error: true, message: 'You do not own any FLOATs from this Group.'};
   } catch(e) {
     return {error: true, message: 'You do not own any FLOATs from this Group.'};
   }
@@ -27,7 +27,7 @@ const checkOwnsAllFloatsFromGroup = async (creator, groupName, user) => {
         fcl.arg(user, t.Address),
       ])
     ]).then(fcl.decode);
-    return result;
+    return result || {error: true, message: 'You do not own all the FLOATs from this Group.'};
   } catch(e) {
     return {error: true, message: 'You do not own all the FLOATs from this Group.'};
   }
