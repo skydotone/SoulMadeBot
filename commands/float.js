@@ -1,7 +1,7 @@
 const { getFloatInfo } = require('../flow/scripts/getFloatInfo.js');
 
 const execute = async (interaction, options) => {
-    await interaction.deferReply();
+    await interaction.deferReply({ ephemeral: true });
     let float = await getFloatInfo(options.getString('account'), options.getNumber('floatid'));
     if (float.error) {
         await interaction.deleteReply();

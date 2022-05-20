@@ -47,7 +47,7 @@ client.once('ready', () => {
 
     commands?.create({
         name: 'resolve',
-        description: 'Resolve a .find or .fn name.',
+        description: 'Get information about a .find, .fn, or address.',
         options: [
             {
                 name: 'account',

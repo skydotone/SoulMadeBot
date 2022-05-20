@@ -3,7 +3,7 @@ const { checkEmeraldIDFromAccount } = require('../flow/scripts/checkEmeraldID');
 const { resolveAddressObject } = require('../flow/scripts/resolveNames');
 
 const execute = async (interaction, options) => {
-    await interaction.deferReply();
+    await interaction.deferReply({ ephemeral: true });
     const obj = await resolveAddressObject(options.getString('account'));
     if (!obj.address) {
         await interaction.deleteReply();
