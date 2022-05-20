@@ -13,17 +13,18 @@ const execute = async (interaction, options) => {
         return;
     }
     const obj = await resolveAddressObject(emeraldID);
-    sendIdentification(interaction, obj.address, obj.resolvedNames.find, obj.resolvedNames.fn)
+    sendIdentification(interaction, obj.address, obj.resolvedNames.find, obj.resolvedNames.fn, discordId)
 }
 
-const sendIdentification = async (interaction, address, find, fn) => {
+const sendIdentification = async (interaction, address, find, fn, discordId) => {
     console.log(address, find, fn)
     const embed = new MessageEmbed()
         .setColor('#5bc595')
         .addFields(
-            { name: 'Address', value: address || "N/A", inline: true },
+            { name: 'Blocto Address', value: address || "N/A", inline: true },
             { name: '.find', value: find || "N/A", inline: true },
             { name: '.fn', value: fn || "N/A", inline: true },
+            { name: 'Discord User', value: `<@${discordId}>`, inline: true },
             { name: 'EmeraldID', value: "✅", inline: true }
         )
         .setAuthor('Emerald City', 'https://i.imgur.com/YbmTuuW.png', 'https://discord.gg/emeraldcity')
