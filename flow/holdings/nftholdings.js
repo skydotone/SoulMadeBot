@@ -885,7 +885,7 @@ const evolution = () => {
   return `
   import Evolution from 0xf4264ac8f3256818 
   pub fun main(address: Address): Bool {
-    if let collection = getAccount(address).getCapability(/public/EvolutionCollection).borrow<&{Evolution.EvolutionCollectionPublic}>() {
+    if let collection = getAccount(address).getCapability(/public/f4264ac8f3256818_Evolution_Collection).borrow<&{Evolution.EvolutionCollectionPublic}>() {
       if collection.getIDs().length > 0 {
         return true
       }
