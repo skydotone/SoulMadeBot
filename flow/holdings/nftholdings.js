@@ -881,6 +881,20 @@ const goobzmegawhale = () => {
   `
 }
 
+const evolution = () => {
+  return `
+  import Evolution from 0xf4264ac8f3256818 
+  pub fun main(address: Address): Bool {
+    if let collection = getAccount(address).getCapability(/public/EvolutionCollection).borrow<&{Evolution.EvolutionCollectionPublic}>() {
+      if collection.getIDs().length > 0 {
+        return true
+      }
+    } 
+    return false
+  }
+  `
+}
+
 const holdingScripts = {
   find,
   geniacemetalmaneki,
@@ -919,7 +933,8 @@ const holdingScripts = {
   fabricants1itemnft,
   fabricants2itemnft,
   goobzwhale,
-  goobzmegawhale
+  goobzmegawhale,
+  evolution
 }
 
 module.exports = {
