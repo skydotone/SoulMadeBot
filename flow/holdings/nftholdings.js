@@ -853,6 +853,34 @@ const fabricants2itemnft = () => {
   `
 }
 
+const goobzwhale = () => {
+  return `
+  import GooberXContract from 0x34f2bf4a80bb0f69 
+  pub fun main(address: Address): Bool {
+    if let collection = getAccount(address).getCapability(GooberXContract.CollectionPublicPath).borrow<&{GooberXContract.GooberCollectionPublic}>() {
+      if collection.getIDs().length >= 30 {
+        return true
+      }
+    } 
+    return false
+  }
+  `
+}
+
+const goobzmegawhale = () => {
+  return `
+  import GooberXContract from 0x34f2bf4a80bb0f69 
+  pub fun main(address: Address): Bool {
+    if let collection = getAccount(address).getCapability(GooberXContract.CollectionPublicPath).borrow<&{GooberXContract.GooberCollectionPublic}>() {
+      if collection.getIDs().length >= 100 {
+        return true
+      }
+    } 
+    return false
+  }
+  `
+}
+
 const holdingScripts = {
   find,
   geniacemetalmaneki,
@@ -889,7 +917,9 @@ const holdingScripts = {
   abdlegendary,
   fabricantitemnft,
   fabricants1itemnft,
-  fabricants2itemnft
+  fabricants2itemnft,
+  goobzwhale,
+  goobzmegawhale
 }
 
 module.exports = {
