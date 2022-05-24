@@ -4,7 +4,6 @@ const execute = async (interaction, options) => {
     await interaction.deferReply({ ephemeral: true });
     let float = await getFloatInfo(options.getString('account'), options.getNumber('floatid'));
     if (float.error) {
-        await interaction.deleteReply();
         await interaction.followUp({ ephemeral: true, content: float.message }).catch(e => console.log(e));
         return;
     }

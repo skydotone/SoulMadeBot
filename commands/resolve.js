@@ -6,7 +6,6 @@ const execute = async (interaction, options) => {
     await interaction.deferReply({ ephemeral: true });
     const obj = await resolveAddressObject(options.getString('account'));
     if (!obj.address) {
-        await interaction.deleteReply();
         await interaction.followUp({ ephemeral: true, content: 'This is not a valid user account.' })
         return;
     }

@@ -8,7 +8,6 @@ const execute = async (interaction, options) => {
     let discordId = discordUser.id;
     let emeraldID = await checkEmeraldID(discordId);
     if (!emeraldID) {
-        await interaction.deleteReply();
         await interaction.followUp({ ephemeral: true, content: 'This user does not have an EmeraldID.' })
         return;
     }
