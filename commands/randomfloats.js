@@ -3,7 +3,7 @@ const { toAddress } = require('../flow/scripts/resolveNames');
 
 const execute = async (interaction, options) => {
     const public = options.getBoolean('public');
-    await interaction.deferReply({ ephemeral: public });
+    await interaction.deferReply({ ephemeral: !public });
     const creator = options.getString('account');
     let resolved = creator;
     if (resolved.includes('.') || resolved.slice(0, 2) !== '0x') {
@@ -20,7 +20,7 @@ const execute = async (interaction, options) => {
 
     const holders = await getRandomFloats(resolved, eventId);
     if (holders.error) {
-        await interaction.followUp({ ephemeral: true, content: holders.message }).catch(e => console.log(e));
+        await interaction.followUp({ content: holders.message }).catch(e => console.log(e));
         return;
     }
     if (holders.length < number) {
