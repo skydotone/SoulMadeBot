@@ -288,6 +288,31 @@ client.once('ready', () => {
             }
         ]
     });
+
+    commands?.create({
+        name: 'randomfloats',
+        description: 'Get a random number of FLOAT claimers from your event.',
+        options: [
+            {
+                name: 'account',
+                description: 'The users address, .find, or .fn name',
+                required: true,
+                type: Constants.ApplicationCommandOptionTypes.STRING
+            },
+            {
+                name: 'eventid',
+                description: 'The id of the event',
+                required: true,
+                type: Constants.ApplicationCommandOptionTypes.STRING
+            },
+            {
+                name: 'number',
+                description: 'The number of claimers you would like to get',
+                required: true,
+                type: Constants.ApplicationCommandOptionTypes.INTEGER
+            }
+        ]
+    });
 })
 
 // When a user types a message
