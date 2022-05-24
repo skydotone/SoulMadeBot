@@ -13,8 +13,8 @@ const execute = async (interaction, options) => {
     }
     const eventId = options.getString('eventid');
     let number = options.getInteger('number');
-    if (number >= 100) {
-        number = 100;
+    if (number > 25) {
+        number = 25;
     }
 
     const holders = await getRandomFloats(resolved, eventId);
