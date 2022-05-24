@@ -2,7 +2,8 @@ const { getRandomFloats, getDiscordIds } = require('../flow/scripts/getRandomFlo
 const { toAddress } = require('../flow/scripts/resolveNames');
 
 const execute = async (interaction, options) => {
-    await interaction.deferReply({ ephemeral: true });
+    const public = options.getBoolean('public');
+    await interaction.deferReply({ ephemeral: public });
     const creator = options.getString('account');
     let resolved = creator;
     if (resolved.includes('.') || resolved.slice(0, 2) !== '0x') {
@@ -59,7 +60,7 @@ const postRandoms = async (interaction, creator, eventId, results) => {
         fields: results
     };
 
-    await interaction.editReply({ ephemeral: false, embeds: [embed] }).catch(e => console.log(e));
+    await interaction.editReply({ embeds: [embed] }).catch(e => console.log(e));
 }
 
 module.exports = {

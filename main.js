@@ -310,6 +310,12 @@ client.once('ready', () => {
                 description: 'The number of claimers you would like to get',
                 required: true,
                 type: Constants.ApplicationCommandOptionTypes.INTEGER
+            },
+            {
+                name: 'public',
+                description: 'Display results publically',
+                required: true,
+                type: Constants.ApplicationCommandOptionTypes.BOOLEAN
             }
         ]
     });
