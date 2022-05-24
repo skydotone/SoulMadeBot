@@ -17,6 +17,21 @@ const getRandomFloats = async (creator, eventId) => {
   }
 }
 
+const getDiscordIds = async (addresses) => {
+  try {
+    const result = await fcl.send([
+      fcl.script(scriptCode2),
+      fcl.args([
+        fcl.arg(addresses, t.Array(t.Address))
+      ])
+    ]).then(fcl.decode);
+    return result || {error: true, message: 'This event does not exist.'};
+  } catch(e) {
+    console.log(e)
+    return {error: true, message: 'This event does not exist.'};
+  }
+}
+
 const scriptCode = `
 import FLOAT from 0xFLOAT
 
@@ -32,6 +47,21 @@ pub fun main(host: Address, eventId: UInt64): [FLOAT.TokenIdentifier] {
 }
 `;
 
+const scriptCode2 = `
+import EmeraldIdentity from 0xEmeraldIdentity
+
+pub fun main(addresses: [Address]): [String?] {
+  var answers: [String?] = []
+  var i = 0
+  while i < addresses.length {
+    answers.append(EmeraldIdentity.getDiscordFromAccount(account: addresses[i]))
+    i = i + 1
+  }
+  return answers
+}
+`
+
 module.exports = {
-  getRandomFloats
+  getRandomFloats,
+  getDiscordIds
 }

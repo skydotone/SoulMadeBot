@@ -1,4 +1,4 @@
-const { getRandomFloats } = require('../flow/scripts/getRandomFloats');
+const { getRandomFloats, getDiscordIds } = require('../flow/scripts/getRandomFloats');
 const { toAddress } = require('../flow/scripts/resolveNames');
 
 const execute = async (interaction, options) => {
@@ -25,15 +25,24 @@ const execute = async (interaction, options) => {
     if (holders.length < number) {
         number = holders.length;
     }
-    let results = [];
+    
+    let addresses = [];
     for (var i = 0; i < number; i++) {
         const random = Math.floor(Math.random() * (holders.length));
+        const address = holders[random].address;
+        addresses[i] = address;
+    }
+    let discordIds = await getDiscordIds(addresses);
+
+    let results = [];
+    for (var i = 0; i < number; i++) {
         results[i] = {
             name: "Winner #" + (i + 1),
-            value: holders[random].address,
+            value: discordIds[i] ? `<@${discordIds[i]}>: ${addresses[i]}` : addresses[i],
             inline: true
         }
     }
+
     postRandoms(interaction, creator, eventId, results);
 }
 
