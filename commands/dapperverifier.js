@@ -10,21 +10,21 @@ const execute = async (interaction, options) => {
             return;
         }
 
-        const customName = options.getString('customname');
-        const convertedName = customName.replace(/\s/g, "").toLowerCase()
-        if (!holdingScripts[convertedName]) {
+        const customName = options.getString('customname').replace(/\s/g, "").toLowerCase();
+        const title = options.getString('title');
+        if (!holdingScripts[customName]) {
             await interaction.reply({ ephemeral: true, content: 'This custom name does not exist.' }).catch(e => console.log(e));
             return;
         }
-        verifyCustomButton(interaction, customName, convertedName, role.id);
+        verifyCustomButton(interaction, title, customName, role.id);
     }
 }
 
-const verifyCustomButton = async (interaction, customName, convertedName, roleId) => {
+const verifyCustomButton = async (interaction, title, customName, roleId) => {
     const row = new MessageActionRow()
         .addComponents(
             new MessageButton()
-                .setCustomId(`verifyDapper-${convertedName}-${roleId}`)
+                .setCustomId(`verifyDapper-${customName}-${roleId}`)
                 .setLabel('Verify')
                 .setStyle('SUCCESS'),
             new MessageButton()
@@ -35,7 +35,7 @@ const verifyCustomButton = async (interaction, customName, convertedName, roleId
 
     const embed = new MessageEmbed()
         .setColor('#5bc595')
-        .setTitle(`Verify you own a ${customName}`)
+        .setTitle(title)
         .setAuthor('Emerald City', 'https://i.imgur.com/YbmTuuW.png', 'https://discord.gg/emeraldcity')
         .setDescription('Click the `Verify` button below to get the ' + `<@&${roleId}>` + ' role with your EmeraldID.')
         .setThumbnail('https://i.imgur.com/UgE8FJl.png');
