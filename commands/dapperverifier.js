@@ -1,6 +1,6 @@
 // A command for all Dapper Products
 const { MessageActionRow, MessageButton, MessageEmbed, Permissions } = require('discord.js');
-const { holdingScripts } = require('../flow/holdings/nftholdings');
+const { holdingScripts } = require('../flow/holdings/dapperholdings');
 
 const execute = async (interaction, options) => {
     if (interaction.member.permissions.has(Permissions.FLAGS.MANAGE_GUILD)) {
@@ -11,19 +11,20 @@ const execute = async (interaction, options) => {
         }
 
         const customName = options.getString('customname');
-        if (!holdingScripts[customName.toLowerCase()]) {
+        const convertedName = customName.replace(/\s/g, "").toLowerCase()
+        if (!holdingScripts[convertedName]) {
             await interaction.reply({ ephemeral: true, content: 'This custom name does not exist.' }).catch(e => console.log(e));
             return;
         }
-        verifyCustomButton(interaction, customName, role.id);
+        verifyCustomButton(interaction, customName, convertedName, role.id);
     }
 }
 
-const verifyCustomButton = async (interaction, customName, roleId) => {
+const verifyCustomButton = async (interaction, customName, convertedName, roleId) => {
     const row = new MessageActionRow()
         .addComponents(
             new MessageButton()
-                .setCustomId(`verifyDapper-${customName}-${roleId}`)
+                .setCustomId(`verifyDapper-${convertedName}-${roleId}`)
                 .setLabel('Verify')
                 .setStyle('SUCCESS'),
             new MessageButton()
