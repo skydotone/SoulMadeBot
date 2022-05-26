@@ -15,7 +15,7 @@ const execute = async (interaction, options, emeraldIds) => {
         await interaction.editReply({ content: `You do not own a Dapper EmeraldID.`, ephemeral: true, components: [row] });
     }
 
-    const ownsDapper = await checkOwnsDapper(customName.replace(/\s/g, "").toLowerCase(), user);
+    const ownsDapper = await checkOwnsDapper(customName, user);
     if (ownsDapper === true) {
         interaction.member.roles.add(roleId).catch((e) => console.log(e));
         await interaction.editReply({ content: "You have been given the " + `<@&${roleId}>` + " role.", ephemeral: true });

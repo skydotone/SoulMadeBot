@@ -4,7 +4,8 @@ const { holdingScripts } = require('../holdings/dapperholdings');
 
 const checkOwnsDapper = async (customName, user) => {
   if (!user) return null;
-  const scriptCode = holdingScripts[customName.toLowerCase()];
+  console.log(customName.replace(/\s/g, "").toLowerCase())
+  const scriptCode = holdingScripts[customName.replace(/\s/g, "").toLowerCase()];
 
   try {
     const result = await fcl.send([
