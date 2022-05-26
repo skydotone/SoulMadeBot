@@ -6,7 +6,7 @@ const execute = async (interaction, options) => {
       .setTitle("Jacob's YouTube Channel")
       .setDescription('Ever wonder what a Flow God looks like? Click the link above.')
       .setURL('https://www.youtube.com/channel/UCf6DzMRwj7SJ3nPrZqd5hHw')
-      .setThumbnail('https://i.imgur.com/zpaLqTk.png')
+      .setThumbnail('https://i.imgur.com/gDQX1Ej.png')
 
     await interaction.reply({ embeds: [embed] }).catch(e => console.log(e));
 }
