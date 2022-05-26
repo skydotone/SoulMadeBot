@@ -2,6 +2,7 @@ const fcl = require('@onflow/fcl');
 const t = require('@onflow/types');
 
 const checkOwnsFloat = async (account, eventId) => {
+  if (!account) return null;
   try {
     const result = await fcl.send([
       fcl.script(scriptCode),

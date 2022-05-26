@@ -2,6 +2,7 @@ const fcl = require('@onflow/fcl');
 const t = require('@onflow/types');
 
 const checkOwnsFloatFromGroup = async (creator, groupName, user) => {
+  if (!user) return null;
   try {
     const result = await fcl.send([
       fcl.script(scriptCode),
@@ -18,6 +19,7 @@ const checkOwnsFloatFromGroup = async (creator, groupName, user) => {
 }
 
 const checkOwnsAllFloatsFromGroup = async (creator, groupName, user) => {
+  if (!user) return null;
   try {
     const result = await fcl.send([
       fcl.script(scriptCode2),

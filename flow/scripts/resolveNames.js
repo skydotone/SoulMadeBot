@@ -41,6 +41,7 @@ const resolveAddressObject = async (lookup) => {
     },
     address: ""
   };
+  if (!lookup) return answer;
   let rootLookup = lookup.split('.')[0];
   try {
     if (rootLookup.length === 18 && rootLookup.substring(0, 2) === '0x') {

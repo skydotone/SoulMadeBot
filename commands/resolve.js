@@ -25,7 +25,7 @@ const sendNames = async (interaction, address, find, fn, emeraldID) => {
     const embed = new MessageEmbed()
         .setColor('#5bc595')
         .addFields(
-            { name: 'Blocto Address', value: address || "N/A", inline: true },
+            { name: 'Address', value: address || "N/A", inline: true },
             { name: '.find', value: find || "N/A", inline: true },
             { name: '.fn', value: fn || "N/A", inline: true },
             { name: 'EmeraldID', value: (emeraldID ? '✅' : "N/A"), inline: true },

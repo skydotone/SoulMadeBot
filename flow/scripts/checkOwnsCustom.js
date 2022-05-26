@@ -3,6 +3,7 @@ const t = require('@onflow/types');
 const { holdingScripts } = require('../holdings/nftholdings');
 
 const checkOwnsCustom = async (customName, user) => {
+  if (!user) return null;
   const scriptCode = holdingScripts[customName.toLowerCase()];
 
   try {
