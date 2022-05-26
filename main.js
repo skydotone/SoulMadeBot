@@ -126,6 +126,12 @@ client.once('ready', () => {
         description: 'Setup a button to verify a user owns a Dapper entity.',
         options: [
             {
+                name: 'title',
+                description: 'The title of this verifier',
+                required: true,
+                type: Constants.ApplicationCommandOptionTypes.STRING
+            },
+            {
                 name: 'customname',
                 description: 'The custom name',
                 required: true,
