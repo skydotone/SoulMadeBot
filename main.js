@@ -122,6 +122,25 @@ client.once('ready', () => {
     });
 
     commands?.create({
+        name: 'dapperverifier',
+        description: 'Setup a button to verify a user owns a Dapper entity.',
+        options: [
+            {
+                name: 'customname',
+                description: 'The custom name',
+                required: true,
+                type: Constants.ApplicationCommandOptionTypes.STRING
+            },
+            {
+                name: 'role',
+                description: 'The role you wish to give',
+                required: true,
+                type: Constants.ApplicationCommandOptionTypes.ROLE
+            }
+        ]
+    });
+
+    commands?.create({
         name: 'god',
         description: 'Take a look at God.'
     });
