@@ -703,7 +703,7 @@ const emeraldid = () => {
   pub fun main(user: Address): Bool {
     let hasBloctoId = EmeraldIdentity.getDiscordFromAccount(account: user) != nil
     let hasDapperId = EmeraldIdentityDapper.getDiscordFromAccount(account: user) != nil
-    return hasBloctoId && hasDapperId
+    return hasBloctoId || hasDapperId
   }
   `
 }
