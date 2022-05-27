@@ -14,8 +14,40 @@ function threeufcmoments() {
   `
 }
 
+function oneflunk() {
+  return `
+  import Flunks from 0x807c3d470888cc48 
+  import NonFungibleToken from 0x1d7e57aa55817448
+  pub fun main(user: Address): Bool {
+    if let collection = getAccount(user).getCapability(Flunks.CollectionPublicPath).borrow<&Flunks.Collection{NonFungibleToken.CollectionPublic}>() {
+      if collection.getIDs().length > 0 {
+        return true
+      }
+    }
+    return false
+  }
+  `
+}
+
+function eightplusflunk() {
+  return `
+  import Flunks from 0x807c3d470888cc48 
+  import NonFungibleToken from 0x1d7e57aa55817448
+  pub fun main(user: Address): Bool {
+    if let collection = getAccount(user).getCapability(Flunks.CollectionPublicPath).borrow<&Flunks.Collection{NonFungibleToken.CollectionPublic}>() {
+      if collection.getIDs().length >= 8 {
+        return true
+      }
+    }
+    return false
+  }
+  `
+}
+
 const holdingScripts = {
-  threeufcmoments
+  threeufcmoments,
+  oneflunk,
+  eightplusflunk
 }
 
 module.exports = {
