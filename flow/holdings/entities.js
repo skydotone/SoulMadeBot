@@ -4,16 +4,16 @@ function UFC() {
   import NonFungibleToken from 0x1d7e57aa55817448
 
   pub fun main(user: Address, roleIds: [String]): [String] {
-    var result: [String] = []
+    var earnedRoles: [String] = []
 
     // This checks for at least 3 UFC Moments
     if let collection = getAccount(user).getCapability(UFC_NFT.CollectionPublicPath).borrow<&UFC_NFT.Collection{NonFungibleToken.CollectionPublic}>() {
       if collection.getIDs().length >= 3 {
-        result.append(roleIds[0])
+        earnedRoles.append(roleIds[0])
       }
     }
 
-    return result
+    return earnedRoles
   } 
   `
 }
@@ -24,21 +24,21 @@ function Flunks() {
   import NonFungibleToken from 0x1d7e57aa55817448
 
   pub fun main(user: Address, roleIds: [String]): [String] {
-    var result: [String] = []
+    var earnedRoles: [String] = []
 
     if let collection = getAccount(user).getCapability(Flunks.CollectionPublicPath).borrow<&Flunks.Collection{NonFungibleToken.CollectionPublic}>() {
       // This checks for at least 1 Flunk
       if collection.getIDs().length > 0 {
-        result.append(roleIds[0])
+        earnedRoles.append(roleIds[0])
       }
 
       // This checks for at least 8 Flunks
       if collection.getIDs().length >= 8 {
-        result.append(roleIds[1])
+        earnedRoles.append(roleIds[1])
       }
     }
 
-    return result
+    return earnedRoles
   }
   `
 }
