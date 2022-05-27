@@ -43,9 +43,47 @@ function Flunks() {
   `
 }
 
+function IXLabs() {
+  return `
+  import TopShot from 0x0b2a3299cc857e29
+
+  // Returns the total # of moments the user has from Cool Cats
+  pub fun main(user: Address, roleIds: [String]): [String] {
+    var earnedRoles: [String] = []
+
+    if let collection = getAccount(account).getCapability(/public/MomentCollection).borrow<&{TopShot.MomentCollectionPublic}>() {
+      let ids = collection.getIDs()
+      var answer: UInt64 = 0
+      var coveredPlays: [UInt32] = []
+      for id in ids {
+        let moment = collection.borrowMoment(id: id)!
+        // If it is a cool cat
+        if moment.data.setID == 32 {
+          answer = answer + 1
+          if !coveredPlays.contains(moment.data.playID) {
+            coveredPlays.append(moment.data.playID)
+          }
+        }
+      }
+      // If the user has 3 or more Cool Cat Moments
+      if answer >= 3 {
+        earnedRoles.append(roleIds[0])
+      }
+      // If the user has all 30 unique Cool Cat Moments
+      if coveredPlays.length == 30 {
+        earnedRoles.append(roleIds[1])
+      }
+    }
+
+    return earnedRoles
+  }
+  `
+}
+
 const holdingScripts = {
   UFC,
-  Flunks
+  Flunks,
+  IXLabs
 }
 
 module.exports = {
