@@ -122,26 +122,14 @@ client.once('ready', () => {
     });
 
     commands?.create({
-        name: 'dapperverifier',
-        description: 'Setup a button to verify a user owns a Dapper entity.',
+        name: 'entity',
+        description: 'Setup a verifier for an entity that was previously verified by Emerald City.',
         options: [
             {
-                name: 'title',
-                description: 'The title of this verifier',
+                name: 'name',
+                description: 'The name provided by Emerald City.',
                 required: true,
                 type: Constants.ApplicationCommandOptionTypes.STRING
-            },
-            {
-                name: 'customname',
-                description: 'The custom name',
-                required: true,
-                type: Constants.ApplicationCommandOptionTypes.STRING
-            },
-            {
-                name: 'role',
-                description: 'The role you wish to give',
-                required: true,
-                type: Constants.ApplicationCommandOptionTypes.ROLE
             }
         ]
     });

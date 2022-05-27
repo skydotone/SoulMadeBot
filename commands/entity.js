@@ -1,30 +1,23 @@
 // A command for all Dapper Products
 const { MessageActionRow, MessageButton, MessageEmbed, Permissions } = require('discord.js');
-const { holdingScripts } = require('../flow/holdings/dapperholdings');
+const { holdingScripts } = require('../flow/holdings/entities');
 
 const execute = async (interaction, options) => {
     if (interaction.member.permissions.has(Permissions.FLAGS.MANAGE_GUILD)) {
-        const role = interaction.guild.roles.cache.find(role => role === options.getRole('role'));
-        if (!role) {
-            await interaction.reply({ ephemeral: true, content: 'This role does not exist.' }).catch(e => console.log(e));
+        const name = options.getString('name');
+        if (!holdingScripts[name]) {
+            await interaction.reply({ ephemeral: true, content: 'This is not a registered entity.' }).catch(e => console.log(e));
             return;
         }
-
-        const customName = options.getString('customname').replace(/\s/g, "").toLowerCase();
-        const title = options.getString('title');
-        if (!holdingScripts[customName]) {
-            await interaction.reply({ ephemeral: true, content: 'This custom name does not exist.' }).catch(e => console.log(e));
-            return;
-        }
-        verifyCustomButton(interaction, title, customName, role.id);
+        verifyEntity(interaction, name);
     }
 }
 
-const verifyCustomButton = async (interaction, title, customName, roleId) => {
+const verifyEntity = async (interaction, name) => {
     const row = new MessageActionRow()
         .addComponents(
             new MessageButton()
-                .setCustomId(`verifyDapper-${customName}-${roleId}`)
+                .setCustomId(`verifyEntity-${name}`)
                 .setLabel('Verify')
                 .setStyle('SUCCESS'),
             new MessageButton()
@@ -35,7 +28,7 @@ const verifyCustomButton = async (interaction, title, customName, roleId) => {
 
     const embed = new MessageEmbed()
         .setColor('#5bc595')
-        .setTitle(title)
+        .setTitle(`Verify your assets for ${name}`)
         .setAuthor('Emerald City', 'https://i.imgur.com/YbmTuuW.png', 'https://discord.gg/emeraldcity')
         .setDescription('Click the `Verify` button below to get the ' + `<@&${roleId}>` + ' role with your EmeraldID.')
         .setThumbnail('https://i.imgur.com/UgE8FJl.png');
@@ -44,7 +37,7 @@ const verifyCustomButton = async (interaction, title, customName, roleId) => {
 }
 
 module.exports = {
-    name: 'dapperverifier',
-    description: 'setup a role verification with emeraldid for dapper products (nbats and ufc strike)',
+    name: 'entity',
+    description: 'Setup a verifier for an entity that was previously verified by Emerald City.',
     execute,
 }
