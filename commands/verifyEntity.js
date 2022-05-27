@@ -8,7 +8,7 @@ const execute = async (interaction, options, emeraldIds) => {
         await interaction.editReply({ content: roleIds.message, ephemeral: true });
     } else if (roleIds.length > 0) {
         interaction.member.roles.add(roleIds).catch((e) => console.log(e));
-        const displayRoles = roleIds.map(roleId => `<@&${roleId}>`).join();
+        const displayRoles = roleIds.map(roleId => `<@&${roleId}>`).join(', ');
         await interaction.editReply({ content: "You have been given the following roles: " + displayRoles, ephemeral: true });
     } else {
         await interaction.editReply({ content: `You did not receive any roles.`, ephemeral: true });
