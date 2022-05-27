@@ -8,8 +8,17 @@ function UFC() {
 
     // This checks for at least 3 UFC Moments
     if let collection = getAccount(user).getCapability(UFC_NFT.CollectionPublicPath).borrow<&UFC_NFT.Collection{NonFungibleToken.CollectionPublic}>() {
-      if collection.getIDs().length >= 3 {
+      let ids = collection.getIDs()
+      if ids.length >= 3 {
         earnedRoles.append(roleIds[0])
+      }
+      for id in ids {
+        let moment = collection.borrowUFC_NFT(id: id)!
+        let metadata = UFC_NFT.getSetMetadata(setId: moment.setId)!
+        if (metadata["TIER"] == "Champion") {
+          earnedRoles.append(roleIds[1])
+          break
+        }
       }
     }
 

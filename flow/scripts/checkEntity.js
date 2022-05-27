@@ -7,7 +7,7 @@ const UFC = async (emeraldIds) => {
   const user = emeraldIds["dapper"];
   if (!user) return { error: true, message: 'You need to create your Dapper EmeraldID at https://id.ecdao.org' };
 
-  const roleIds = ['972637352742748241', '953024151516491806'];
+  const roleIds = ['979887923904278539', '979887923904278539'];
 
   const args = [
     fcl.arg(user, t.Address),
