@@ -51,7 +51,7 @@ function IXLabs() {
   pub fun main(user: Address, roleIds: [String]): [String] {
     var earnedRoles: [String] = []
 
-    if let collection = getAccount(account).getCapability(/public/MomentCollection).borrow<&{TopShot.MomentCollectionPublic}>() {
+    if let collection = getAccount(user).getCapability(/public/MomentCollection).borrow<&{TopShot.MomentCollectionPublic}>() {
       let ids = collection.getIDs()
       var answer: UInt64 = 0
       var coveredPlays: [UInt32] = []
