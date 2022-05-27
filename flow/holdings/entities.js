@@ -1,13 +1,12 @@
 function UFC() {
   return `
   import UFC_NFT from 0x329feb3ab062d289
-  import NonFungibleToken from 0x1d7e57aa55817448
 
   pub fun main(user: Address, roleIds: [String]): [String] {
     var earnedRoles: [String] = []
 
     // This checks for at least 3 UFC Moments
-    if let collection = getAccount(user).getCapability(UFC_NFT.CollectionPublicPath).borrow<&UFC_NFT.Collection{NonFungibleToken.CollectionPublic}>() {
+    if let collection = getAccount(user).getCapability(UFC_NFT.CollectionPublicPath).borrow<&UFC_NFT.Collection{UFC_NFT.UFC_NFTCollectionPublic}>() {
       let ids = collection.getIDs()
       if ids.length >= 3 {
         earnedRoles.append(roleIds[0])
