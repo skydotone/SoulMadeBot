@@ -5,7 +5,7 @@ const { holdingScripts } = require('../holdings/entities');
 const UFC = async (emeraldIds) => {
   const scriptCode = holdingScripts['UFC'];
   const user = emeraldIds["dapper"];
-  if (!user) return { error: true, message: 'You need to create your Dapper EmeraldID at https://id.ecdao.org' };
+  if (!user) return { error: true, message: 'You need to create your Dapper EmeraldID at https://id.ecdao.org/dapper' };
 
   const roleIds = ['979898271281586180', '979886293091766302'];
 
