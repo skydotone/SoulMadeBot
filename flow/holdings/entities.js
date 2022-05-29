@@ -26,6 +26,26 @@ function UFC() {
   `
 }
 
+function NFL() {
+  return `
+  import NFL_NFT from 0x329feb3ab062d289
+
+  pub fun main(user: Address, roleIds: [String]): [String] {
+    var earnedRoles: [String] = []
+
+    // This checks for at least 3 NFL Moments
+    if let collection = getAccount(user).getCapability(NFL_NFT.CollectionPublicPath).borrow<&NFL_NFT.Collection{NFL_NFT.NFL_NFTCollectionPublic}>() {
+      let ids = collection.getIDs()
+      if ids.length >= 3 {
+        earnedRoles.append(roleIds[0])
+      }
+    }
+
+    return earnedRoles
+  } 
+  `
+}
+
 function Flunks() {
   return `
   import Flunks from 0x807c3d470888cc48 
@@ -91,7 +111,8 @@ function IXLabs() {
 const holdingScripts = {
   UFC,
   Flunks,
-  IXLabs
+  IXLabs,
+  NFL
 }
 
 module.exports = {

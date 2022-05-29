@@ -16,6 +16,20 @@ const UFC = async (emeraldIds) => {
   return await executeScript(scriptCode, args);
 }
 
+const NFL = async (emeraldIds) => {
+  const scriptCode = holdingScripts['UFC'];
+  const user = emeraldIds["dapper"];
+  if (!user) return { error: true, message: 'You need to create your Dapper EmeraldID at https://id.ecdao.org/dapper' };
+
+  const roleIds = [];
+
+  const args = [
+    fcl.arg(user, t.Address),
+    fcl.arg(roleIds, t.Array(t.String))
+  ]
+  return await executeScript(scriptCode, args);
+}
+
 const Flunks = async (emeraldIds) => {
   const scriptCode = holdingScripts['Flunks'];
   const user = emeraldIds["dapper"];
