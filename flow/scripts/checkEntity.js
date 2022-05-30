@@ -23,7 +23,7 @@ const NFL = async (emeraldIds) => {
   if (!user) return { error: true, message: 'You need to create your Dapper EmeraldID at https://id.ecdao.org/dapper' };
 
   // 1. 3+
-  const roleIds = [];
+  const roleIds = ['980633744966819930'];
 
   const args = [
     fcl.arg(user, t.Address),
