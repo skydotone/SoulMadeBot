@@ -71,13 +71,21 @@ function Flunks() {
         let flunk = collection.borrowFlunks(id: id)!
         let clique = flunk.getNFTMetadata()["Clique"]!
         if clique == "Jock" {
-          earnedRoles.append(roleIds[2])
+          if !earnedRoles.contains(roleIds[2]) {
+            earnedRoles.append(roleIds[2])
+          }
         } else if clique == "Geek" {
-          earnedRoles.append(roleIds[3])
+          if !earnedRoles.contains(roleIds[3]) {
+            earnedRoles.append(roleIds[3])
+          }
         } else if clique == "Prep" {
-          earnedRoles.append(roleIds[4])
+          if !earnedRoles.contains(roleIds[4]) {
+            earnedRoles.append(roleIds[4])
+          }
         } else if clique == "Freak" {
-          earnedRoles.append(roleIds[5])
+          if !earnedRoles.contains(roleIds[5]) {
+            earnedRoles.append(roleIds[5])
+          }
         }
       }
     }
