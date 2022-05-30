@@ -7,6 +7,7 @@ const UFC = async (emeraldIds) => {
   const user = emeraldIds["dapper"];
   if (!user) return { error: true, message: 'You need to create your Dapper EmeraldID at https://id.ecdao.org/dapper' };
 
+  // 1. 3+, 2. Champion
   const roleIds = ['979898271281586180', '979886293091766302'];
 
   const args = [
@@ -21,6 +22,7 @@ const NFL = async (emeraldIds) => {
   const user = emeraldIds["dapper"];
   if (!user) return { error: true, message: 'You need to create your Dapper EmeraldID at https://id.ecdao.org/dapper' };
 
+  // 1. 3+
   const roleIds = [];
 
   const args = [
@@ -35,7 +37,8 @@ const Flunks = async (emeraldIds) => {
   const user = emeraldIds["dapper"];
   if (!user) return { error: true, message: 'You need to create your Dapper EmeraldID at https://id.ecdao.org' };
 
-  const roleIds = ['961353472328994826', '958216670218965094'];
+  // 1. Holder, 2. Whale, 3. Jock, 4. Geek, 5. Prep, 6. Freak
+  const roleIds = ['961353472328994826', '958216670218965094', '979841797608050688', '979842660393185330', '979842799451140166', '979841981381480519'];
 
   const args = [
     fcl.arg(user, t.Address),
@@ -49,6 +52,7 @@ const IXLabs = async (emeraldIds) => {
   const user = emeraldIds["dapper"];
   if (!user) return { error: true, message: 'You need to create your Dapper EmeraldID at https://id.ecdao.org' };
 
+  // 1. 3 Cool Cats, 2. All 30 Cool Cats
   const roleIds = ['922504964662771822', '922523238762950696'];
 
   const args = [
@@ -74,7 +78,8 @@ const executeScript = async (scriptCode, args) => {
 const entities = {
   UFC,
   Flunks,
-  IXLabs
+  IXLabs,
+  NFL
 }
 
 module.exports = {

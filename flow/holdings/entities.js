@@ -55,14 +55,31 @@ function Flunks() {
     var earnedRoles: [String] = []
 
     if let collection = getAccount(user).getCapability(Flunks.CollectionPublicPath).borrow<&Flunks.Collection{NonFungibleToken.CollectionPublic}>() {
+      let ids = collection.getIDs()
+      
       // This checks for at least 1 Flunk
-      if collection.getIDs().length > 0 {
+      if ids.length > 0 {
         earnedRoles.append(roleIds[0])
       }
 
       // This checks for at least 8 Flunks
-      if collection.getIDs().length >= 8 {
+      if ids.length >= 8 {
         earnedRoles.append(roleIds[1])
+      }
+
+      // Checks the Flunks Clique
+      for id in ids {
+        let flunk = collection.borrowFlunks(id: id)!
+        let clique = flunk.getNFTMetadata()["Clique"]!
+        if clique == "Jock" {
+          earnedRoles.append(roleIds[2])
+        } else if clique == "Geek" {
+          earnedRoles.append(roleIds[3])
+        } else if clique == "Prep" {
+          earnedRoles.append(roleIds[4])
+        } else if clique == "Freak" {
+          earnedRoles.append(roleIds[5])
+        }
       }
     }
 
