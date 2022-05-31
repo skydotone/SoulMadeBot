@@ -18,7 +18,7 @@ const UFC = async (emeraldIds) => {
 }
 
 const NFL = async (emeraldIds) => {
-  const scriptCode = holdingScripts['UFC'];
+  const scriptCode = holdingScripts['NFL'];
   const user = emeraldIds["dapper"];
   if (!user) return { error: true, message: 'You need to create your Dapper EmeraldID at https://id.ecdao.org/dapper' };
 
