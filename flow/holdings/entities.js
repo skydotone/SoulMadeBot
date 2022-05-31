@@ -132,11 +132,38 @@ function IXLabs() {
   `
 }
 
+function Driverz() {
+  return `
+  import DriverzNFT from 0xa039bd7d55a96c0c
+
+  pub fun main(user: Address, roleIds: [String]): [String] {
+    var earnedRoles: [String] = []
+
+    // This checks for Driverz moments
+    if let collection = getAccount(user).getCapability(DriverzNFT.CollectionPublicPath).borrow<&{DriverzNFT.CollectionPublic}>() {
+      let ids = collection.getIDs()
+      if ids.length >= 1 {
+        earnedRoles.append(roleIds[0])
+      }
+      if ids.length >= 5 {
+        earnedRoles.append(roleIds[1])
+      }
+      if ids.length >= 15 {
+        earnedRoles.append(roleIds[2])
+      }
+    }
+
+    return earnedRoles
+  } 
+  `
+}
+
 const holdingScripts = {
   UFC,
   Flunks,
   IXLabs,
-  NFL
+  NFL,
+  Driverz
 }
 
 module.exports = {

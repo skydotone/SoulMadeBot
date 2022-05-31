@@ -62,6 +62,21 @@ const IXLabs = async (emeraldIds) => {
   return await executeScript(scriptCode, args);
 }
 
+const Driverz = async (emeraldIds) => {
+  const scriptCode = holdingScripts['Driverz'];
+  const user = emeraldIds["dapper"];
+  if (!user) return { error: true, message: 'You need to create your Dapper EmeraldID at https://id.ecdao.org' };
+
+  // 1. 1, 2. 5, 3. 15
+  const roleIds = ['981264736098344970', '981264841660579951', '981264946530754654'];
+
+  const args = [
+    fcl.arg(user, t.Address),
+    fcl.arg(roleIds, t.Array(t.String))
+  ]
+  return await executeScript(scriptCode, args);
+}
+
 const executeScript = async (scriptCode, args) => {
   try {
     const result = await fcl.send([
@@ -79,7 +94,8 @@ const entities = {
   UFC,
   Flunks,
   IXLabs,
-  NFL
+  NFL,
+  Driverz
 }
 
 module.exports = {

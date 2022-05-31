@@ -1,12 +1,13 @@
-import Flunks from 0x807c3d470888cc48 
+import NFL_NFT from 0x329feb3ab062d289
 
-  pub fun main(user: Address): String? {
+  pub fun main(user: Address): [UInt64] {
+    let roleIds: [String] = ["980633744966819930"]
     var earnedRoles: [String] = []
 
-    if let collection = getAccount(user).getCapability(Flunks.CollectionPublicPath).borrow<&Flunks.Collection{Flunks.FlunksCollectionPublic}>() {
-      let nft = collection.borrowFlunks(id: collection.getIDs()[0])!
-      return nft.getNFTMetadata()["Clique"]
+    // This checks for at least 3 NFL Moments
+    if let collection = getAccount(user).getCapability(NFL_NFT.CollectionPublicPath).borrow<&NFL_NFT.Collection{NFL_NFT.NFL_NFTCollectionPublic}>() {
+      return collection.getIDs()
     }
 
-    return nil
-  }
+    return []
+  } 
