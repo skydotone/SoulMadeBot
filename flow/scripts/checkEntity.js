@@ -77,6 +77,24 @@ const Driverz = async (emeraldIds) => {
   return await executeScript(scriptCode, args);
 }
 
+const Genies = async (emeraldIds) => {
+  const scriptCode = holdingScripts['Genies'];
+  const user = emeraldIds["dapper"];
+  if (!user) return { error: true, message: 'You need to create your Dapper EmeraldID at https://id.ecdao.org' };
+
+  const roleIds = [
+    // Lucid Tokyo Holder
+    '981662081243811911',
+  ];
+
+  const args = [
+    fcl.arg(user, t.Address),
+    fcl.arg(roleIds, t.Array(t.String))
+  ];
+
+  return await executeScript(scriptCode, args);
+}
+
 const executeScript = async (scriptCode, args) => {
   try {
     const result = await fcl.send([
@@ -95,7 +113,8 @@ const entities = {
   Flunks,
   IXLabs,
   NFL,
-  Driverz
+  Driverz,
+  Genies
 }
 
 module.exports = {
