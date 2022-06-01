@@ -22,7 +22,7 @@ function UFC() {
     }
 
     return earnedRoles
-  } 
+  }
   `
 }
 
@@ -42,20 +42,20 @@ function NFL() {
     }
 
     return earnedRoles
-  } 
+  }
   `
 }
 
 function Flunks() {
   return `
-  import Flunks from 0x807c3d470888cc48 
+  import Flunks from 0x807c3d470888cc48
 
   pub fun main(user: Address, roleIds: [String]): [String] {
     var earnedRoles: [String] = []
 
     if let collection = getAccount(user).getCapability(Flunks.CollectionPublicPath).borrow<&Flunks.Collection{Flunks.FlunksCollectionPublic}>() {
       let ids = collection.getIDs()
-      
+
       // This checks for at least 1 Flunk
       if ids.length > 0 {
         earnedRoles.append(roleIds[0])
@@ -154,7 +154,46 @@ function Driverz() {
     }
 
     return earnedRoles
-  } 
+  }
+  `
+}
+
+function Genies() {
+  return `
+  import Genies from 0x12450e4bb3b7666e
+
+  pub fun main(user: Address, roleIds: [String]): [String] {
+    var earnedRoles: [String] = [];
+
+    // This checks for Genies NFTs
+    if let collection = getAccount(user).getCapability(Genies.CollectionPublicPath).borrow<&Genies.Collection{Genies.GeniesNFTCollectionPublic}>() {
+      let ids: [UInt64] = collection.getIDs();
+      var collections: [UInt32] = [];
+      var editions: [UInt32] = [];
+
+      // Gather all Collections & Editions the User is holding
+      for id in ids {
+        let nft = collection!.borrowGeniesNFT(id: id)!;
+
+        let editionID: UInt32 = nft.editionID;
+        if ! editions.contains(editionID) {
+          editions.append(editionID);
+        }
+
+        let collectionID: UInt32 = Genies.getEditionData(id: editionID).collectionID;
+        if ! collections.contains(collectionID) {
+          collections.append(collectionID);
+        }
+      }
+
+      // Check if User holds a Lucid Tokyo Wearable
+      if collections.contains(1) {
+        earnedRoles.append(roleIds[0]);
+      }
+    }
+
+    return earnedRoles;
+  }
   `
 }
 
@@ -163,7 +202,8 @@ const holdingScripts = {
   Flunks,
   IXLabs,
   NFL,
-  Driverz
+  Driverz,
+  Genies
 }
 
 module.exports = {
