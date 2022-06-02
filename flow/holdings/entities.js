@@ -197,13 +197,49 @@ function Genies() {
   `
 }
 
+function NFW() {
+  return `
+  import DriverzNFT from 0xa039bd7d55a96c0c
+  import Flunks from 0x807c3d470888cc48 
+  import FIND from 0x097bafa4e0b48eef
+
+  pub fun main(user: Address, roleIds: [String]): [String] {
+    var earnedRoles: [String] = []
+
+    // Driverz
+    if let collection = getAccount(user).getCapability(DriverzNFT.CollectionPublicPath).borrow<&{DriverzNFT.CollectionPublic}>() {
+      if collection.getIDs().length >= 1 {
+        earnedRoles.append(roleIds[0])
+      }
+    }
+
+    // Flunks
+    if let collection = getAccount(user).getCapability(Flunks.CollectionPublicPath).borrow<&Flunks.Collection{Flunks.FlunksCollectionPublic}>() {
+      if collection.getIDs().length >= 1{
+        earnedRoles.append(roleIds[1])
+      }
+    }
+
+    // .find
+    let name = FIND.reverseLookup(user)
+    if name != nil {
+      earnedRoles.append(roleIds[2])
+    }
+
+
+    return earnedRoles
+  } 
+  `
+}
+
 const holdingScripts = {
   UFC,
   Flunks,
   IXLabs,
   NFL,
   Driverz,
-  Genies
+  Genies,
+  NFW
 }
 
 module.exports = {

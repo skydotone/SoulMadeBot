@@ -95,6 +95,34 @@ const Genies = async (emeraldIds) => {
   return await executeScript(scriptCode, args);
 }
 
+const NFW = async (emeraldIds) => {
+  const scriptCode = holdingScripts['NFW'];
+
+  const roleIds = [
+    '982024446627954739', // Driverz
+    '982023267017719808', // Flunks
+    '982024121745551400' // .find
+  ];
+
+  const dapperArgs = [
+    fcl.arg(emeraldIds["dapper"], t.Address),
+    fcl.arg(roleIds, t.Array(t.String))
+  ]
+  const bloctoArgs = [
+    fcl.arg(emeraldIds["blocto"], t.Address),
+    fcl.arg(roleIds, t.Array(t.String))
+  ]
+  let dapper = await executeScript(scriptCode, dapperArgs);
+  let blocto = await executeScript(scriptCode, bloctoArgs);
+  if (blocto.error) {
+    blocto = [];
+  }
+  if (dapper.error) {
+    dapper = [];
+  }
+  return dapper.concat(blocto.filter((item) => dapper.indexOf(item) < 0));
+}
+
 const executeScript = async (scriptCode, args) => {
   try {
     const result = await fcl.send([
@@ -114,7 +142,8 @@ const entities = {
   IXLabs,
   NFL,
   Driverz,
-  Genies
+  Genies,
+  NFW
 }
 
 module.exports = {
