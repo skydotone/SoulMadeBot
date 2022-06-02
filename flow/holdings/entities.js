@@ -199,9 +199,11 @@ function Genies() {
 
 function NFW() {
   return `
+  import NonFungibleToken from 0x1d7e57aa55817448
   import DriverzNFT from 0xa039bd7d55a96c0c
   import Flunks from 0x807c3d470888cc48 
   import FIND from 0x097bafa4e0b48eef
+  import Bl0x from 0x7620acf6d7f2468a
 
   pub fun main(user: Address, roleIds: [String]): [String] {
     var earnedRoles: [String] = []
@@ -215,7 +217,7 @@ function NFW() {
 
     // Flunks
     if let collection = getAccount(user).getCapability(Flunks.CollectionPublicPath).borrow<&Flunks.Collection{Flunks.FlunksCollectionPublic}>() {
-      if collection.getIDs().length >= 1{
+      if collection.getIDs().length >= 1 {
         earnedRoles.append(roleIds[1])
       }
     }
@@ -226,6 +228,12 @@ function NFW() {
       earnedRoles.append(roleIds[2])
     }
 
+    // bl0x
+    if let collection = getAccount(user).getCapability(Bl0x.CollectionPublicPath).borrow<&Bl0x.Collection{NonFungibleToken.CollectionPublic}>() {
+      if collection.getIDs().length >= 1 {
+        earnedRoles.append(roleIds[3])
+      }
+    }
 
     return earnedRoles
   } 

@@ -101,7 +101,8 @@ const NFW = async (emeraldIds) => {
   const roleIds = [
     '982024446627954739', // Driverz
     '982023267017719808', // Flunks
-    '982024121745551400' // .find
+    '982024121745551400', // .find
+    '982024358694354964', // bl0x
   ];
 
   const dapperArgs = [
