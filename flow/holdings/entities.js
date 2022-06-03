@@ -204,6 +204,7 @@ function NFW() {
   import Flunks from 0x807c3d470888cc48 
   import FIND from 0x097bafa4e0b48eef
   import Bl0x from 0x7620acf6d7f2468a
+  import GooberXContract from 0x34f2bf4a80bb0f69 
 
   pub fun main(user: Address, roleIds: [String]): [String] {
     var earnedRoles: [String] = []
@@ -234,6 +235,13 @@ function NFW() {
         earnedRoles.append(roleIds[3])
       }
     }
+
+    // GOOBz
+    if let collection = getAccount(user).getCapability(GooberXContract.CollectionPublicPath).borrow<&{GooberXContract.GooberCollectionPublic}>() {
+      if collection.getIDs().length >= 1 {
+        earnedRoles.append(roleIds[4])
+      }
+    } 
 
     return earnedRoles
   } 
