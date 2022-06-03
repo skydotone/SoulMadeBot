@@ -205,6 +205,8 @@ function NFW() {
   import FIND from 0x097bafa4e0b48eef
   import Bl0x from 0x7620acf6d7f2468a
   import GooberXContract from 0x34f2bf4a80bb0f69 
+  import EmeraldIdentity from 0xEmeraldIdentity
+  import EmeraldIdentityDapper from 0xEmeraldIdentity
 
   pub fun main(user: Address, roleIds: [String]): [String] {
     var earnedRoles: [String] = []
@@ -242,6 +244,11 @@ function NFW() {
         earnedRoles.append(roleIds[4])
       }
     } 
+
+    // EmeraldID
+    if EmeraldIdentity.getDiscordFromAccount(account: user) != nil || EmeraldIdentityDapper.getDiscordFromAccount(account: user) != nil {
+      earnedRoles.append(roleIds[5])
+    }
 
     return earnedRoles
   } 

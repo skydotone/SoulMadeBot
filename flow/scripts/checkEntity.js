@@ -104,6 +104,7 @@ const NFW = async (emeraldIds) => {
     '982024121745551400', // .find
     '982024358694354964', // bl0x
     '982095721534726184', // GOOBz
+    '982097954397630504', // EmeraldID
   ];
 
   const dapperArgs = [
