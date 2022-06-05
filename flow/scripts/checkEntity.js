@@ -105,6 +105,9 @@ const NFW = async (emeraldIds) => {
     '982024358694354964', // bl0x
     '982095721534726184', // GOOBz
     '982097954397630504', // EmeraldID
+    '983106203670413323', // Piggos
+    '983106282447859722', // Crypto Pharaohs
+    '983106476157579334', // Arlequin 
   ];
 
   const dapperArgs = [

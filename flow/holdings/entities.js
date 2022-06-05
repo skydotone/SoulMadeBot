@@ -207,6 +207,7 @@ function NFW() {
   import GooberXContract from 0x34f2bf4a80bb0f69 
   import EmeraldIdentity from 0xEmeraldIdentity
   import EmeraldIdentityDapper from 0xEmeraldIdentity
+  import CryptoPiggo from 0xd3df824bf81910a4
 
   pub fun main(user: Address, roleIds: [String]): [String] {
     var earnedRoles: [String] = []
@@ -249,6 +250,22 @@ function NFW() {
     if EmeraldIdentity.getDiscordFromAccount(account: user) != nil || EmeraldIdentityDapper.getDiscordFromAccount(account: user) != nil {
       earnedRoles.append(roleIds[5])
     }
+
+    // Piggos
+    if let collection = getAccount(user).getCapability(CryptoPiggo.CollectionPublicPath).borrow<&{CryptoPiggo.CryptoPiggoCollectionPublic}>() {
+      if collection.getIDs().length >= 1 {
+        earnedRoles.append(roleIds[6])
+      }
+    } 
+
+    // Crypto Pharaohs
+
+    // Arlequin
+    if let collection = getAccount(user).getCapability(ArleeScene.CollectionPublicPath).borrow<&{ArleeScene.CollectionPublic}>() {
+      if collection.getIDs().length >= 1 {
+        earnedRoles.append(roleIds[8])
+      }
+    } 
 
     return earnedRoles
   } 
