@@ -208,6 +208,7 @@ function NFW() {
   import EmeraldIdentity from 0xEmeraldIdentity
   import EmeraldIdentityDapper from 0xEmeraldIdentity
   import CryptoPiggo from 0xd3df824bf81910a4
+  import ArleeScene from 0x47cbd3edd044cb5d
 
   pub fun main(user: Address, roleIds: [String]): [String] {
     var earnedRoles: [String] = []
