@@ -209,6 +209,9 @@ function NFW() {
   import EmeraldIdentityDapper from 0xEmeraldIdentity
   import CryptoPiggo from 0xd3df824bf81910a4
   import ArleeScene from 0x47cbd3edd044cb5d
+  import EnemyMetal from 0xa38d9dda1d06fdea
+  import Epix from 0xcc838e3f0213008f
+  import SNKRHUDNFT from 0x80af1db15aa6535a
 
   pub fun main(user: Address, roleIds: [String]): [String] {
     var earnedRoles: [String] = []
@@ -265,6 +268,27 @@ function NFW() {
     if let collection = getAccount(user).getCapability(ArleeScene.CollectionPublicPath).borrow<&{ArleeScene.CollectionPublic}>() {
       if collection.getIDs().length >= 1 {
         earnedRoles.append(roleIds[8])
+      }
+    } 
+
+    // Epix
+    if let collection = getAccount(user).getCapability(Epix.CollectionPublicPath).borrow<&{Epix.EpixCollectionPublic}>() {
+      if collection.getIDs().length >= 1 {
+        earnedRoles.append(roleIds[9])
+      }
+    } 
+
+    // Enemy Metal
+    if let collection = getAccount(user).getCapability(EnemyMetal.CollectionPublicPath).borrow<&{EnemyMetal.EnemyMetalCollectionPublic}>() {
+      if collection.getIDs().length >= 1 {
+        earnedRoles.append(roleIds[10])
+      }
+    } 
+
+    // SNKRHUD
+    if let collection = getAccount(user).getCapability(SNKRHUDNFT.CollectionPublicPath).borrow<&{SNKRHUDNFT.CollectionPublic}>() {
+      if collection.getIDs().length >= 1 {
+        earnedRoles.append(roleIds[11])
       }
     } 
 
