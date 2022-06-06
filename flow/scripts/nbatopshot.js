@@ -112,7 +112,7 @@ const ownsAllInSet = async (account, setName) => {
     return result || { error: true, message: `You do not have all the moments from the ${setName} set.` };
   } catch (e) {
     console.log(e);
-    return { error: true, message: 'The account does not have TopShots.' };
+    return { error: true, message: 'The account does not have TopShots or the set doesnt exist.' };
   }
 }
 
