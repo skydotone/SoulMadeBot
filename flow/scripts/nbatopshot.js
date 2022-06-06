@@ -1,23 +1,6 @@
 const fcl = require('@onflow/fcl');
 const t = require('@onflow/types');
 
-const getMomentsInSet = async (account, setName) => {
-  try {
-    const result = await fcl.send([
-      fcl.script(scriptCode),
-      fcl.args([
-        fcl.arg(account, t.Address),
-        fcl.arg(setName, t.String)
-      ])
-    ]).then(fcl.decode);
-
-    return result;
-  } catch (e) {
-    console.log(e);
-    return { error: true, message: 'The account does not have TopShots.' };
-  }
-}
-
 const scriptCode = `
 import TopShot from 0x0b2a3299cc857e29
 
@@ -74,6 +57,66 @@ pub struct MomentData {
 }
 `;
 
+const getMomentsInSet = async (account, setName) => {
+  try {
+    const result = await fcl.send([
+      fcl.script(scriptCode),
+      fcl.args([
+        fcl.arg(account, t.Address),
+        fcl.arg(setName, t.String)
+      ])
+    ]).then(fcl.decode);
+
+    return result;
+  } catch (e) {
+    console.log(e);
+    return { error: true, message: 'The account does not have TopShots.' };
+  }
+}
+
+const scriptCode2 = `
+import TopShot from 0x0b2a3299cc857e29
+
+pub fun main(account: Address, setName: String): Bool {
+  let setID = TopShot.getSetIDsByName(setName: setName)?.removeFirst()!
+  let setData = TopShot.getSetData(setID: setID)!
+  let collection = getAccount(account).getCapability(/public/MomentCollection)
+                      .borrow<&{TopShot.MomentCollectionPublic}>()
+                      ?? panic("GG")
+  let neededLength = setData.getPlays().length
+  
+  let ids = collection.getIDs()
+  let playIds: [UInt32] = []
+  for id in ids {
+    let moment = collection.borrowMoment(id: id)!
+    let playID = moment.data.playID
+    if moment.data.setID == setID && !playIds.contains(playID) {
+      playIds.append(playID)
+    }
+  }
+  return playIds.length == neededLength
+}
+`;
+
+const ownsAllInSet = async (account, setName) => {
+  if (!account) return { error: true, message: 'You do not have a Dapper EmeraldID. Please get one at https://id.ecdao.org/.' };
+  try {
+    const result = await fcl.send([
+      fcl.script(scriptCode2),
+      fcl.args([
+        fcl.arg(account, t.Address),
+        fcl.arg(setName, t.String)
+      ])
+    ]).then(fcl.decode);
+
+    return result || { error: true, message: `You do not have all the moments from the ${setName} set.` };
+  } catch (e) {
+    console.log(e);
+    return { error: true, message: 'The account does not have TopShots.' };
+  }
+}
+
 module.exports = {
-  getMomentsInSet
+  getMomentsInSet,
+  ownsAllInSet
 }

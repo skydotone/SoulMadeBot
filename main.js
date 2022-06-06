@@ -140,25 +140,6 @@ client.once('ready', () => {
     });
 
     commands?.create({
-        name: 'momentsinset',
-        description: 'View the moments a user has from a TopShot set',
-        options: [
-            {
-                name: 'address',
-                description: 'The users Dapper Wallet address',
-                required: true,
-                type: Constants.ApplicationCommandOptionTypes.STRING
-            },
-            {
-                name: 'setname',
-                description: 'The name of the set (ex. Cool Cats)',
-                required: true,
-                type: Constants.ApplicationCommandOptionTypes.STRING
-            }
-        ]
-    });
-
-    commands?.create({
         name: 'userswithrole',
         description: 'Get a list of all the users with a certain role.',
         options: [
@@ -332,6 +313,51 @@ client.once('ready', () => {
             }
         ]
     });
+
+    commands?.create({
+        name: 'nbatopshot',
+        description: 'A group of commands for NBATopShot.',
+        options: [
+            {
+                name: 'momentsinset',
+                description: 'View the moments a user has from a TopShot set',
+                options: [
+                    {
+                        name: 'address',
+                        description: 'The users Dapper Wallet address',
+                        required: true,
+                        type: Constants.ApplicationCommandOptionTypes.STRING
+                    },
+                    {
+                        name: 'setname',
+                        description: 'The name of the set (ex. Cool Cats)',
+                        required: true,
+                        type: Constants.ApplicationCommandOptionTypes.STRING
+                    }
+                ],
+                type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND
+            },
+            {
+                name: 'ownsallinset',
+                description: 'Setup a verifier to check if the user owns all the moments in a set',
+                options: [
+                    {
+                        name: 'setname',
+                        description: 'The name of the set (ex. Cool Cats)',
+                        required: true,
+                        type: Constants.ApplicationCommandOptionTypes.STRING
+                    },
+                    {
+                        name: 'role',
+                        description: 'The role you wish to give',
+                        required: true,
+                        type: Constants.ApplicationCommandOptionTypes.ROLE
+                    }
+                ],
+                type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND
+            }
+        ]
+    });
 })
 
 // When a user types a message
@@ -364,7 +390,8 @@ client.on('interactionCreate', async interaction => {
         const commandName = customIdArray.shift();
         client.commands.get(commandName)?.execute(interaction, customIdArray, emeraldIds);
     } else if (interaction.isCommand()) {
-        const { commandName, options } = interaction;
+        const { options } = interaction;
+        const commandName = options._subcommand || interaction.commandName;
         client.commands.get(commandName)?.execute(interaction, options);
     }
 });

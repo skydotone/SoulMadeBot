@@ -1,4 +1,4 @@
-const { getMomentsInSet } = require('../flow/scripts/getMomentsInSet.js');
+const { getMomentsInSet } = require('../flow/scripts/nbatopshot.js');
 
 const execute = async (interaction, options) => {
   await interaction.deferReply();
