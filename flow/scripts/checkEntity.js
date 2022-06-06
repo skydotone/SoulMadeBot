@@ -110,7 +110,8 @@ const NFW = async (emeraldIds) => {
     '983106476157579334', // Arlequin 
     '983119676806680607', // Epix
     '983119759862296648', // Enemy Metal
-    '983120167989035008', // SNKRHUD
+    '983120167989035008', // SNKRHUD,
+    '983493329226436638' // Flovatar
   ];
 
   const dapperArgs = [

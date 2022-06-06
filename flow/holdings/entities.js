@@ -212,6 +212,7 @@ function NFW() {
   import EnemyMetal from 0xa38d9dda1d06fdea
   import Epix from 0xcc838e3f0213008f
   import SNKRHUDNFT from 0x80af1db15aa6535a
+  import Flovatar from 0x921ea449dffec68a
 
   pub fun main(user: Address, roleIds: [String]): [String] {
     var earnedRoles: [String] = []
@@ -289,6 +290,13 @@ function NFW() {
     if let collection = getAccount(user).getCapability(SNKRHUDNFT.CollectionPublicPath).borrow<&{SNKRHUDNFT.CollectionPublic}>() {
       if collection.getIDs().length >= 1 {
         earnedRoles.append(roleIds[11])
+      }
+    } 
+
+    // Flovatar
+    if let collection = getAccount(user).getCapability(Flovatar.CollectionPublicPath).borrow<&{Flovatar.CollectionPublic}>() {
+      if collection.getIDs().length >= 1 {
+        earnedRoles.append(roleIds[12])
       }
     } 
 
