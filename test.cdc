@@ -1,14 +1,25 @@
-import NonFungibleToken from 0x1d7e57aa55817448
-import Bl0x from 0x7620acf6d7f2468a
+import FLOAT from 0x2d4c3caffbeab845
 
-  pub fun main(user: Address): [UInt64] {
-    let roleIds: [String] = ["980633744966819930"]
-    var earnedRoles: [String] = []
+pub fun main(): Bool {
+  let eventsCollection = getAccount(0x99bd48c8036e2876).getCapability(FLOAT.FLOATEventsPublicPath)
+                        .borrow<&FLOAT.FLOATEvents{FLOAT.FLOATEventsPublic}>()
+                        ?? panic("Could not borrow the FLOATEventsPublic from the host.")
+  let group = eventsCollection.getGroup(groupName: "Emerald Academy") ?? panic("This group does not exist.")
+  let eventsInGroup = group.getEvents()
 
-    // This checks for at least 3 NFL Moments
-    if let collection = getAccount(user).getCapability(Bl0x.CollectionPublicPath).borrow<&Bl0x.Collection{NonFungibleToken.CollectionPublic}>() {
-      return collection.getIDs()
-    }
+  let users: [Address] = [0x99bd48c8036e2876]
 
-    return []
-  } 
+  for user in users {
+    let floatsCollection = getAccount(0x99bd48c8036e2876).getCapability(FLOAT.FLOATCollectionPublicPath)
+        .borrow<&FLOAT.Collection{FLOAT.CollectionPublic}>()
+        ?? panic("Could not borrow the CollectionPublic from the user.")
+
+    for eventId in eventsInGroup {
+      if floatsCollection.ownedIdsFromEvent(eventId: eventId).length > 0 {
+        return true
+      }
+    } 
+  }
+
+  return false
+}

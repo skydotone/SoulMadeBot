@@ -9,9 +9,9 @@ const execute = async (interaction, options, emeraldIds) => {
   let passed;
 
   if (all === 'true') {
-    passed = await checkOwnsAllFloatsFromGroup(creator, groupName, emeraldIds);
+    passed = await checkOwnsAllFloatsFromGroup(creator, groupName, Object.values(emeraldIds));
   } else {
-    passed = await checkOwnsFloatFromGroup(creator, groupName, emeraldIds);
+    passed = await checkOwnsFloatFromGroup(creator, groupName, Object.values(emeraldIds));
   }
   if (passed === true) {
     interaction.member.roles.add(roleId).catch((e) => console.log(e));
