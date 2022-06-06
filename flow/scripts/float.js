@@ -6,12 +6,11 @@ import FLOAT from 0xFLOAT
 
 pub fun main(accounts: [Address], eventId: UInt64): Bool {
   for account in accounts {
-    let floatCollection = getAccount(account).getCapability(FLOAT.FLOATCollectionPublicPath)
-                            .borrow<&FLOAT.Collection{FLOAT.CollectionPublic}>()
-                            ?? panic("Could not borrow the Collection from the account.")
-    let ids = floatCollection.ownedIdsFromEvent(eventId: eventId)
-    if ids.length > 0 {
-      return true
+    if let floatCollection = getAccount(account).getCapability(FLOAT.FLOATCollectionPublicPath).borrow<&FLOAT.Collection{FLOAT.CollectionPublic}>() {
+      let ids = floatCollection.ownedIdsFromEvent(eventId: eventId)
+      if ids.length > 0 {
+        return true
+      }
     }
   }
   return false
@@ -45,15 +44,13 @@ pub fun main(host: Address, groupName: String, users: [Address]): Bool {
   let eventsInGroup = group.getEvents()
 
   for user in users {
-    let floatsCollection = getAccount(user).getCapability(FLOAT.FLOATCollectionPublicPath)
-        .borrow<&FLOAT.Collection{FLOAT.CollectionPublic}>()
-        ?? panic("Could not borrow the CollectionPublic from the user.")
-
-    for eventId in eventsInGroup {
-      if floatsCollection.ownedIdsFromEvent(eventId: eventId).length > 0 {
-        return true
-      }
-    } 
+    if let floatsCollection = getAccount(user).getCapability(FLOAT.FLOATCollectionPublicPath).borrow<&FLOAT.Collection{FLOAT.CollectionPublic}>() {
+      for eventId in eventsInGroup {
+        if floatsCollection.ownedIdsFromEvent(eventId: eventId).length > 0 {
+          return true
+        }
+      } 
+    }
   }
 
   return false
@@ -90,15 +87,13 @@ pub fun main(host: Address, groupName: String, users: [Address]): Bool {
   let ownedEvents: [UInt64] = []
 
   for user in users {
-    let floatsCollection = getAccount(user).getCapability(FLOAT.FLOATCollectionPublicPath)
-        .borrow<&FLOAT.Collection{FLOAT.CollectionPublic}>()
-        ?? panic("Could not borrow the CollectionPublic from the user.")
-
-    for eventId in eventsInGroup {
-      if !ownedEvents.contains(eventId) && floatsCollection.ownedIdsFromEvent(eventId: eventId).length > 0 {
-        ownedEvents.append(eventId)
-      }
-    } 
+    if let floatsCollection = getAccount(user).getCapability(FLOAT.FLOATCollectionPublicPath).borrow<&FLOAT.Collection{FLOAT.CollectionPublic}>() {
+      for eventId in eventsInGroup {
+        if !ownedEvents.contains(eventId) && floatsCollection.ownedIdsFromEvent(eventId: eventId).length > 0 {
+          ownedEvents.append(eventId)
+        }
+      } 
+    }
   }
 
   return ownedEvents.length == eventsInGroup.length
