@@ -213,6 +213,7 @@ function NFW() {
   import Epix from 0xcc838e3f0213008f
   import SNKRHUDNFT from 0x80af1db15aa6535a
   import Flovatar from 0x921ea449dffec68a
+  import GoatedGoats from 0x2068315349bdfce5
 
   pub fun main(user: Address, roleIds: [String]): [String] {
     var earnedRoles: [String] = []
@@ -297,6 +298,13 @@ function NFW() {
     if let collection = getAccount(user).getCapability(Flovatar.CollectionPublicPath).borrow<&{Flovatar.CollectionPublic}>() {
       if collection.getIDs().length >= 1 {
         earnedRoles.append(roleIds[12])
+      }
+    } 
+
+    // Goated Goats
+    if let collection = getAccount(user).getCapability(GoatedGoats.CollectionPublicPath).borrow<&{GoatedGoats.GoatCollectionPublic}>() {
+      if collection.getIDs().length >= 1 {
+        earnedRoles.append(roleIds[13])
       }
     } 
 
