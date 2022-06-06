@@ -14,7 +14,6 @@ const execute = async (interaction, options, emeraldIds) => {
     }
 }
 
-
 module.exports = {
     name: 'verifyNFT',
     description: 'verifies if a user has a nft from a certain contract',
