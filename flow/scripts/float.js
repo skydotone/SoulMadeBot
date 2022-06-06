@@ -19,7 +19,6 @@ pub fun main(accounts: [Address], eventId: UInt64): Bool {
 `;
 
 const checkOwnsFloat = async (emeraldIds, eventId) => {
-  if (!account) return null;
   try {
     const result = await fcl.send([
       fcl.script(scriptCode),
