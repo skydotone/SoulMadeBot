@@ -79,11 +79,11 @@ import TopShot from 0x0b2a3299cc857e29
 
 pub fun main(account: Address, setName: String): Bool {
   let setID = TopShot.getSetIDsByName(setName: setName)?.removeFirst()!
-  let setData = TopShot.getSetData(setID: setID)!
+  let neededLength = TopShot.getPlaysInSet(setID: setID)!.length
+  
   let collection = getAccount(account).getCapability(/public/MomentCollection)
                       .borrow<&{TopShot.MomentCollectionPublic}>()
                       ?? panic("GG")
-  let neededLength = setData.getPlays().length
   
   let ids = collection.getIDs()
   let playIds: [UInt32] = []
