@@ -217,6 +217,7 @@ function NFW() {
   import Momentables from 0x9d21537544d9123d
   import Gaia from 0x8b148183c28ff88f
   import MetaPanda from 0xf2af175e411dfff8
+  import SomePlaceCollectible from 0x667a16294a089ef8
 
   pub fun main(user: Address, roleIds: [String]): [String] {
     var earnedRoles: [String] = []
@@ -332,6 +333,13 @@ function NFW() {
     if let collection = getAccount(user).getCapability(MetaPanda.CollectionPublicPath).borrow<&{NonFungibleToken.CollectionPublic}>() {
       if collection.getIDs().length >= 1 {
         earnedRoles.append(roleIds[15])
+      }
+    } 
+
+    // some.place
+    if let collection = getAccount(user).getCapability(SomePlaceCollectible.CollectionPublicPath).borrow<&{SomePlaceCollectible.CollectibleCollectionPublic}>() {
+      if collection.getIDs().length >= 1 {
+        earnedRoles.append(roleIds[16])
       }
     } 
 

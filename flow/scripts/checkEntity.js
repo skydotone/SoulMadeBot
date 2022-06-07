@@ -115,6 +115,7 @@ const NFW = async (emeraldIds) => {
     '983493931159408640', // Goated Goats
     '983547522943434832', // Ballerz
     '983549184680538112', // MetaPanda
+    '983553743326965780', // some.place
   ];
 
   let dapper = [];
