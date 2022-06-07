@@ -216,6 +216,7 @@ function NFW() {
   import GoatedGoats from 0x2068315349bdfce5
   import Momentables from 0x9d21537544d9123d
   import Gaia from 0x8b148183c28ff88f
+  import MetaPanda from 0xf2af175e411dfff8
 
   pub fun main(user: Address, roleIds: [String]): [String] {
     var earnedRoles: [String] = []
@@ -324,6 +325,13 @@ function NFW() {
           earnedRoles.append(roleIds[14])
           continue
         }
+      }
+    } 
+
+    // MetaPandas
+    if let collection = getAccount(user).getCapability(MetaPanda.CollectionPublicPath).borrow<&{NonFungibleToken.CollectionPublic}>() {
+      if collection.getIDs().length >= 1 {
+        earnedRoles.append(roleIds[15])
       }
     } 
 
