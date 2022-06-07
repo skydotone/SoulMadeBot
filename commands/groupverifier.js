@@ -41,7 +41,7 @@ const verifyGroupButton = (interaction, creator, resolved, groupInfo, roleId, al
         .setStyle('SUCCESS'),
       new MessageButton()
         .setURL('https://id.ecdao.org' + '/reset')
-        .setLabel('Reset')
+        .setLabel('Manage EmeraldID')
         .setStyle('LINK')
     );
 
