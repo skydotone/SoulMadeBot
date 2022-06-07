@@ -113,6 +113,7 @@ const NFW = async (emeraldIds) => {
     '983120167989035008', // SNKRHUD,
     '983493329226436638', // Flovatar,
     '983493931159408640', // Goated Goats
+    '983547522943434832', // Ballerz
   ];
 
   const dapperArgs = [

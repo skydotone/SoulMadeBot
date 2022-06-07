@@ -215,6 +215,7 @@ function NFW() {
   import Flovatar from 0x921ea449dffec68a
   import GoatedGoats from 0x2068315349bdfce5
   import Momentables from 0x9d21537544d9123d
+  import Gaia from 0x8b148183c28ff88f
 
   pub fun main(user: Address, roleIds: [String]): [String] {
     var earnedRoles: [String] = []
@@ -311,6 +312,18 @@ function NFW() {
     if let collection = getAccount(user).getCapability(GoatedGoats.CollectionPublicPath).borrow<&{GoatedGoats.GoatCollectionPublic}>() {
       if collection.getIDs().length >= 1 {
         earnedRoles.append(roleIds[13])
+      }
+    } 
+
+    // Ballerz
+    if let collection = getAccount(user).getCapability(Gaia.CollectionPublicPath).borrow<&{Gaia.CollectionPublic}>() {
+      for id in collection.getIDs() {
+        let nft = collection.borrowGaiaNFT(id: id)!
+        let info = Gaia.getSetInfo(setID: nft.data.setID)
+        if info != nil && info!.name == "Ballerz" {
+          earnedRoles.append(roleIds[14])
+          continue
+        }
       }
     } 
 
