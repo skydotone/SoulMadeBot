@@ -112,7 +112,7 @@ const NFW = async (emeraldIds) => {
     '983119759862296648', // Enemy Metal
     '983120167989035008', // SNKRHUD,
     '983493329226436638', // Flovatar,
-    '983493931159408640' // Goated Goats
+    '983493931159408640', // Goated Goats
   ];
 
   const dapperArgs = [

@@ -214,6 +214,7 @@ function NFW() {
   import SNKRHUDNFT from 0x80af1db15aa6535a
   import Flovatar from 0x921ea449dffec68a
   import GoatedGoats from 0x2068315349bdfce5
+  import Momentables from 0x9d21537544d9123d
 
   pub fun main(user: Address, roleIds: [String]): [String] {
     var earnedRoles: [String] = []
@@ -265,6 +266,11 @@ function NFW() {
     } 
 
     // Crypto Pharaohs
+    if let collection = getAccount(user).getCapability(Momentables.CollectionPublicPath).borrow<&{Momentables.MomentablesCollectionPublic}>() {
+      if collection.getIDs().length >= 1 {
+        earnedRoles.append(roleIds[7])
+      }
+    } 
 
     // Arlequin
     if let collection = getAccount(user).getCapability(ArleeScene.CollectionPublicPath).borrow<&{ArleeScene.CollectionPublic}>() {
