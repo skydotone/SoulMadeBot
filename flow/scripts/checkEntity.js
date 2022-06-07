@@ -117,16 +117,23 @@ const NFW = async (emeraldIds) => {
     '983549184680538112', // MetaPanda
   ];
 
-  const dapperArgs = [
-    fcl.arg(emeraldIds["dapper"], t.Address),
-    fcl.arg(roleIds, t.Array(t.String))
-  ]
-  const bloctoArgs = [
-    fcl.arg(emeraldIds["blocto"], t.Address),
-    fcl.arg(roleIds, t.Array(t.String))
-  ]
-  let dapper = await executeScript(scriptCode, dapperArgs);
-  let blocto = await executeScript(scriptCode, bloctoArgs);
+  let dapper = [];
+  let blocto = [];
+  if (emeraldIds["dapper"]) {
+    const dapperArgs = [
+      fcl.arg(emeraldIds["dapper"], t.Address),
+      fcl.arg(roleIds, t.Array(t.String))
+    ]
+    dapper = await executeScript(scriptCode, dapperArgs);
+  }
+  if (emeraldIds["blocto"]) {
+    const bloctoArgs = [
+      fcl.arg(emeraldIds["blocto"], t.Address),
+      fcl.arg(roleIds, t.Array(t.String))
+    ]
+    blocto = await executeScript(scriptCode, bloctoArgs);
+  }
+  
   if (blocto.error) {
     blocto = [];
   }
