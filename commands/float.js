@@ -11,9 +11,9 @@ const execute = async (interaction, options) => {
 }
 
 const postFloat = async (interaction, float) => {
-    if (float.eventDescription.length > 200) {
-        float.eventDescription = float.eventDescription.substring(200) + '...';
-    }
+    // if (float.eventDescription.length > 200) {
+    //     float.eventDescription = float.eventDescription.substring(200) + '...';
+    // }
     const embed = {
         color: '#5bc595',
         title: float.eventName,
