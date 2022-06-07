@@ -218,6 +218,7 @@ function NFW() {
   import Gaia from 0x8b148183c28ff88f
   import MetaPanda from 0xf2af175e411dfff8
   import SomePlaceCollectible from 0x667a16294a089ef8
+  import BarterYardClubWerewolf from 0x28abb9f291cadaf2
 
   pub fun main(user: Address, roleIds: [String]): [String] {
     var earnedRoles: [String] = []
@@ -340,6 +341,13 @@ function NFW() {
     if let collection = getAccount(user).getCapability(SomePlaceCollectible.CollectionPublicPath).borrow<&{SomePlaceCollectible.CollectibleCollectionPublic}>() {
       if collection.getIDs().length >= 1 {
         earnedRoles.append(roleIds[16])
+      }
+    } 
+
+    // Barter Yard Club
+    if let collection = getAccount(user).getCapability(BarterYardClubWerewolf.CollectionPublicPath).borrow<&{NonFungibleToken.CollectionPublic}>() {
+      if collection.getIDs().length >= 1 {
+        earnedRoles.append(roleIds[17])
       }
     } 
 
