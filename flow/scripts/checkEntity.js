@@ -32,6 +32,21 @@ const NFL = async (emeraldIds) => {
   return await executeScript(scriptCode, args);
 }
 
+const EAD = async (emeraldIds) => {
+  const scriptCode = holdingScripts['EAD'];
+  const user = emeraldIds["dapper"];
+  if (!user) return { error: true, message: 'You need to create your Dapper EmeraldID at https://id.ecdao.org/dapper' };
+
+  // 1. 25+, 2. 100+, 3. 250+ 
+  const roleIds = ['984246197101412432', '983563607335899217', '984246308179152966'];
+
+  const args = [
+    fcl.arg(user, t.Address),
+    fcl.arg(roleIds, t.Array(t.String))
+  ]
+  return await executeScript(scriptCode, args);
+}
+
 const Flunks = async (emeraldIds) => {
   const scriptCode = holdingScripts['Flunks'];
   const user = emeraldIds["dapper"];
@@ -165,7 +180,8 @@ const entities = {
   NFL,
   Driverz,
   Genies,
-  NFW
+  NFW,
+  EAD
 }
 
 module.exports = {
