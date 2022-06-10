@@ -1,5 +1,6 @@
 require('dotenv').config();
 const { Client, Intents, Collection, Constants } = require('discord.js');
+const path = require('path')
 
 const fs = require('fs');
 const fcl = require("@onflow/fcl");
