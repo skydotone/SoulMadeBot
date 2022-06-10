@@ -382,6 +382,55 @@ function NFW() {
   `
 }
 
+function WIT() {
+  return `
+  import NonFungibleToken from 0x1d7e57aa55817448
+  import GooberXContract from 0x34f2bf4a80bb0f69 
+  import CryptoPiggo from 0xd3df824bf81910a4
+  import Flovatar from 0x921ea449dffec68a
+  import Gaia from 0x8b148183c28ff88f
+
+  pub fun main(user: Address, roleIds: [String]): [String] {
+    var earnedRoles: [String] = []
+
+    // Ballerz
+    if let collection = getAccount(user).getCapability(Gaia.CollectionPublicPath).borrow<&{Gaia.CollectionPublic}>() {
+      for id in collection.getIDs() {
+        let nft = collection.borrowGaiaNFT(id: id)!
+        let info = Gaia.getSetInfo(setID: nft.data.setID)
+        if info != nil && info!.name == "Ballerz" {
+          earnedRoles.append(roleIds[0])
+          continue
+        }
+      }
+    } 
+
+    // Piggos
+    if let collection = getAccount(user).getCapability(CryptoPiggo.CollectionPublicPath).borrow<&{CryptoPiggo.CryptoPiggoCollectionPublic}>() {
+      if collection.getIDs().length >= 1 {
+        earnedRoles.append(roleIds[1])
+      }
+    } 
+
+    // GOOBz
+    if let collection = getAccount(user).getCapability(GooberXContract.CollectionPublicPath).borrow<&{GooberXContract.GooberCollectionPublic}>() {
+      if collection.getIDs().length >= 1 {
+        earnedRoles.append(roleIds[2])
+      }
+    } 
+
+    // Flovatar
+    if let collection = getAccount(user).getCapability(Flovatar.CollectionPublicPath).borrow<&{Flovatar.CollectionPublic}>() {
+      if collection.getIDs().length >= 1 {
+        earnedRoles.append(roleIds[3])
+      }
+    } 
+
+    return earnedRoles
+  } 
+  `
+}
+
 const holdingScripts = {
   UFC,
   Flunks,
@@ -390,7 +439,8 @@ const holdingScripts = {
   Driverz,
   Genies,
   NFW,
-  EAD
+  EAD,
+  WIT
 }
 
 module.exports = {

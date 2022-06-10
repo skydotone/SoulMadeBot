@@ -110,6 +110,42 @@ const Genies = async (emeraldIds) => {
   return await executeScript(scriptCode, args);
 }
 
+const WIT = async (emeraldIds) => {
+  const scriptCode = holdingScripts['WIT'];
+
+  const roleIds = [
+    '984558304510496798', // Ballerz
+    '984558859861516368', // Piggos
+    '984559036127129680', // Goobz
+    '984559362381078538', // Flovatar
+  ];
+
+  let dapper = [];
+  let blocto = [];
+  if (emeraldIds["dapper"]) {
+    const dapperArgs = [
+      fcl.arg(emeraldIds["dapper"], t.Address),
+      fcl.arg(roleIds, t.Array(t.String))
+    ]
+    dapper = await executeScript(scriptCode, dapperArgs);
+  }
+  if (emeraldIds["blocto"]) {
+    const bloctoArgs = [
+      fcl.arg(emeraldIds["blocto"], t.Address),
+      fcl.arg(roleIds, t.Array(t.String))
+    ]
+    blocto = await executeScript(scriptCode, bloctoArgs);
+  }
+  
+  if (blocto.error) {
+    blocto = [];
+  }
+  if (dapper.error) {
+    dapper = [];
+  }
+  return dapper.concat(blocto.filter((item) => dapper.indexOf(item) < 0));
+}
+
 const NFW = async (emeraldIds) => {
   const scriptCode = holdingScripts['NFW'];
 
@@ -181,7 +217,8 @@ const entities = {
   Driverz,
   Genies,
   NFW,
-  EAD
+  EAD,
+  WIT
 }
 
 module.exports = {
