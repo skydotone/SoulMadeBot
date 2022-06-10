@@ -1,6 +1,6 @@
 // A command for all Dapper Products
 const { MessageActionRow, MessageButton, MessageEmbed, Permissions } = require('discord.js');
-const { holdingScripts } = require('../flow/holdings/entities');
+const { holdingScripts } = require('../../flow/holdings/entities');
 
 const execute = async (interaction, options) => {
     if (interaction.member.permissions.has(Permissions.FLAGS.MANAGE_GUILD)) {
@@ -37,7 +37,7 @@ const verifyEntity = async (interaction, name) => {
 }
 
 module.exports = {
-    name: 'entity',
+    name: 'verify-entity',
     description: 'Setup a verifier for an entity that was previously verified by Emerald City.',
     execute,
 }

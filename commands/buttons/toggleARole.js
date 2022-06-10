@@ -12,7 +12,7 @@ const execute = async (interaction, options, emeraldID) => {
 }
 
 module.exports = {
-  name: 'toggleARole',
+  name: 'button-toggleARole',
   description: 'gives or takes a certain role',
   execute,
 }

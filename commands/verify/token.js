@@ -1,5 +1,4 @@
 const { MessageActionRow, MessageButton, MessageEmbed, Permissions } = require('discord.js');
-const { holdingScripts } = require('../flow/holdings/nftholdings');
 
 const execute = async (interaction, options) => {
     if (interaction.member.permissions.has(Permissions.FLAGS.MANAGE_GUILD)) {
@@ -9,20 +8,19 @@ const execute = async (interaction, options) => {
             return;
         }
 
-        const customName = options.getString('customname');
-        if (!holdingScripts[customName.toLowerCase()]) {
-            await interaction.reply({ ephemeral: true, content: 'This custom name does not exist.' }).catch(e => console.log(e));
-            return;
-        }
-        verifyCustomButton(interaction, customName, role.id);
+        const contractName = options.getString('contractname');
+        const contractAddress = options.getString('contractaddress');
+        const publicPath = options.getString('publicpath');
+        const amount = options.getString('amount');
+        verifyFTButton(interaction, contractName, contractAddress, publicPath, amount, role.id);
     }
 }
 
-const verifyCustomButton = async (interaction, customName, roleId) => {
+const verifyFTButton = async (interaction, contractName, contractAddress, publicPath, amount, roleId) => {
     const row = new MessageActionRow()
         .addComponents(
             new MessageButton()
-                .setCustomId(`verifyCustom-${customName}-${roleId}`)
+                .setCustomId(`verifyFT-${contractName}-${contractAddress}-${publicPath}-${amount}-${roleId}`)
                 .setLabel('Verify')
                 .setStyle('SUCCESS'),
             new MessageButton()
@@ -33,16 +31,16 @@ const verifyCustomButton = async (interaction, customName, roleId) => {
 
     const embed = new MessageEmbed()
         .setColor('#5bc595')
-        .setTitle(`Verify you own a ${customName}`)
+        .setTitle(`Verify you own ${amount} ${contractName} tokens`)
         .setAuthor('Emerald City', 'https://i.imgur.com/YbmTuuW.png', 'https://discord.gg/emeraldcity')
         .setDescription('Click the `Verify` button below to get the ' + `<@&${roleId}>` + ' role with your EmeraldID.')
         .setThumbnail('https://i.imgur.com/UgE8FJl.png');
 
-    await interaction.reply({ ephemeral: false, embeds: [embed], components: [row] }).catch(e => console.log(e));
+    await interaction.reply({ embeds: [embed], components: [row] }).catch(e => console.log(e));
 }
 
 module.exports = {
-    name: 'customverifier',
-    description: 'setup a role verification with emeraldid for a custom entity (must be added to ./flow/holdings/nftholdings.js through a PR)',
-    execute,
+    name: 'verify-token',
+    description: 'setup a role verification with emeraldid for an arbitrary token',
+    execute: execute,
 }

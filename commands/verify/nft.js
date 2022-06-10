@@ -11,16 +11,15 @@ const execute = async (interaction, options) => {
         const contractName = options.getString('contractname');
         const contractAddress = options.getString('contractaddress');
         const publicPath = options.getString('publicpath');
-        const amount = options.getString('amount');
-        verifyFTButton(interaction, contractName, contractAddress, publicPath, amount, role.id);
+        verifyNFTButton(interaction, contractName, contractAddress, publicPath, role.id);
     }
 }
 
-const verifyFTButton = async (interaction, contractName, contractAddress, publicPath, amount, roleId) => {
+const verifyNFTButton = async (interaction, contractName, contractAddress, publicPath, roleId) => {
     const row = new MessageActionRow()
         .addComponents(
             new MessageButton()
-                .setCustomId(`verifyFT-${contractName}-${contractAddress}-${publicPath}-${amount}-${roleId}`)
+                .setCustomId(`verifyNFT-${contractName}-${contractAddress}-${publicPath}-${roleId}`)
                 .setLabel('Verify')
                 .setStyle('SUCCESS'),
             new MessageButton()
@@ -31,7 +30,7 @@ const verifyFTButton = async (interaction, contractName, contractAddress, public
 
     const embed = new MessageEmbed()
         .setColor('#5bc595')
-        .setTitle(`Verify you own ${amount} ${contractName} tokens`)
+        .setTitle(`Verify you own a ${contractName} NFT`)
         .setAuthor('Emerald City', 'https://i.imgur.com/YbmTuuW.png', 'https://discord.gg/emeraldcity')
         .setDescription('Click the `Verify` button below to get the ' + `<@&${roleId}>` + ' role with your EmeraldID.')
         .setThumbnail('https://i.imgur.com/UgE8FJl.png');
@@ -40,7 +39,7 @@ const verifyFTButton = async (interaction, contractName, contractAddress, public
 }
 
 module.exports = {
-    name: 'tokenverifier',
-    description: 'setup a role verification with emeraldid for an arbitrary token',
-    execute: execute,
+    name: 'verify-nft',
+    description: 'setup a role verification with emeraldid for an arbitrary nft',
+    execute,
 }

@@ -84,69 +84,6 @@ client.once('ready', () => {
     });
 
     commands?.create({
-        name: 'nftverifier',
-        description: 'Setup a button to verify a user owns a NFT from a certain collection.',
-        options: [
-            {
-                name: 'contractname',
-                description: 'The name of the contract',
-                required: true,
-                type: Constants.ApplicationCommandOptionTypes.STRING
-            },
-            {
-                name: 'contractaddress',
-                description: 'The address of the contract',
-                required: true,
-                type: Constants.ApplicationCommandOptionTypes.STRING
-            },
-            {
-                name: 'publicpath',
-                description: 'The public path to the collection',
-                required: true,
-                type: Constants.ApplicationCommandOptionTypes.STRING
-            },
-            {
-                name: 'role',
-                description: 'The role you wish to give',
-                required: true,
-                type: Constants.ApplicationCommandOptionTypes.ROLE
-            }
-        ]
-    });
-
-    commands?.create({
-        name: 'customverifier',
-        description: 'Setup a button to verify a user owns a Custom entity.',
-        options: [
-            {
-                name: 'customname',
-                description: 'The custom name',
-                required: true,
-                type: Constants.ApplicationCommandOptionTypes.STRING
-            },
-            {
-                name: 'role',
-                description: 'The role you wish to give',
-                required: true,
-                type: Constants.ApplicationCommandOptionTypes.ROLE
-            }
-        ]
-    });
-
-    commands?.create({
-        name: 'entity',
-        description: 'Setup a verifier for an entity that was previously verified by Emerald City.',
-        options: [
-            {
-                name: 'name',
-                description: 'The name provided by Emerald City.',
-                required: true,
-                type: Constants.ApplicationCommandOptionTypes.STRING
-            }
-        ]
-    });
-
-    commands?.create({
         name: 'god',
         description: 'Take a look at God.'
     });
@@ -185,43 +122,6 @@ client.once('ready', () => {
                 description: 'A URL to an image that will display',
                 required: false,
                 type: Constants.ApplicationCommandOptionTypes.STRING
-            }
-        ]
-    });
-
-    commands?.create({
-        name: 'tokenverifier',
-        description: 'Setup a button to verify a user owns X tokens from a certain vault.',
-        options: [
-            {
-                name: 'contractname',
-                description: 'The name of the contract',
-                required: true,
-                type: Constants.ApplicationCommandOptionTypes.STRING
-            },
-            {
-                name: 'contractaddress',
-                description: 'The address of the contract',
-                required: true,
-                type: Constants.ApplicationCommandOptionTypes.STRING
-            },
-            {
-                name: 'publicpath',
-                description: 'The public path to the vault',
-                required: true,
-                type: Constants.ApplicationCommandOptionTypes.STRING
-            },
-            {
-                name: 'amount',
-                description: 'The amount of tokens the user must hold',
-                required: true,
-                type: Constants.ApplicationCommandOptionTypes.STRING
-            },
-            {
-                name: 'role',
-                description: 'The role you wish to give',
-                required: true,
-                type: Constants.ApplicationCommandOptionTypes.ROLE
             }
         ]
     });
@@ -376,6 +276,113 @@ client.once('ready', () => {
                     {
                         name: 'setname',
                         description: 'The name of the set (ex. Cool Cats)',
+                        required: true,
+                        type: Constants.ApplicationCommandOptionTypes.STRING
+                    },
+                    {
+                        name: 'role',
+                        description: 'The role you wish to give',
+                        required: true,
+                        type: Constants.ApplicationCommandOptionTypes.ROLE
+                    }
+                ],
+                type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND
+            }
+        ]
+    });
+
+    commands?.create({
+        name: 'verify',
+        description: 'A group of commands for verifying assets.',
+        options: [
+            {
+                name: 'entity',
+                description: 'Setup a verifier for an entity that was previously verified by Emerald City.',
+                options: [
+                    {
+                        name: 'name',
+                        description: 'The name provided by Emerald City.',
+                        required: true,
+                        type: Constants.ApplicationCommandOptionTypes.STRING
+                    }
+                ],
+                type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND
+            },
+            {
+                name: 'token',
+                description: 'Setup a button to verify a user owns X tokens from a certain vault.',
+                options: [
+                    {
+                        name: 'contractname',
+                        description: 'The name of the contract',
+                        required: true,
+                        type: Constants.ApplicationCommandOptionTypes.STRING
+                    },
+                    {
+                        name: 'contractaddress',
+                        description: 'The address of the contract',
+                        required: true,
+                        type: Constants.ApplicationCommandOptionTypes.STRING
+                    },
+                    {
+                        name: 'publicpath',
+                        description: 'The public path to the vault',
+                        required: true,
+                        type: Constants.ApplicationCommandOptionTypes.STRING
+                    },
+                    {
+                        name: 'amount',
+                        description: 'The amount of tokens the user must hold',
+                        required: true,
+                        type: Constants.ApplicationCommandOptionTypes.STRING
+                    },
+                    {
+                        name: 'role',
+                        description: 'The role you wish to give',
+                        required: true,
+                        type: Constants.ApplicationCommandOptionTypes.ROLE
+                    }
+                ],
+                type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND
+            },
+            {
+                name: 'custom',
+                description: 'Setup a button to verify a user owns a Custom entity.',
+                options: [
+                    {
+                        name: 'customname',
+                        description: 'The custom name',
+                        required: true,
+                        type: Constants.ApplicationCommandOptionTypes.STRING
+                    },
+                    {
+                        name: 'role',
+                        description: 'The role you wish to give',
+                        required: true,
+                        type: Constants.ApplicationCommandOptionTypes.ROLE
+                    }
+                ],
+                type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND
+            },
+            {
+                name: 'nft',
+                description: 'Setup a button to verify a user owns a NFT from a certain collection.',
+                options: [
+                    {
+                        name: 'contractname',
+                        description: 'The name of the contract',
+                        required: true,
+                        type: Constants.ApplicationCommandOptionTypes.STRING
+                    },
+                    {
+                        name: 'contractaddress',
+                        description: 'The address of the contract',
+                        required: true,
+                        type: Constants.ApplicationCommandOptionTypes.STRING
+                    },
+                    {
+                        name: 'publicpath',
+                        description: 'The public path to the collection',
                         required: true,
                         type: Constants.ApplicationCommandOptionTypes.STRING
                     },
