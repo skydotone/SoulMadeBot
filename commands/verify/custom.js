@@ -1,5 +1,5 @@
 const { MessageActionRow, MessageButton, MessageEmbed, Permissions } = require('discord.js');
-const { holdingScripts } = require('../flow/holdings/nftholdings');
+const { holdingScripts } = require('../../flow/holdings/nftholdings');
 
 const execute = async (interaction, options) => {
     if (interaction.member.permissions.has(Permissions.FLAGS.MANAGE_GUILD)) {
