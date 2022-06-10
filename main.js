@@ -422,7 +422,7 @@ client.on('interactionCreate', async interaction => {
         client.commands.get(commandName)?.execute(interaction, customIdArray, emeraldIds);
     } else if (interaction.isCommand()) {
         const { options } = interaction;
-        const commandName = options._subcommand || interaction.commandName;
+        const commandName = options._subcommand ? interaction.commandName + '-' + options._subcommand : interaction.commandName;
         client.commands.get(commandName)?.execute(interaction, options);
     }
 });
