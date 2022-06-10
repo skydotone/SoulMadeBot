@@ -62,6 +62,21 @@ const Flunks = async (emeraldIds) => {
   return await executeScript(scriptCode, args);
 }
 
+const InceptionFlunks = async (emeraldIds) => {
+  const scriptCode = holdingScripts['InceptionFlunks'];
+  const user = emeraldIds["dapper"];
+  if (!user) return { error: true, message: 'You need to create your Dapper EmeraldID at https://id.ecdao.org' };
+
+  // 1. >= 1, 2. >= 8, 3. >= 8
+  const roleIds = ['945509809745182740', '945509281267060807', '930157852377636906'];
+
+  const args = [
+    fcl.arg(user, t.Address),
+    fcl.arg(roleIds, t.Array(t.String))
+  ]
+  return await executeScript(scriptCode, args);
+}
+
 const IXLabs = async (emeraldIds) => {
   const scriptCode = holdingScripts['IXLabs'];
   const user = emeraldIds["dapper"];
@@ -218,7 +233,8 @@ const entities = {
   Genies,
   NFW,
   EAD,
-  WIT
+  WIT,
+  InceptionFlunks
 }
 
 module.exports = {

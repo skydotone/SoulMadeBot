@@ -121,6 +121,30 @@ function Flunks() {
   `
 }
 
+function InceptionFlunks() {
+  return `
+  import Flunks from 0x807c3d470888cc48
+
+  pub fun main(user: Address, roleIds: [String]): [String] {
+    var earnedRoles: [String] = []
+
+    if let collection = getAccount(user).getCapability(Flunks.CollectionPublicPath).borrow<&Flunks.Collection{Flunks.FlunksCollectionPublic}>() {
+      let ids = collection.getIDs()
+
+      // This checks for at least 8 Flunks
+      if ids.length >= 8 {
+        earnedRoles.append(roleIds[1])
+        earnedRoles.append(roleIds[2])
+      } else if ids.length >= 1 {
+        earnedRoles.append(roleIds[0])
+      }
+    }
+
+    return earnedRoles
+  }
+  `
+}
+
 function IXLabs() {
   return `
   import TopShot from 0x0b2a3299cc857e29
@@ -440,7 +464,8 @@ const holdingScripts = {
   Genies,
   NFW,
   EAD,
-  WIT
+  WIT,
+  InceptionFlunks
 }
 
 module.exports = {
