@@ -37,7 +37,7 @@ const verifyMomentsButton = async (interaction, setName, roleId) => {
 }
 
 module.exports = {
-    name: 'ownsallinset',
+    name: 'nbatopshot-ownsallinset',
     description: 'setup a role verification with emeraldid to verify all moments in set',
     execute,
 }

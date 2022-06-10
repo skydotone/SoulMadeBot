@@ -1,4 +1,4 @@
-const { getMomentsInSet } = require('../flow/scripts/nbatopshot.js');
+const { getMomentsInSet } = require('../../flow/scripts/nbatopshot.js');
 
 const execute = async (interaction, options) => {
   await interaction.deferReply();
@@ -52,7 +52,7 @@ const postTopShot = async (interaction, topshot) => {
 }
 
 module.exports = {
-  name: 'momentsinset',
+  name: 'nbatopshot-momentsinset',
   description: 'display all the moments a user has from a topshot set',
   execute,
 }

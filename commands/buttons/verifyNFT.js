@@ -1,4 +1,4 @@
-const { checkOwnsNFT } = require('../flow/scripts/checkOwnsNFT.js');
+const { checkOwnsNFT } = require('../../flow/scripts/checkOwnsNFT.js');
 
 const execute = async (interaction, options, emeraldIds) => {
     const contractName = options[0];
@@ -15,7 +15,7 @@ const execute = async (interaction, options, emeraldIds) => {
 }
 
 module.exports = {
-    name: 'verifyNFT',
+    name: 'button-verifyNFT',
     description: 'verifies if a user has a nft from a certain contract',
     execute,
 }

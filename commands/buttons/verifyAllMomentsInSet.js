@@ -1,4 +1,4 @@
-const { ownsAllInSet } = require('../flow/scripts/nbatopshot.js');
+const { ownsAllInSet } = require('../../flow/scripts/nbatopshot.js');
 
 const execute = async (interaction, options, emeraldIds) => {
     const setName = options[0];
@@ -15,7 +15,7 @@ const execute = async (interaction, options, emeraldIds) => {
 
 
 module.exports = {
-    name: 'verifyAllMomentsInSet',
+    name: 'button-verifyAllMomentsInSet',
     description: 'verifies if a user has all the moments from a set',
     execute,
 }

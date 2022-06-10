@@ -1,4 +1,4 @@
-const { checkOwnsFloatFromGroup, checkOwnsAllFloatsFromGroup } = require('../flow/scripts/float.js');
+const { checkOwnsFloatFromGroup, checkOwnsAllFloatsFromGroup } = require('../../flow/scripts/float.js');
 
 const execute = async (interaction, options, emeraldIds) => {
   const creator = options[0];
@@ -23,7 +23,7 @@ const execute = async (interaction, options, emeraldIds) => {
 
 
 module.exports = {
-  name: 'verifyGroup',
+  name: 'button-verifyGroup',
   description: 'verifies if a user has a float inside of a group of events',
   execute,
 }

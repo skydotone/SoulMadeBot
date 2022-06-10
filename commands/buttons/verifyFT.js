@@ -1,4 +1,4 @@
-const { checkOwnsFT } = require('../flow/scripts/checkOwnsFT.js');
+const { checkOwnsFT } = require('../../flow/scripts/checkOwnsFT.js');
 
 const execute = async (interaction, options, emeraldIds) => {
     const contractName = options[0];
@@ -17,7 +17,7 @@ const execute = async (interaction, options, emeraldIds) => {
 
 
 module.exports = {
-    name: 'verifyFT',
+    name: 'button-verifyFT',
     description: 'verifies if a user has a certain amount of FT from a certain contract',
     execute,
 }

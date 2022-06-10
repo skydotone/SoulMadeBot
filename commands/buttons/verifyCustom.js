@@ -1,4 +1,4 @@
-const { checkOwnsCustom } = require('../flow/scripts/checkOwnsCustom.js');
+const { checkOwnsCustom } = require('../../flow/scripts/checkOwnsCustom.js');
 
 const execute = async (interaction, options, emeraldIds) => {
     const customName = options[0];
@@ -15,7 +15,7 @@ const execute = async (interaction, options, emeraldIds) => {
 
 
 module.exports = {
-    name: 'verifyCustom',
+    name: 'button-verifyCustom',
     description: 'verifies if a user has a custom entity that is pre-defined in ./flow/holdings/nftholdings.js',
     execute,
 }

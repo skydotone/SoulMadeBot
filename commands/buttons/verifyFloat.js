@@ -1,4 +1,4 @@
-const { checkOwnsFloat } = require('../flow/scripts/float.js');
+const { checkOwnsFloat } = require('../../flow/scripts/float.js');
 
 const execute = async (interaction, options, emeraldIds) => {
     const eventId = options[0];
@@ -15,7 +15,7 @@ const execute = async (interaction, options, emeraldIds) => {
 
 
 module.exports = {
-    name: 'verifyFloat',
+    name: 'button-verifyFloat',
     description: 'verifies if a user has a float from a specific event and gives them the role for it',
     execute,
 }

@@ -1,4 +1,4 @@
-const { entities } = require('../flow/scripts/checkEntity.js');
+const { entities } = require('../../flow/scripts/checkEntity.js');
 
 const execute = async (interaction, options, emeraldIds) => {
     const name = options[0];
@@ -16,7 +16,7 @@ const execute = async (interaction, options, emeraldIds) => {
 }
 
 module.exports = {
-    name: 'verifyEntity',
+    name: 'button-verifyEntity',
     description: 'verifies all the users assets for a registered entity and sets appropriate roles',
     execute,
 }
