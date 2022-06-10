@@ -419,7 +419,7 @@ client.on('interactionCreate', async interaction => {
             return;
         }
         let customIdArray = interaction.customId.replaceAll(" - ", " : ").split('-');
-        const commandName = customIdArray.shift();
+        const commandName = 'button-' + customIdArray.shift();
         client.commands.get(commandName)?.execute(interaction, customIdArray, emeraldIds);
     } else if (interaction.isCommand()) {
         const { options } = interaction;
