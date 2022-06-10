@@ -1,5 +1,5 @@
-const { getRandomFloats, getDiscordIds } = require('../flow/scripts/getRandomFloats');
-const { toAddress } = require('../flow/scripts/resolveNames');
+const { getRandomFloats, getDiscordIds } = require('../../flow/scripts/getRandomFloats');
+const { toAddress } = require('../../flow/scripts/resolveNames');
 
 const execute = async (interaction, options) => {
     const public = options.getBoolean('public');
@@ -64,7 +64,7 @@ const postRandoms = async (interaction, creator, eventId, results) => {
 }
 
 module.exports = {
-    name: 'randomfloats',
+    name: 'float-random',
     description: 'return random float holders to win a giveaway',
     execute,
 }

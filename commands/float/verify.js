@@ -37,7 +37,7 @@ const verifyFloatButton = async (interaction, eventId, roleId) => {
 }
 
 module.exports = {
-    name: 'floatverifier',
+    name: 'float-verify',
     description: 'setup a role verification with emeraldid',
-    execute: execute,
+    execute
 }

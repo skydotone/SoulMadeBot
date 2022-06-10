@@ -1,6 +1,6 @@
 const { MessageActionRow, MessageButton, MessageEmbed, Permissions } = require('discord.js');
-const { getGroupInfo } = require('../flow/scripts/getGroupInfo');
-const { toAddress } = require('../flow/scripts/resolveNames');
+const { getGroupInfo } = require('../../flow/scripts/getGroupInfo');
+const { toAddress } = require('../../flow/scripts/resolveNames');
 
 const execute = async (interaction, options) => {
   if (interaction.member.permissions.has(Permissions.FLAGS.MANAGE_GUILD)) {
@@ -60,7 +60,7 @@ const verifyGroupButton = (interaction, creator, resolved, groupInfo, roleId, al
 }
 
 module.exports = {
-  name: 'groupverifier',
+  name: 'float-verifygroup',
   description: 'setup a role verification with emeraldid',
   execute: execute,
 }

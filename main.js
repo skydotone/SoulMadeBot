@@ -24,12 +24,23 @@ const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_
 
 // Gets all of our commands from our commands folder
 client.commands = new Collection();
+
+/*** THIS IS FOR ALL THE DIRECTORIES ***/ 
+const isDirectory = source => fs.lstatSync(source).isDirectory();
+const getDirectories = source => fs.readdirSync(source).map(name => path.join(source, name)).filter(isDirectory);
+getDirectories(__dirname + '/commands').forEach(category => {
+    const commandFiles = fs.readdirSync(category).filter(file => file.endsWith('.js'));
+
+    for (const file of commandFiles) {
+        const command = require(`${category}/${file}`);
+        client.commands.set(command.name, command);
+    }
+});
+
+/*** THIS IS FOR ALL THE INDIVIDUAL FILES ***/ 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 for (const file of commandFiles) {
     const command = require(`./commands/${file}`);
-    // command.name is the name of the file,
-    // and command has a list of all the module exports
-    // in that file.
     client.commands.set(command.name, command);
 }
 
@@ -153,25 +164,6 @@ client.once('ready', () => {
     });
 
     commands?.create({
-        name: 'float',
-        description: 'View a FLOAT from someones collection',
-        options: [
-            {
-                name: 'account',
-                description: 'The users address, .find, or .fn name',
-                required: true,
-                type: Constants.ApplicationCommandOptionTypes.STRING
-            },
-            {
-                name: 'floatid',
-                description: 'The ID of the FLOAT',
-                required: true,
-                type: Constants.ApplicationCommandOptionTypes.NUMBER
-            }
-        ]
-    });
-
-    commands?.create({
         name: 'togglerole',
         description: 'Give someone the ability to get or remove a specific role.',
         options: [
@@ -192,56 +184,6 @@ client.once('ready', () => {
                 description: 'A URL to an image that will display',
                 required: false,
                 type: Constants.ApplicationCommandOptionTypes.STRING
-            }
-        ]
-    });
-
-    commands?.create({
-        name: 'floatverifier',
-        description: 'Setup a button to verify a user owns a FLOAT from a specified Event and give them a role for it.',
-        options: [
-            {
-                name: 'eventid',
-                description: 'The id of the event',
-                required: true,
-                type: Constants.ApplicationCommandOptionTypes.NUMBER
-            },
-            {
-                name: 'role',
-                description: 'The role you wish to give',
-                required: true,
-                type: Constants.ApplicationCommandOptionTypes.ROLE
-            }
-        ]
-    });
-
-    commands?.create({
-        name: 'groupverifier',
-        description: 'Setup a button to verify a user owns a FLOAT from a certain group of FLOAT Events.',
-        options: [
-            {
-                name: 'creator',
-                description: 'The Group creators address, .find, or .fn name',
-                required: true,
-                type: Constants.ApplicationCommandOptionTypes.STRING
-            },
-            {
-                name: 'groupname',
-                description: 'The name of the Group',
-                required: true,
-                type: Constants.ApplicationCommandOptionTypes.STRING
-            },
-            {
-                name: 'role',
-                description: 'The role you wish to give',
-                required: true,
-                type: Constants.ApplicationCommandOptionTypes.ROLE
-            },
-            {
-                name: 'all',
-                description: 'If the user has to own ALL the FLOATs from this group',
-                required: true,
-                type: Constants.ApplicationCommandOptionTypes.BOOLEAN
             }
         ]
     });
@@ -284,32 +226,121 @@ client.once('ready', () => {
     });
 
     commands?.create({
-        name: 'randomfloats',
-        description: 'Get a random number of FLOAT claimers from your event.',
+        name: 'float',
+        description: 'A group of commands for FLOAT.',
         options: [
             {
-                name: 'account',
+                name: 'random',
+                description: 'Get a random number of FLOAT claimers from your event.',
+                options: [
+                    {
+                        name: 'account',
+                        description: 'The users address, .find, or .fn name',
+                        required: true,
+                        type: Constants.ApplicationCommandOptionTypes.STRING
+                    },
+                    {
+                        name: 'eventid',
+                        description: 'The id of the event',
+                        required: true,
+                        type: Constants.ApplicationCommandOptionTypes.STRING
+                    },
+                    {
+                        name: 'number',
+                        description: 'The number of claimers you would like to get',
+                        required: true,
+                        type: Constants.ApplicationCommandOptionTypes.INTEGER
+                    },
+                    {
+                        name: 'public',
+                        description: 'Display results publically',
+                        required: true,
+                        type: Constants.ApplicationCommandOptionTypes.BOOLEAN
+                    }
+                ],
+                type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND
+            },
+            {
+                name: 'verify',
+                description: 'Setup a button to verify a user owns a FLOAT from a specified Event and give them a role for it.',
+                options: [
+                    {
+                        name: 'eventid',
+                        description: 'The id of the event',
+                        required: true,
+                        type: Constants.ApplicationCommandOptionTypes.NUMBER
+                    },
+                    {
+                        name: 'role',
+                        description: 'The role you wish to give',
+                        required: true,
+                        type: Constants.ApplicationCommandOptionTypes.ROLE
+                    }
+                ],
+                type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND
+            },
+            {
+                name: 'view',
+                description: 'View a FLOAT from someones collection',
+                options: [
+                    {
+                        name: 'account',
+                        description: 'The users address, .find, or .fn name',
+                        required: true,
+                        type: Constants.ApplicationCommandOptionTypes.STRING
+                    },
+                    {
+                        name: 'floatid',
+                        description: 'The ID of the FLOAT',
+                        required: true,
+                        type: Constants.ApplicationCommandOptionTypes.NUMBER
+                    }
+                ],
+                type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND
+            },
+            {
+                name: 'groupverifier',
+                description: 'Setup a button to verify a user owns a FLOAT from a certain group of FLOAT Events.',
+                options: [
+                    {
+                        name: 'creator',
+                        description: 'The Group creators address, .find, or .fn name',
+                        required: true,
+                        type: Constants.ApplicationCommandOptionTypes.STRING
+                    },
+                    {
+                        name: 'groupname',
+                        description: 'The name of the Group',
+                        required: true,
+                        type: Constants.ApplicationCommandOptionTypes.STRING
+                    },
+                    {
+                        name: 'role',
+                        description: 'The role you wish to give',
+                        required: true,
+                        type: Constants.ApplicationCommandOptionTypes.ROLE
+                    },
+                    {
+                        name: 'all',
+                        description: 'If the user has to own ALL the FLOATs from this group',
+                        required: true,
+                        type: Constants.ApplicationCommandOptionTypes.BOOLEAN
+                    }
+                ],
+                type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND
+            }
+        ]
+    });
+
+    commands?.create({
+        name: 'indiscord',
+        description: 'Export a .csv of all the people currently in your Discord AMA',
+        options: [
+            {
+                name: 'channel',
                 description: 'The users address, .find, or .fn name',
                 required: true,
-                type: Constants.ApplicationCommandOptionTypes.STRING
-            },
-            {
-                name: 'eventid',
-                description: 'The id of the event',
-                required: true,
-                type: Constants.ApplicationCommandOptionTypes.STRING
-            },
-            {
-                name: 'number',
-                description: 'The number of claimers you would like to get',
-                required: true,
-                type: Constants.ApplicationCommandOptionTypes.INTEGER
-            },
-            {
-                name: 'public',
-                description: 'Display results publically',
-                required: true,
-                type: Constants.ApplicationCommandOptionTypes.BOOLEAN
+                type: Constants.ApplicationCommandOptionTypes.CHANNEL
             }
         ]
     });

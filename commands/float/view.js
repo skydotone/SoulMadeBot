@@ -1,4 +1,4 @@
-const { getFloatInfo } = require('../flow/scripts/getFloatInfo.js');
+const { getFloatInfo } = require('../../flow/scripts/getFloatInfo.js');
 
 const execute = async (interaction, options) => {
     await interaction.deferReply({ ephemeral: false });
@@ -50,7 +50,7 @@ const postFloat = async (interaction, float) => {
 }
 
 module.exports = {
-    name: 'float',
+    name: 'float-view',
     description: 'display information about a float',
     execute,
 }
