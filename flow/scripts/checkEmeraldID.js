@@ -26,12 +26,12 @@ const checkEmeraldID = async (discordID) => {
         fcl.arg(discordID, t.String)
       ])
     ]).then(fcl.decode);
-  
+
     if (Object.keys(emeraldIds).length === 0) {
       return null;
     }
     return emeraldIds;
-  } catch(e) {
+  } catch (e) {
     return null;
   }
 }
@@ -56,9 +56,10 @@ const checkEmeraldIDBatch = async (discordIDs) => {
         fcl.arg(discordIDs, t.Array(t.String))
       ])
     ]).then(fcl.decode);
-  
+
     return accounts;
-  } catch(e) {
+  } catch (e) {
+    console.log(e);
     return null;
   }
 }
@@ -86,9 +87,9 @@ const checkEmeraldIDFromAccount = async (account) => {
         fcl.arg(account, t.Address)
       ])
     ]).then(fcl.decode);
-  
+
     return discordID;
-  } catch(e) {
+  } catch (e) {
     return null;
   }
 }
