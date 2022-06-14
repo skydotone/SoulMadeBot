@@ -57,6 +57,7 @@ const checkEmeraldIDBatch = async (discordIDs) => {
       ])
     ]).then(fcl.decode);
 
+    console.log('ACCOUNTS:', accounts);
     return accounts;
   } catch (e) {
     console.log(e);

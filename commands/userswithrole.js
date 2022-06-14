@@ -33,6 +33,7 @@ const sendInfo = async (interaction, role) => {
     let userTag = usersWithRole[userIDs[i]];
     fields[userTag] = emeraldID || 'N/A';
   }
+  console.log('FIELDS:', fields);
   const csv = csvmaker(fields);
 
   const userList = new MessageAttachment(Buffer.from(csv), 'users.csv');
