@@ -38,11 +38,16 @@ const checkEmeraldID = async (discordID) => {
 
 const scriptCode2 = `
 import EmeraldIdentity from 0xEmeraldIdentity
+import EmeraldIdentityDapper from 0xEmeraldIdentity
 
-pub fun main(discordIDs: [String]): {String: Address?} {
-  let answer: {String: Address?} = {}
+pub fun main(discordIDs: [String]): {String: Address} {
+  let answer: {String: Address} = {}
   for discordID in discordIDs {
-    answer[discordID] = EmeraldIdentity.getAccountFromDiscord(discordID: discordID)
+    if let bloctoId = EmeraldIdentity.getAccountFromDiscord(discordID: discordID) {
+      answer[discordID] = bloctoId
+    } else if let dapperId = EmeraldIdentityDapper.getAccountFromDiscord(discordID: discordID) {
+      answer[discordID] = dapperId
+    }
   }
   return answer
 }

@@ -26,7 +26,7 @@ const sendInfo = async (interaction, role) => {
   let fields = {};
   // A list of discordIDs
   const userIDs = Object.keys(usersWithRole);
-  // Maps discordID => BLOCTO emeraldID
+  // Maps discordID => EmeraldID
   const answer = await checkEmeraldIDBatch(userIDs);
   for (let i = 0; i < userIDs.length; i++) {
     let emeraldID = answer[userIDs[i]];
