@@ -4,8 +4,7 @@ const { MessageAttachment, Permissions } = require('discord.js');
 const execute = async (interaction, options) => {
   if (interaction.member.permissions.has(Permissions.FLAGS.MANAGE_GUILD)) {
     await interaction.deferReply({ ephemeral: true });
-    const channel = options.getChannel('channel');
-    await channel.members.fetch();
+    const channel = interaction.member.voiceChannel;
     const membersInChannel = channel.members.map(member => member.id);
 
     sendInfo(interaction, membersInChannel);

@@ -26,7 +26,7 @@ const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_
 // Gets all of our commands from our commands folder
 client.commands = new Collection();
 
-/*** THIS IS FOR ALL THE DIRECTORIES ***/ 
+/*** THIS IS FOR ALL THE DIRECTORIES ***/
 const isDirectory = source => fs.lstatSync(source).isDirectory();
 const getDirectories = source => fs.readdirSync(source).map(name => path.join(source, name)).filter(isDirectory);
 getDirectories(__dirname + '/commands').forEach(category => {
@@ -38,7 +38,7 @@ getDirectories(__dirname + '/commands').forEach(category => {
     }
 });
 
-/*** THIS IS FOR ALL THE INDIVIDUAL FILES ***/ 
+/*** THIS IS FOR ALL THE INDIVIDUAL FILES ***/
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 for (const file of commandFiles) {
     const command = require(`./commands/${file}`);
@@ -236,14 +236,7 @@ client.once('ready', () => {
     commands?.create({
         name: 'indiscord',
         description: 'Export a .csv of all the people currently in your Discord AMA',
-        options: [
-            {
-                name: 'channel',
-                description: 'The users address, .find, or .fn name',
-                required: true,
-                type: Constants.ApplicationCommandOptionTypes.CHANNEL
-            }
-        ]
+        options: []
     });
 
     commands?.create({
