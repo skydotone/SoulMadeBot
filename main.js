@@ -236,7 +236,14 @@ client.once('ready', () => {
     commands?.create({
         name: 'indiscord',
         description: 'Export a .csv of all the people currently in your Discord AMA',
-        options: []
+        options: [
+            {
+                name: 'channel',
+                description: 'The users address, .find, or .fn name',
+                required: true,
+                type: Constants.ApplicationCommandOptionTypes.CHANNEL
+            }
+        ]
     });
 
     commands?.create({
