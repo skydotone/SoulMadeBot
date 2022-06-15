@@ -5,7 +5,7 @@ const execute = async (interaction, options) => {
   if (interaction.member.permissions.has(Permissions.FLAGS.MANAGE_GUILD)) {
     await interaction.deferReply({ ephemeral: true });
     const channel = options.getChannel('channel');
-    const voiceChannel = interaction.guild.channels.fetch(channel.id);
+    const voiceChannel = await interaction.guild.channels.fetch(channel.id);
     const membersInChannel = voiceChannel.members.map(member => member.id);
 
     sendInfo(interaction, membersInChannel);
