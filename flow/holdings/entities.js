@@ -195,11 +195,14 @@ function Driverz() {
       if ids.length >= 1 {
         earnedRoles.append(roleIds[0])
       }
-      if ids.length >= 5 {
+      if ids.length >= 6 {
         earnedRoles.append(roleIds[1])
       }
-      if ids.length >= 15 {
+      if ids.length >= 13 {
         earnedRoles.append(roleIds[2])
+      }
+      if ids.length >= 25 {
+        earnedRoles.append(roleIds[3])
       }
     }
 

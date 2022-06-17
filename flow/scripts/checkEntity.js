@@ -97,8 +97,8 @@ const Driverz = async (emeraldIds) => {
   const user = emeraldIds["dapper"];
   if (!user) return { error: true, message: 'You need to create your Dapper EmeraldID at https://id.ecdao.org' };
 
-  // 1. 1, 2. 5, 3. 15
-  const roleIds = ['981264736098344970', '981264841660579951', '981264946530754654'];
+  // 1. 1, 2. 6, 3. 13, 4. 25
+  const roleIds = ['981264736098344970', '987185469282484245', '981264841660579951', '981264946530754654'];
 
   const args = [
     fcl.arg(user, t.Address),
@@ -151,7 +151,7 @@ const WIT = async (emeraldIds) => {
     ]
     blocto = await executeScript(scriptCode, bloctoArgs);
   }
-  
+
   if (blocto.error) {
     blocto = [];
   }
@@ -201,7 +201,7 @@ const NFW = async (emeraldIds) => {
     ]
     blocto = await executeScript(scriptCode, bloctoArgs);
   }
-  
+
   if (blocto.error) {
     blocto = [];
   }
