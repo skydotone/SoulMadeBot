@@ -200,7 +200,7 @@ client.once('ready', () => {
                 type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND
             },
             {
-                name: 'groupverifier',
+                name: 'verifygroup',
                 description: 'Setup a button to verify a user owns a FLOAT from a certain group of FLOAT Events.',
                 options: [
                     {
