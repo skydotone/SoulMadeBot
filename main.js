@@ -57,6 +57,16 @@ client.once('ready', () => {
     //   commands = client.application?.commands;
     // }
 
+    commands?.delete('978510701658275910');
+    commands?.delete('979514357891354664');
+    commands?.delete('955651580399607868');
+    commands?.delete('967120948874592366');
+    commands?.delete('971248871206436945');
+    commands?.delete('961491271908741180');
+    commands?.delete('957148433414766632');
+    commands?.delete('955651580126957588');
+
+
     commands?.create({
         name: 'resolve',
         description: 'Get information about a .find, .fn, or address.',
