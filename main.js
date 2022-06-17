@@ -57,7 +57,7 @@ client.once('ready', () => {
     //   commands = client.application?.commands;
     // }
 
-    commands?.delete('979604763186429992');
+    // commands?.delete('979604763186429992');
 
     commands?.create({
         name: 'resolve',
@@ -431,7 +431,6 @@ client.on('interactionCreate', async interaction => {
         const commandName = 'button-' + customIdArray.shift();
         client.commands.get(commandName)?.execute(interaction, customIdArray, emeraldIds);
     } else if (interaction.isCommand()) {
-        console.log(interaction);
         const { options } = interaction;
         const commandName = options._subcommand ? interaction.commandName + '-' + options._subcommand : interaction.commandName;
         client.commands.get(commandName)?.execute(interaction, options);
