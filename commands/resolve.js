@@ -18,7 +18,7 @@ const sendNames = async (interaction, address, find, fn, emeraldID) => {
     if (emeraldID) {
         const member = interaction.guild.members.cache.get(emeraldID);
         if (member) {
-            roleMap = member.roles.cache.sort((a, b) => b.position - a.position).map(r => r).join(", ");   
+            roleMap = member.roles.cache.sort((a, b) => b.position - a.position).map(r => r).join(", ");
         }
     }
 
@@ -33,7 +33,7 @@ const sendNames = async (interaction, address, find, fn, emeraldID) => {
             { name: 'Roles', value: roleMap || "N/A", inline: true }
         )
         .setAuthor('Emerald City', 'https://i.imgur.com/YbmTuuW.png', 'https://discord.gg/emeraldcity')
-        .setThumbnail('https://i.imgur.com/UgE8FJl.png');
+        .setThumbnail('https://i.imgur.com/WW9R6UA.png');
 
     await interaction.editReply({ embeds: [embed] }).catch(e => console.log(e));
 }

@@ -27,7 +27,7 @@ const sendIdentification = async (interaction, emeraldIds, find, fn, discordId) 
             { name: 'EmeraldID', value: "✅", inline: true }
         )
         .setAuthor('Emerald City', 'https://i.imgur.com/YbmTuuW.png', 'https://discord.gg/emeraldcity')
-        .setThumbnail('https://i.imgur.com/UgE8FJl.png');
+        .setThumbnail('https://i.imgur.com/WW9R6UA.png');
 
     await interaction.editReply({ embeds: [embed] }).catch(e => console.log(e));
 }

@@ -31,7 +31,7 @@ const verifyEntity = async (interaction, name) => {
         .setTitle(`Verify your assets for ${name}`)
         .setAuthor('Emerald City', 'https://i.imgur.com/YbmTuuW.png', 'https://discord.gg/emeraldcity')
         .setDescription('Click the `Verify` button below to verify your assets with your EmeraldID.')
-        .setThumbnail('https://i.imgur.com/UgE8FJl.png');
+        .setThumbnail('https://i.imgur.com/WW9R6UA.png');
 
     await interaction.reply({ ephemeral: false, embeds: [embed], components: [row] }).catch(e => console.log(e));
 }

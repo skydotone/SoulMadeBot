@@ -34,7 +34,7 @@ const verifyFTButton = async (interaction, contractName, contractAddress, public
         .setTitle(`Verify you own ${amount} ${contractName} tokens`)
         .setAuthor('Emerald City', 'https://i.imgur.com/YbmTuuW.png', 'https://discord.gg/emeraldcity')
         .setDescription('Click the `Verify` button below to get the ' + `<@&${roleId}>` + ' role with your EmeraldID.')
-        .setThumbnail('https://i.imgur.com/UgE8FJl.png');
+        .setThumbnail('https://i.imgur.com/WW9R6UA.png');
 
     await interaction.reply({ embeds: [embed], components: [row] }).catch(e => console.log(e));
 }
