@@ -416,6 +416,7 @@ function WIT() {
   import CryptoPiggo from 0xd3df824bf81910a4
   import Flovatar from 0x921ea449dffec68a
   import Gaia from 0x8b148183c28ff88f
+  import Flunks from 0x807c3d470888cc48
 
   pub fun main(user: Address, roleIds: [String]): [String] {
     var earnedRoles: [String] = []
@@ -452,6 +453,13 @@ function WIT() {
         earnedRoles.append(roleIds[3])
       }
     } 
+
+    // Flunks
+    if let collection = getAccount(user).getCapability(Flunks.CollectionPublicPath).borrow<&Flunks.Collection{Flunks.FlunksCollectionPublic}>() {
+      if collection.getIDs().length >= 1 {
+        earnedRoles.append(roleIds[4])
+      }
+    }
 
     return earnedRoles
   } 

@@ -133,6 +133,7 @@ const WIT = async (emeraldIds) => {
     '984558859861516368', // Piggos
     '984559036127129680', // Goobz
     '984559362381078538', // Flovatar
+    '988632169276641331', // Flunks
   ];
 
   let dapper = [];
